@@ -25,6 +25,9 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [],
+  router: {
+    middleware: ["auth"],
+  },
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
@@ -34,30 +37,26 @@ export default {
   ],
   firebase: {
     config: {
-      apiKey: "<AIzaSyCARUcWtbvD2y3jkF4PFTO5BIrB-VFWwu0>",
-      authDomain: "<knjigotekaapi.firebaseapp.com>",
-      projectId: "<knjigotekaapi>",
-      storageBucket: "<knjigotekaapi.appspot.com>",
-      messagingSenderId: "<943810533754>",
-      appId: "<1:943810533754:web:8bb8a0097dd83f709fdec3>",
-      measurementId: "<G-P4D91FYJ4D>",
+      apiKey: "AIzaSyCARUcWtbvD2y3jkF4PFTO5BIrB-VFWwu0",
+      authDomain: "knjigotekaapi.firebaseapp.com",
+      projectId: "knjigotekaapi",
+      storageBucket: "knjigotekaapi.appspot.com",
+      messagingSenderId: "943810533754",
+      appId: "1:943810533754:web:8bb8a0097dd83f709fdec3",
+      measurementId: "G-P4D91FYJ4D",
     },
     services: {
-      auth: true,
-      firestore: true,
-    },
-  },
-  mar: "marko",
-  firestore: {
-    memoryOnly: false, // default
-    chunkName: process.env.NODE_ENV !== "production" ? "firebase-auth" : "[id]", // default
-    enablePersistence: true,
-    emulatorPort: 3000,
-    emulatorHost: "localhost",
-    settings: {
-      // Firestore Settings - currently only works in SPA mode
+      auth: {
+        persistence: "local",
+        initialize: {
+          onAuthStateChangedAction: "onAuthStateChangedAction",
+          subscribeManually: false,
+        },
+        ssr: false,
+      },
     },
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
+  ssr: false,
 };

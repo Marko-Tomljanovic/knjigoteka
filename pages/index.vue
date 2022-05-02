@@ -1,5 +1,12 @@
 <template>
-  <div><b-button variant="danger">Button</b-button></div>
+  <div></div>
 </template>
 
-<script></script>
+<script>
+export default {
+  name: "naslovna",
+  data() {
+    return {};
+  },
+};
+</script>
