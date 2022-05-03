@@ -2,6 +2,7 @@ export default {
   state() {
     return {
       userData: null,
+      jedan: "dva",
     };
   },
 
@@ -26,6 +27,16 @@ export default {
         } catch (e) {
           console.log(e);
         }
+      }
+    },
+    async mm({ commit, state, rootState }, userId) {
+      const ref = this.$fire.firestore.collection("users").doc(userId);
+      try {
+        await exerciseRef.update({
+          [`randomFoo.FooFoo`]: this.$fireModule.firestore.FieldValue.delete(),
+        });
+      } catch (e) {
+        return Promise.reject(e);
       }
     },
   },
