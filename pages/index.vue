@@ -1,5 +1,6 @@
 <template>
   <b-container class="mt-3">
+    <b-button to="novaknjiga">Dodaj knjigu</b-button>
     <b-form-input
       size="sm"
       class="mr-sm-2 mb-3"
@@ -19,7 +20,7 @@
 import podaci from "@/store/podaci";
 export default {
   data() {
-    return { kategorijeApi: [], podaci, trazi: "" };
+    return { podaci, trazi: "" };
   },
   methods: {
     fire() {
@@ -31,18 +32,6 @@ export default {
       } catch (e) {
         console.log(e);
       }
-    },
-    async ucitaj() {
-      let userDoc = this.$fire.firestore.collection(`marko`);
-      userDoc.get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          let data = doc.data();
-          this.kategorijeApi.push({
-            ime: data.ime,
-            prezime: data.prezime,
-          });
-        });
-      });
     },
   },
   computed: {
@@ -65,9 +54,5 @@ export default {
   //     }
   //   },
   // },
-
-  mounted() {
-    this.ucitaj();
-  },
 };
 </script>

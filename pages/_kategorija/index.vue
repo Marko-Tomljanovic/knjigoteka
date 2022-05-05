@@ -1,27 +1,68 @@
 <template>
-  <div>
-    marko -- {{ kategorijeApi }}
-    <div></div>
-  </div>
+  <b-container class="mt-3">
+    <b-card-group>
+      <CardKnjiga
+        v-for="(card, idx) in knjige"
+        :key="idx.naslov"
+        :title="card.naslov"
+        :id="card.id" /></b-card-group
+  ></b-container>
 </template>
 
 <script>
 import podaci from "@/store/podaci";
 export default {
   data() {
-    return { kategorijeApi: [], podaci };
+    return { knjige: [], podaci };
   },
   methods: {
+    // async ucitaj() {
+    //   let userDoc = this.$fire.firestore.collection(
+    //     this.$route.params.kategorija
+    //   );
+    //   userDoc
+    //     .get()
+    //     .then((querySnapshot) => {
+    //       querySnapshot.forEach((doc) => {
+    //         let data = doc.data();
+    //         this.kategorijeApi.push({
+    //           naslov: data.naslov,
+    //           cijena: data.cijena,
+    //         });
+    //       });
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //       this.$router.push("errorPage");
+    //     });
+    // },
+    // async ucitaj() {
+    //   try {
+    //     let userDoc = await this.$fire.firestore
+    //       .collection("kategorije")
+    //       .doc(this.$route.params.kategorija)
+    //       .get();
+    //     this.kategorijeApi = userDoc.data();
+    //     if (!this.kategorijeApi) {
+    //       this.$router.replace("errorPage");
+    //     }
+    //   } catch (e) {
+    //     console.log(e);
+    //     this.$router.replace("errorPage");
+    //   }
+    // },
     async ucitaj() {
-      let userDoc = this.$fire.firestore.collection(
-        this.$route.params.kategorija
-      );
+      let userDoc = await this.$fire.firestore
+        .collection("kategorije")
+        .doc(this.$route.params.kategorija)
+        .collection("knjige");
       userDoc
         .get()
         .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
             let data = doc.data();
-            this.kategorijeApi.push({
+            this.knjige.push({
+              id: data.id,
               naslov: data.naslov,
               cijena: data.cijena,
             });
@@ -35,7 +76,6 @@ export default {
   },
   mounted() {
     this.ucitaj();
-    console.log(this.$route.params.kategorija);
   },
 };
 </script>

@@ -1,7 +1,26 @@
 export default {
   kategorije: [
+    { naslov: "Romani" },
+    { naslov: "Znanstvena fantastika" },
+    { naslov: "Drama" },
+    { naslov: "Poezija" },
+    { naslov: "Knjige za djecu" },
+    { naslov: "Biografija" },
     { naslov: "Povijest" },
-    { naslov: "Književnost" },
-    { naslov: "itd" },
+    { naslov: "Religija" },
+    { naslov: "Umjetnost" },
+    { naslov: "Znanost i tehnologija" },
+  ],
+  options: [
+    "Romani",
+    "Znanstvena fantastika",
+    "Drama",
+    "Poezija",
+    "Knjige za djecu",
+    "Biografija",
+    "Povijest",
+    "Religija",
+    "Umjetnost",
+    "Znanost i tehnologija",
   ],
 };

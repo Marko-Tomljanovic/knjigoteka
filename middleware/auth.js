@@ -1,6 +1,6 @@
 // import store from "@/store/index";
 export default function ({ route, redirect, store }) {
-  if (route.path === "/") return;
+  if (route.path === "/" || route.path === "/Povijest") return;
 
   if (!store.state.userData && route.path !== "/prijava") {
     return redirect("/prijava");
