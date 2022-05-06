@@ -21,7 +21,7 @@
     >
     <b-button to="/" class="mt-2" type="button" variant="danger"
       >Naslovna</b-button
-    >{{ xtrnutniKorisnik }}
+    >
   </b-form>
 </template>
 
@@ -59,11 +59,6 @@ export default {
       console.log("signOut");
       // this.$fireAuth.signOut()
       this.$fire.auth.signOut();
-    },
-  },
-  computed: {
-    xtrnutniKorisnik() {
-      return this.$store.state.userData;
     },
   },
 };

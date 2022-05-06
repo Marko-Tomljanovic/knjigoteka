@@ -36,21 +36,7 @@ export default {
     //       this.$router.push("errorPage");
     //     });
     // },
-    // async ucitaj() {
-    //   try {
-    //     let userDoc = await this.$fire.firestore
-    //       .collection("kategorije")
-    //       .doc(this.$route.params.kategorija)
-    //       .get();
-    //     this.kategorijeApi = userDoc.data();
-    //     if (!this.kategorijeApi) {
-    //       this.$router.replace("errorPage");
-    //     }
-    //   } catch (e) {
-    //     console.log(e);
-    //     this.$router.replace("errorPage");
-    //   }
-    // },
+
     async ucitaj() {
       let userDoc = await this.$fire.firestore
         .collection("kategorije")

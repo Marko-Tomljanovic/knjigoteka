@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nuxt-link :to="`/${this.$route.params.kategorija}/${id}`">
+    <nuxt-link :to="`/kategorije/${this.$route.params.kategorija}/${id}`">
       <b-card
         :title="title"
         img-src="https://picsum.photos/600/300/?image=25"

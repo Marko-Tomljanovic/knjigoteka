@@ -8,7 +8,6 @@
         placeholder="Unesi naslov"
         required
       ></b-form-input>
-
       <b-form-input
         id="cijena"
         type="number"
@@ -16,9 +15,34 @@
         placeholder="Unesi cijenu"
         required
       ></b-form-input>
+      <b-form-input
+        id="izdavacka kuca"
+        v-model="izdavackaKuca"
+        type="text"
+        placeholder="Izdavačka kuća"
+        required
+      ></b-form-input>
+      <b-form-input
+        id="godinaIzdanja"
+        type="number"
+        v-model="godinaIzdanja"
+        placeholder="Unesi godinu izdanja"
+        required
+      ></b-form-input>
+      <b-form-input
+        id="opis"
+        v-model="opis"
+        type="text"
+        placeholder="Opis"
+        required
+      ></b-form-input>
       <b-form-select
-        v-model="odabrano"
-        :options="podaci.options"
+        v-model="kategorijaO"
+        :options="podaci.optionsKategorije"
+      ></b-form-select>
+      <b-form-select
+        v-model="stanjeO"
+        :options="podaci.optionsStanje"
       ></b-form-select>
 
       <b-button @click="onClick" type="submit" variant="primary"
@@ -33,7 +57,17 @@ import podaci from "@/store/podaci";
 export default {
   name: "novaknjiga",
   data() {
-    return { naslov: "", cijena: "", odabrano: "", obj: {}, podaci };
+    return {
+      naslov: "",
+      cijena: "",
+      izdavackaKuca: "",
+      kategorijaO: "",
+      godinaIzdanja: "",
+      stanjeO: "",
+      opis: "",
+      obj: {},
+      podaci,
+    };
   },
   methods: {
     async onClick(e) {
@@ -47,7 +81,7 @@ export default {
           .doc("podaci");
         const refKnjiga = await this.$fire.firestore
           .collection("kategorije")
-          .doc(this.odabrano)
+          .doc(this.kategorijaO)
           .collection("knjige");
         ref.update({ ukKnjiga: increment });
         const { id } = await refKnjiga.add(this.obj);
@@ -55,6 +89,13 @@ export default {
           id: id,
           naslov: this.naslov,
           cijena: this.cijena,
+          kategorija: this.kategorijaO,
+          stanje: this.stanjeO,
+          izdavackaKuca: this.izdavackaKuca,
+          godinaIzdanja: this.godinaIzdanja,
+          kreiran: Date.now(),
+          opis: this.opis,
+          korisnik: this.$store.state.userData.email,
         });
       }
     },

@@ -55,6 +55,7 @@ export default {
         ssr: false,
       },
       firestore: true,
+      storage: true,
     },
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build

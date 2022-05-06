@@ -1,4 +1,5 @@
 export default {
+  trazi: "",
   kategorije: [
     { naslov: "Romani" },
     { naslov: "Znanstvena fantastika" },
@@ -11,7 +12,8 @@ export default {
     { naslov: "Umjetnost" },
     { naslov: "Znanost i tehnologija" },
   ],
-  options: [
+  optionsKategorije: [
+    { value: "", text: "Kategorija", disabled: true },
     "Romani",
     "Znanstvena fantastika",
     "Drama",
@@ -22,5 +24,11 @@ export default {
     "Religija",
     "Umjetnost",
     "Znanost i tehnologija",
+  ],
+  optionsStanje: [
+    { value: "", text: "Stanje", disabled: true },
+    "Loše",
+    "Dobro",
+    "Kao novo",
   ],
 };
