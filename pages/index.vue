@@ -1,7 +1,7 @@
 <template>
-  <div class="bg">
+  <div>
     <b-container class="text-center">
-      <b-row style="margin-top: 6rem" xclass="mt-5">
+      <b-row style="margin-top: 6rem">
         <b-col><p class="fontI">Što mi se čita?</p></b-col>
       </b-row>
       <b-row> <Search /></b-row>
@@ -18,7 +18,7 @@ export default {
       podaci,
     };
   },
-  methods: {},
+
   computed: {
     filter() {
       return this.podaci.kategorije.filter((card) =>
@@ -29,17 +29,7 @@ export default {
 };
 </script>
 
-<style>
-body {
-  background-image: url("@/static/books_bg.jpg");
-  top: 0;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
-  width: auto;
-  height: 100vh;
-}
-
+<style scoped>
 .fontI {
   font-family: "Inconsolata, sans-serif";
   font-size: 4rem;

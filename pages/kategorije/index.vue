@@ -8,7 +8,7 @@
       v-model="podaci.trazi"
       autocomplete="off"
     ></b-form-input
-    ><b-card-group deck>
+    ><b-card-group>
       <CardKategorija
         v-for="(card, idx) in filter"
         :key="idx.naslov"

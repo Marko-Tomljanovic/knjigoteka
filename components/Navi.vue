@@ -2,9 +2,9 @@
   <div>
     <b-navbar
       class="sticky-top"
+      :class="var1 ? 'naslovna' : 'ostali'"
       toggleable="lg"
-      type="dark"
-      style="background-color: rgba(0, 0, 0, 0.5); color: #fff"
+      :type="var1 ? 'dark' : 'light'"
     >
       <b-navbar-brand class="font" to="/"
         ><img :src="logo" alt="logo" /> Knjigoteka</b-navbar-brand
@@ -23,7 +23,7 @@
             <b-button
               class="my-2 my-sm-0 mr-1 naviButton"
               type="button"
-              to="kategorije"
+              to="/kategorije"
               >Kategorije</b-button
             >
             <b-button
@@ -66,6 +66,11 @@ export default {
       this.$fire.auth.signOut();
     },
   },
+  computed: {
+    var1() {
+      return this.$route.name.includes("index");
+    },
+  },
 };
 </script>
 
@@ -82,5 +87,14 @@ export default {
   justify-content: center;
   align-items: center;
   font-family: "Inika", sans-serif;
+}
+.naslovna {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff;
+}
+.ostali {
+  background-color: white;
+  color: black;
+  border-bottom: 1px solid #c4c4c4;
 }
 </style>

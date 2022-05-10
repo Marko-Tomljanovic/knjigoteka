@@ -1,7 +1,7 @@
 <template>
   <div>
-    <nuxt-link :to="`/kategorije/${title}`">
-      <b-card
+    <nuxt-link style="text-decoration: none" :to="`/kategorije/${title}`">
+      <!-- <b-card
         :title="title"
         img-src="https://picsum.photos/600/300/?image=25"
         img-alt="Image"
@@ -10,9 +10,16 @@
         style="max-width: 11.6rem"
         class="mb-2 xml-2 xmr-2"
       >
-        <!-- <b-button href="#" variant="primary">Go somewhere</b-button> -->
-      </b-card></nuxt-link
-    >
+         </b-card -->
+      <b-img
+        style="height: 10rem; width: 15.5rem; border-radius: 10%"
+        class="mb-1 mr-2 ml-2"
+        :src="require(`@/static/kategorije/${title.toLowerCase()}.jpg`)"
+        alt="kategorija" />
+      <br />
+      <p class="mb-3 text-right kartica mr-2">{{ title }}</p>
+      <p></p
+    ></nuxt-link>
   </div>
 </template>
 
@@ -24,3 +31,10 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.kartica {
+  font-family: "Inika", sans-serif;
+  color: black;
+}
+</style>
