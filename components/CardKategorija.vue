@@ -12,7 +12,7 @@
       >
          </b-card -->
       <b-img
-        style="height: 10rem; width: 15.5rem; border-radius: 10%"
+        style="height: 10.2rem; width: 15.5rem; border-radius: 10%"
         class="mb-1 mr-2 ml-2"
         :src="require(`@/static/kategorije/${title.toLowerCase()}.jpg`)"
         alt="kategorija" />
