@@ -29,11 +29,15 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .fontI {
   font-family: "Inconsolata, sans-serif";
   font-size: 4rem;
   font-weight: 900;
   color: white;
 }
+/* .custom-control:focus {
+  outline: none !important;
+  box-shadow: none;
+} */
 </style>

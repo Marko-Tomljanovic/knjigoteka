@@ -26,14 +26,7 @@
               to="/kategorije"
               >Kategorije</b-button
             >
-            <b-button
-              v-if="this.$store.state.userData"
-              size="sm"
-              class="my-2 my-sm-0"
-              type="button"
-              @click="odjava"
-              >Odjava</b-button
-            >
+
             <b-button
               v-if="!this.$store.state.userData"
               class="my-1 my-sm-0 naviButton"
@@ -47,6 +40,41 @@
               to="registracija"
               >Registracija</b-button
             >
+
+            <b-dropdown
+              v-if="this.$store.state.userData"
+              variant="outline"
+              toggle-class="text-decoration-none"
+              no-caret
+              right
+            >
+              <template #button-content>
+                <b-icon
+                  :class="var1 ? 'whiteN' : ''"
+                  class="ml-2 mr-1"
+                  icon="person-circle"
+                  font-scale="2.4"
+                  aria-hidden="true"
+                ></b-icon>
+              </template>
+              <b-dropdown-item :to="`/profil/${this.$store.state.userData.uid}`"
+                ><b-icon class="mr-1" icon="person-lines-fill"></b-icon>
+                Profil</b-dropdown-item
+              >
+              <b-dropdown-item to="#"
+                ><b-icon class="mr-1" icon="heart"></b-icon>
+                Omiljene</b-dropdown-item
+              >
+              <b-dropdown-item to="/novaknjiga"
+                ><b-icon class="mr-1" icon="journal-plus"></b-icon> Dodaj
+                knjigu</b-dropdown-item
+              >
+              <hr />
+              <b-dropdown-item @click="odjava" variant="danger"
+                ><b-icon class="mr-1" icon="box-arrow-right"></b-icon> Odjavi
+                se</b-dropdown-item
+              >
+            </b-dropdown>
           </b-nav-form>
         </b-navbar-nav>
       </b-collapse>
@@ -96,5 +124,8 @@ export default {
   background-color: white;
   color: black;
   border-bottom: 1px solid #c4c4c4;
+}
+.whiteN {
+  color: rgb(255, 255, 255);
 }
 </style>

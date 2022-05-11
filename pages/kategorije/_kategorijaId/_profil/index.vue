@@ -35,13 +35,13 @@ export default {
     // },
     async ucitaj() {
       try {
-        let userDoc = await this.$fire.firestore
+        let ref = await this.$fire.firestore
           .collection("kategorije")
           .doc(this.$route.params.kategorija)
           .collection("knjige")
           .doc(this.$route.params.profil)
           .get();
-        this.profil = userDoc.data();
+        this.profil = ref.data();
         if (!this.profil) {
           this.$router.replace({ path: "/errorPage" });
         }

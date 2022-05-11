@@ -1,8 +1,13 @@
 <template>
   <b-form @submit="onSubmit" class="container mt-5">
     <b-form-input
+      class="mb-2"
+      v-model="form.imePrezime"
+      placeholder="ime i prezime"
+    ></b-form-input>
+    <b-form-input
       v-model="form.email"
-      placeholder="Enter your name"
+      placeholder="Enter your email"
     ></b-form-input>
     <b-form-input
       class="mt-2"
@@ -14,8 +19,18 @@
       v-model="form.repeatPasswrod"
       placeholder="Repeat your password"
     ></b-form-input>
+    <b-form-input
+      class="mt-2"
+      v-model="form.mobitel"
+      placeholder="Mobitel"
+    ></b-form-input>
+    <b-form-input
+      class="mt-2"
+      v-model="form.mjesto"
+      placeholder="Mjesto"
+    ></b-form-input>
 
-    <b-button class="mt-2" type="submit" variant="danger">Button</b-button>
+    <b-button class="mt-2" type="submit" variant="danger">Registriraj</b-button>
     <b-button @click="odjava" class="mt-2" type="button" variant="danger"
       >Odjava</b-button
     >
@@ -31,9 +46,12 @@ export default {
   data() {
     return {
       form: {
+        imePrezime: "",
         email: "",
         password: "",
         repeatPasswrod: "",
+        mobitel: "",
+        mjesto: "",
       },
     };
   },
@@ -42,13 +60,21 @@ export default {
       event.preventDefault();
       if (this.form.repeatPasswrod == this.form.password) {
         try {
-          await this.$fire.auth.createUserWithEmailAndPassword(
-            this.form.email,
-            this.form.password
-          );
+          await this.$fire.auth
+            .createUserWithEmailAndPassword(this.form.email, this.form.password)
+            .then((user) => {
+              this.$fire.firestore
+                .collection("users")
+                .doc(user.user._delegate.uid)
+                .set({
+                  id: user.user._delegate.uid,
+                  imePrezime: this.form.imePrezime,
+                  mobitel: this.form.mobitel,
+                  mjesto: this.form.mjesto,
+                });
+            });
           alert("ulogiran si care!");
         } catch (e) {
-          alert(e);
           console.log(e);
         }
       } else {

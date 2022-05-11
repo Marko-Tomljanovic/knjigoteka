@@ -55,10 +55,10 @@ export default {
 }
 
 .search_icon {
-  height: 40px;
+  max-height: 40px;
   width: 40px;
   float: left;
-  display: flex;
+  xdisplay: flex;
   justify-content: center;
   align-items: center;
   border-radius: 50%;

@@ -35,6 +35,9 @@ export default {
     "bootstrap-vue/nuxt",
     "@nuxtjs/firebase",
   ],
+  bootstrapVue: {
+    icons: true,
+  },
   firebase: {
     config: {
       apiKey: "AIzaSyCARUcWtbvD2y3jkF4PFTO5BIrB-VFWwu0",

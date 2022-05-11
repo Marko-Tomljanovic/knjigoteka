@@ -1,6 +1,5 @@
 <template>
   <b-container fluid class="mt-3">
-    <b-button to="novaknjiga">Dodaj knjigu</b-button>
     <b-card-group>
       <CardKategorija
         v-for="(card, idx) in podaci.kategorije"
