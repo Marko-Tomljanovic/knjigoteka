@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div>Ime: {{ this.$store.state.userData.providerData.displayName }}</div>
+    <div>----Ime: {{ this.$store.state.userData.uid }}</div>
     <div>Email: {{ this.$store.state.userData.email }}</div>
     <div>
       Mobitel: {{ this.$store.state.userData.providerData.phoneNumber }}
@@ -14,7 +14,6 @@
 export default {
   data() {
     return {
-      ruta: this.$route.params.profilId,
       profilKorisnika: [],
     };
   },
@@ -23,7 +22,7 @@ export default {
       try {
         let ref = await this.$fire.firestore
           .collection("users")
-          .doc(this.$route.params.profilId)
+          .doc(this.$store.state.userData.uid)
           .get();
         this.profilKorisnika = ref.data();
         if (!this.profilKorisnika) {

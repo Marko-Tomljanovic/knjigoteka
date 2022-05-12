@@ -1,7 +1,13 @@
 export default function ({ route, redirect, store }) {
-  if (!store.state.userData && route.path === "/novaknjiga") {
+  if (
+    (!store.state.userData && route.path === "/novaknjiga") ||
+    route.path === "/profil/profilId"
+  ) {
     return redirect("/prijava");
-  } else if (route.path === "/prijava" && store.state.userData) {
+  } else if (
+    (store.state.userData && route.path === "/prijava") ||
+    route.path === "/registracija"
+  ) {
     return redirect("/");
   }
 }

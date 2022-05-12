@@ -16,31 +16,10 @@ export default {
     return { knjige: [], podaci };
   },
   methods: {
-    // async ucitaj() {
-    //   let userDoc = this.$fire.firestore.collection(
-    //     this.$route.params.kategorija
-    //   );
-    //   userDoc
-    //     .get()
-    //     .then((querySnapshot) => {
-    //       querySnapshot.forEach((doc) => {
-    //         let data = doc.data();
-    //         this.kategorijeApi.push({
-    //           naslov: data.naslov,
-    //           cijena: data.cijena,
-    //         });
-    //       });
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //       this.$router.push("errorPage");
-    //     });
-    // },
-
     async ucitaj() {
       let userDoc = await this.$fire.firestore
         .collection("kategorije")
-        .doc(this.$route.params.kategorija)
+        .doc(this.$route.params.kategorijaId)
         .collection("knjige");
       userDoc
         .get()

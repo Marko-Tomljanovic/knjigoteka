@@ -83,7 +83,6 @@ export default {
     },
     odjava() {
       console.log("signOut");
-      // this.$fireAuth.signOut()
       this.$fire.auth.signOut();
     },
   },

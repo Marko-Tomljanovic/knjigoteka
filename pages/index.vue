@@ -29,7 +29,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .fontI {
   font-family: "Inconsolata, sans-serif";
   font-size: 4rem;

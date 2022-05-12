@@ -35,10 +35,21 @@
         type="text"
         placeholder="Opis"
         required
+      ></b-form-input
+      ><b-form-input
+        id="jezik"
+        v-model="jezik"
+        type="text"
+        placeholder="Jezik"
+        required
       ></b-form-input>
       <b-form-select
         v-model="kategorijaO"
         :options="podaci.optionsKategorije"
+      ></b-form-select>
+      <b-form-select
+        v-model="uvezO"
+        :options="podaci.optionsUvez"
       ></b-form-select>
       <b-form-select
         v-model="stanjeO"
@@ -64,9 +75,12 @@ export default {
       kategorijaO: "",
       godinaIzdanja: "",
       stanjeO: "",
+      jezik: "",
+      uvezO: "",
       opis: "",
       obj: {},
       podaci,
+      profilKorisnika: [],
     };
   },
   methods: {
@@ -96,10 +110,32 @@ export default {
           kreiran: Date.now(),
           opis: this.opis,
           korisnik: this.$store.state.userData.email,
+          uvez: this.uvezO,
+          jezik: this.jezik,
+          lokacija: this.profilKorisnika.mjesto,
+          imePrezime: this.profilKorisnika.imePrezime,
+          mobitel: this.profilKorisnika.mobitel,
         });
       }
     },
+    async ucitaj() {
+      try {
+        let ref = await this.$fire.firestore
+          .collection("users")
+          .doc(this.$store.state.userData.uid)
+          .get();
+        this.profilKorisnika = ref.data();
+        if (!this.profilKorisnika) {
+          this.$router.replace({ path: "/errorPage" });
+        }
+      } catch (e) {
+        console.log(e);
+        this.$router.replace({ path: "/errorPage" });
+      }
+    },
   },
-  mounted() {},
+  mounted() {
+    this.ucitaj();
+  },
 };
 </script>

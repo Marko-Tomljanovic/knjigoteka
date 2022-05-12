@@ -31,4 +31,5 @@ export default {
     "Dobro",
     "Kao novo",
   ],
+  optionsUvez: [{ value: "", text: "Uvez", disabled: true }, "Tvrdi", "Meki"],
 };
