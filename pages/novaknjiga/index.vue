@@ -66,6 +66,9 @@
 <script>
 import podaci from "@/store/podaci";
 export default {
+  head: {
+    title: "Dodaj knjigu",
+  },
   name: "novaknjiga",
   data() {
     return {

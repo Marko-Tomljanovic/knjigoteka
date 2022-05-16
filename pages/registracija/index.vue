@@ -36,12 +36,15 @@
     >
     <b-button to="/" class="mt-2" type="button" variant="danger"
       >Naslovna</b-button
-    >
+    >{{ form.mobitel }}
   </b-form>
 </template>
 
 <script>
 export default {
+  head: {
+    title: "Knjigoteka || Registracija",
+  },
   name: "registracija",
   data() {
     return {
@@ -55,6 +58,7 @@ export default {
       },
     };
   },
+
   methods: {
     async onSubmit(event) {
       event.preventDefault();
@@ -72,8 +76,10 @@ export default {
                   mobitel: this.form.mobitel,
                   mjesto: this.form.mjesto,
                 });
+            })
+            .then(() => {
+              this.$router.replace("/");
             });
-          alert("ulogiran si care!");
         } catch (e) {
           console.log(e);
         }
@@ -81,10 +87,12 @@ export default {
         alert("Lozinke nisu iste!");
       }
     },
+
     odjava() {
       console.log("signOut");
       this.$fire.auth.signOut();
     },
   },
+  mounted() {},
 };
 </script>

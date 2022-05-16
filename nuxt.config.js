@@ -1,7 +1,7 @@
 export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: "knjigoteka",
+    title: "Knjigoteka",
     htmlAttrs: {
       lang: "en",
     },
@@ -59,6 +59,7 @@ export default {
       },
       firestore: true,
       storage: true,
+      // analytics: true,
     },
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build

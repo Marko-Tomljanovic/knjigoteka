@@ -11,6 +11,9 @@
 <script>
 import podaci from "@/store/podaci";
 export default {
+  head: {
+    title: "Knjigoteka || Kategorije",
+  },
   name: "kategorije",
   data() {
     return { podaci };

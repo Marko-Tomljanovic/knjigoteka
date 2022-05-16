@@ -24,6 +24,9 @@
 
 <script>
 export default {
+  head: {
+    title: "Knjigoteka || Prijava",
+  },
   name: "prijava",
   data() {
     return {

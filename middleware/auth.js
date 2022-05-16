@@ -6,7 +6,7 @@ export default function ({ route, redirect, store }) {
     return redirect("/prijava");
   } else if (
     (store.state.userData && route.path === "/prijava") ||
-    route.path === "/registracija"
+    (store.state.userData && route.path === "/registracija")
   ) {
     return redirect("/");
   }

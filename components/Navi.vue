@@ -37,7 +37,7 @@
               v-if="!this.$store.state.userData"
               class="ml-1 my-2 my-sm-0 naviButton"
               type="button"
-              to="registracija"
+              to="/registracija"
               >Registracija</b-button
             >
 
@@ -61,7 +61,10 @@
                 ><b-icon class="mr-1" icon="person-lines-fill"></b-icon>
                 Profil</b-dropdown-item
               >
-              <b-dropdown-item to="#"
+              <b-dropdown-item
+                :to="`/profil/${
+                  this.$store.state.userData.uid
+                }/${this.$store.state.userData.uid.substr(-5)}`"
                 ><b-icon class="mr-1" icon="heart"></b-icon>
                 Omiljene</b-dropdown-item
               >
@@ -91,7 +94,11 @@ export default {
   methods: {
     odjava() {
       console.log("signOut");
-      this.$fire.auth.signOut();
+      this.$fire.auth.signOut().then(() => {
+        this.$router.replace("/").catch((error) => {
+          console.log(error);
+        });
+      });
     },
   },
   computed: {

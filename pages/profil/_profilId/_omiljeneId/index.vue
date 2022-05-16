@@ -1,20 +1,12 @@
 <template>
-  <div>
-    <div>----Ime: {{ this.$store.state.userData.uid }}</div>
-    <div>Email: {{ this.$store.state.userData.email }}</div>
-    <div>
-      Mobitel: {{ this.$store.state.userData.providerData.phoneNumber }}
-    </div>
-
-    <div>{{ profilKorisnika }}</div>
-  </div>
+  <div>omiljene knjige <br />{{ profilKorisnika }}</div>
 </template>
 
 <script>
 export default {
   head() {
     return {
-      title: "Profil || " + this.profilKorisnika.imePrezime,
+      title: "Omiljene knjige",
     };
   },
   data() {

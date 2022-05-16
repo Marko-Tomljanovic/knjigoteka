@@ -27,13 +27,16 @@
         ><b-row>
           <b-col class="mt-1">Jezik: {{ oglas.jezik }} </b-col> </b-row
         ><b-row>
-          <b-col class="mt-1">Lokacija: {{ oglas.lokacija }} </b-col> </b-row
+          <b-col class="mt-1"
+            >Kategorija: {{ $route.params.kategorijaId }}
+          </b-col> </b-row
         ><b-row>
-          <b-col class="mt-1">Broj pregleda: Dodati podatak </b-col> </b-row
+          <b-col class="mt-1">Broj pregleda: Dodati (analytics) </b-col> </b-row
         ><b-row>
           <b-col class="mt-4"
             ><b-button
               v-b-tooltip.hover
+              @click="dodajOmiljene"
               title="Dodaj u omiljene"
               class="mr-3"
               variant="outline"
@@ -63,14 +66,10 @@
           <p class="tekstK">
             {{ oglas.imePrezime }} <br /><b-icon icon="geo-alt-fill"></b-icon>
             {{ oglas.lokacija }} <br />
-            <b-icon class="mr-1 mt-3" icon="hand-thumbs-up"></b-icon>23<b-icon
-              class="ml-3 mr-1"
-              icon="hand-thumbs-down"
-            ></b-icon
-            >50
-          </p>
-        </div></b-col
-      >
+            <b-icon class="mr-2 mt-3" icon="hand-thumbs-up"></b-icon>Pogledaj
+            profil<b-icon class="ml-2" icon="hand-thumbs-down"></b-icon>
+          </p></div
+      ></b-col>
     </b-row>
   </b-container>
 </template>
@@ -78,13 +77,17 @@
 <script>
 import podaci from "@/store/podaci";
 export default {
+  head() {
+    return {
+      title: this.$route.params.kategorijaId + " || " + this.oglas.naslov,
+    };
+  },
   data() {
     return {
       oglas: [],
       podaci,
     };
   },
-
   methods: {
     async ucitaj() {
       try {
@@ -102,6 +105,16 @@ export default {
         console.log(e);
         this.$router.replace({ path: "/errorPage" });
       }
+    },
+    dodajOmiljene() {
+      this.$fire.firestore
+        .collection("users")
+        .doc(this.$store.state.userData.uid)
+        .update({
+          omiljene: this.$fireModule.firestore.FieldValue.arrayUnion(
+            this.$route.params.oglasId
+          ),
+        });
     },
   },
   mounted() {
