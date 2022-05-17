@@ -1,3 +1,0 @@
-export default {
-  ignore: "nuxt.config.js",
-};
