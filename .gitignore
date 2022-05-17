@@ -88,6 +88,3 @@ sw.*
 
 # Vim swap files
 *.swp
-
-# set up app
-store/index.js
