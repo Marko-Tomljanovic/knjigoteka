@@ -90,4 +90,4 @@ sw.*
 *.swp
 
 # set up app
-.nuxt.config.js
+nuxt.config.js
