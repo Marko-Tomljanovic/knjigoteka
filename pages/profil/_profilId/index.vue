@@ -14,7 +14,7 @@
 export default {
   head() {
     return {
-      title: "Profil || " + this.profilKorisnika.imePrezime,
+      title: "Profil | " + this.profilKorisnika.imePrezime,
     };
   },
   data() {

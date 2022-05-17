@@ -31,19 +31,17 @@
     ></b-form-input>
 
     <b-button class="mt-2" type="submit" variant="danger">Registriraj</b-button>
-    <b-button @click="odjava" class="mt-2" type="button" variant="danger"
-      >Odjava</b-button
-    >
+
     <b-button to="/" class="mt-2" type="button" variant="danger"
       >Naslovna</b-button
-    >{{ form.mobitel }}
+    >
   </b-form>
 </template>
 
 <script>
 export default {
   head: {
-    title: "Knjigoteka || Registracija",
+    title: "Knjigoteka | Registracija",
   },
   name: "registracija",
   data() {
@@ -78,7 +76,7 @@ export default {
                 });
             })
             .then(() => {
-              this.$router.replace("/");
+              location.reload();
             });
         } catch (e) {
           console.log(e);
@@ -86,11 +84,6 @@ export default {
       } else {
         alert("Lozinke nisu iste!");
       }
-    },
-
-    odjava() {
-      console.log("signOut");
-      this.$fire.auth.signOut();
     },
   },
   mounted() {},

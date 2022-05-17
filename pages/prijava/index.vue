@@ -25,7 +25,7 @@
 <script>
 export default {
   head: {
-    title: "Knjigoteka || Prijava",
+    title: "Knjigoteka | Prijava",
   },
   name: "prijava",
   data() {
@@ -45,7 +45,7 @@ export default {
           this.form.email,
           this.form.password
         );
-        this.$router.push("/");
+        location.reload();
       } catch (e) {
         console.log(e);
       }

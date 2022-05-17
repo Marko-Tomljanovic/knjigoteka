@@ -118,6 +118,8 @@ export default {
           lokacija: this.profilKorisnika.mjesto,
           imePrezime: this.profilKorisnika.imePrezime,
           mobitel: this.profilKorisnika.mobitel,
+          omiljene: [],
+          idKorisnika: this.$store.state.userData.uid,
         });
       }
     },

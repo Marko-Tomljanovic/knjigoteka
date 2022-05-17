@@ -88,3 +88,6 @@ sw.*
 
 # Vim swap files
 *.swp
+
+# set up app
+.nuxt.config.js

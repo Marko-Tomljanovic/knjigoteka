@@ -12,7 +12,7 @@
 import podaci from "@/store/podaci";
 export default {
   head: {
-    title: "Knjigoteka || Kategorije",
+    title: "Knjigoteka | Kategorije",
   },
   name: "kategorije",
   data() {

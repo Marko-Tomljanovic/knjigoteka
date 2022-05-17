@@ -37,16 +37,20 @@
             ><b-button
               v-b-tooltip.hover
               @click="dodajOmiljene"
-              title="Dodaj u omiljene"
+              :title="oznacenoO ? 'Obriši iz omiljenih' : 'Dodaj u omiljene'"
               class="mr-3"
+              :class="oznacenoO ? 'naviButton' : ''"
               variant="outline"
               style="border: solid 1px black"
-              ><b-icon icon="heart"></b-icon></b-button
+              ><b-icon
+                :variant="oznacenoO ? 'white ' : ''"
+                icon="heart"
+              ></b-icon></b-button
             ><b-button
               disabled
               variant="outline"
               style="border: solid 1px black; width: 2.8rem"
-              >5</b-button
+              >{{ ukOmiljene }}</b-button
             ><b-button class="ml-4 naviButton"
               >Javi se prodavaču</b-button
             ></b-col
@@ -66,10 +70,15 @@
           <p class="tekstK">
             {{ oglas.imePrezime }} <br /><b-icon icon="geo-alt-fill"></b-icon>
             {{ oglas.lokacija }} <br />
-            <b-icon class="mr-2 mt-3" icon="hand-thumbs-up"></b-icon>Pogledaj
-            profil<b-icon class="ml-2" icon="hand-thumbs-down"></b-icon>
-          </p></div
-      ></b-col>
+            <b-icon class="mr-1 mt-3" icon="hand-thumbs-up"></b-icon>54<b-icon
+              class="ml-3 mr-1"
+              icon="hand-thumbs-down"
+            ></b-icon
+            >21
+          </p>
+        </div>
+        {{ $store.state.userData }}
+      </b-col>
     </b-row>
   </b-container>
 </template>
@@ -79,13 +88,15 @@ import podaci from "@/store/podaci";
 export default {
   head() {
     return {
-      title: this.$route.params.kategorijaId + " || " + this.oglas.naslov,
+      title: this.$route.params.kategorijaId + " | " + this.oglas.naslov,
     };
   },
   data() {
     return {
       oglas: [],
       podaci,
+      oznacenoO: false,
+      ukOmiljene: 0,
     };
   },
   methods: {
@@ -98,6 +109,12 @@ export default {
           .doc(this.$route.params.oglasId)
           .get();
         this.oglas = ref.data();
+        if (this.$store.state.userData) {
+          this.oznacenoO = ref
+            .data()
+            .omiljene.includes(this.$store.state.userData.uid);
+        }
+        this.ukOmiljene = ref.data().omiljene.length;
         if (!this.oglas) {
           this.$router.replace({ path: "/errorPage" });
         }
@@ -107,14 +124,30 @@ export default {
       }
     },
     dodajOmiljene() {
-      this.$fire.firestore
-        .collection("users")
-        .doc(this.$store.state.userData.uid)
-        .update({
-          omiljene: this.$fireModule.firestore.FieldValue.arrayUnion(
-            this.$route.params.oglasId
-          ),
-        });
+      if (this.$store.state.userData) {
+        let ref = this.$fire.firestore
+          .collection("kategorije")
+          .doc(this.$route.params.kategorijaId)
+          .collection("knjige")
+          .doc(this.$route.params.oglasId);
+        if (this.oznacenoO) {
+          ref.update({
+            omiljene: this.$fireModule.firestore.FieldValue.arrayRemove(
+              this.$store.state.userData.uid
+            ),
+          });
+          this.ucitaj();
+        } else {
+          ref.update({
+            omiljene: this.$fireModule.firestore.FieldValue.arrayUnion(
+              this.$store.state.userData.uid
+            ),
+          });
+          this.ucitaj();
+        }
+      } else {
+        alert("Prijavi se za dodavanje knjiga u omiljene!");
+      }
     },
   },
   mounted() {
@@ -130,7 +163,7 @@ export default {
 .profilK {
   border: solid 1.9px black;
   width: 17.5rem;
-  height: 10.1rem;
+  height: 10.4rem;
 }
 .slikaK {
   margin-left: 8.1rem;

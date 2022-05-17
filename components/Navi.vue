@@ -31,7 +31,7 @@
               v-if="!this.$store.state.userData"
               class="my-1 my-sm-0 naviButton"
               type="button"
-              to="prijava"
+              to="/prijava"
               >Prijavi se</b-button
             ><b-button
               v-if="!this.$store.state.userData"
@@ -95,7 +95,7 @@ export default {
     odjava() {
       console.log("signOut");
       this.$fire.auth.signOut().then(() => {
-        this.$router.replace("/").catch((error) => {
+        location.reload().catch((error) => {
           console.log(error);
         });
       });

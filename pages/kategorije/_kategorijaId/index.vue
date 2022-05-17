@@ -13,7 +13,7 @@
 import podaci from "@/store/podaci";
 export default {
   head() {
-    return { title: "Kategorije || " + this.$route.params.kategorijaId };
+    return { title: "Kategorije | " + this.$route.params.kategorijaId };
   },
   data() {
     return { knjige: [], podaci };
