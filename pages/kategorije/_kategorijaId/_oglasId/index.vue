@@ -4,7 +4,7 @@
       <b-col md="auto"
         ><img src="https://picsum.photos/300/450" alt="knjiga"
       /></b-col>
-      <b-col class="font">
+      <b-col class="fontC">
         <b-row>
           <b-col
             ><h2>{{ oglas.naslov }}</h2></b-col
@@ -77,7 +77,6 @@
             >21
           </p>
         </div>
-        {{ $store.state.userData }}
       </b-col>
     </b-row>
   </b-container>
@@ -157,9 +156,6 @@ export default {
 </script>
 
 <style scoped>
-.font {
-  font-family: "Lucida Console", "Courier New", monospace;
-}
 .profilK {
   border: solid 1.9px black;
   width: 17.5rem;

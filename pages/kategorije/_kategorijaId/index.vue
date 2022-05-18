@@ -5,7 +5,9 @@
         v-for="(card, idx) in knjige"
         :key="idx.naslov"
         :title="card.naslov"
-        :id="card.id" /></b-card-group
+        :id="card.idKnjige"
+        :kategorija="card.kategorija"
+      /> </b-card-group
   ></b-container>
 </template>
 
@@ -16,30 +18,23 @@ export default {
     return { title: "Kategorije | " + this.$route.params.kategorijaId };
   },
   data() {
-    return { knjige: [], podaci };
+    return { knjige: [], podaci, test: [] };
   },
   methods: {
     async ucitaj() {
-      let userDoc = await this.$fire.firestore
-        .collection("kategorije")
-        .doc(this.$route.params.kategorijaId)
-        .collection("knjige");
-      userDoc
-        .get()
-        .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            let data = doc.data();
-            this.knjige.push({
-              id: data.id,
-              naslov: data.naslov,
-              cijena: data.cijena,
-            });
-          });
-        })
-        .catch((error) => {
-          console.log(error);
-          this.$router.push("errorPage");
-        });
+      try {
+        let userDoc = await this.$fire.firestore
+          .collection("kategorije")
+          .doc("podaci")
+          .get();
+        this.knjige = userDoc
+          .data()
+          .knjige.filter(
+            (item) => item.kategorija === this.$route.params.kategorijaId
+          );
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
   mounted() {

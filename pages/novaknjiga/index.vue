@@ -92,16 +92,31 @@ export default {
       if (!this.naslov) {
         alert("potrebno upisati podatke");
       } else {
-        const increment = this.$fireModule.firestore.FieldValue.increment(1);
-        const ref = await this.$fire.firestore
-          .collection("kategorije")
-          .doc("podaci");
         const refKnjiga = await this.$fire.firestore
           .collection("kategorije")
           .doc(this.kategorijaO)
           .collection("knjige");
-        ref.update({ ukKnjiga: increment });
         const { id } = await refKnjiga.add(this.obj);
+        await this.$fire.firestore
+          .collection("users")
+          .doc(this.$store.state.userData.uid)
+          .update({
+            dodaneKnjige: this.$fireModule.firestore.FieldValue.arrayUnion({
+              idKnjige: id,
+              naslov: this.naslov,
+              kategorija: this.kategorijaO,
+            }),
+          });
+        await this.$fire.firestore
+          .collection("kategorije")
+          .doc("podaci")
+          .update({
+            knjige: this.$fireModule.firestore.FieldValue.arrayUnion({
+              idKnjige: id,
+              naslov: this.naslov,
+              kategorija: this.kategorijaO,
+            }),
+          });
         refKnjiga.doc(id).set({
           id: id,
           naslov: this.naslov,
