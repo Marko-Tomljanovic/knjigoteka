@@ -18,7 +18,7 @@ export default {
     return { title: "Kategorije | " + this.$route.params.kategorijaId };
   },
   data() {
-    return { knjige: [], podaci, test: [] };
+    return { knjige: [], podaci };
   },
   methods: {
     async ucitaj() {

@@ -1,5 +1,21 @@
 <template>
-  <div>omiljene knjige <br />{{ profilKorisnika }}</div>
+  <b-container>
+    <b-row class="mt-4">
+      <h3 class="fontC mx-auto">
+        omiljene knjige |{{ omiljeneKnjige.length }}|
+      </h3></b-row
+    >
+    <b-row class="mt-4">
+      <CardKnjiga
+        class="mr-1 ml-1"
+        v-for="(card, idx) in omiljeneKnjige"
+        :key="idx.naslov"
+        :title="card.naslov"
+        :id="card.idKnjige"
+        :kategorija="card.kategorija"
+        @ucitajEmit="ucitaj"
+    /></b-row>
+  </b-container>
 </template>
 
 <script>
@@ -11,7 +27,7 @@ export default {
   },
   data() {
     return {
-      profilKorisnika: [],
+      omiljeneKnjige: [],
     };
   },
   methods: {
@@ -21,13 +37,15 @@ export default {
           .collection("users")
           .doc(this.$store.state.userData.uid)
           .get();
-        this.profilKorisnika = ref.data();
-        if (!this.profilKorisnika) {
+
+        this.omiljeneKnjige = ref.data().omiljeneK;
+
+        if (!this.omiljeneKnjige) {
           this.$router.replace({ path: "/errorPage" });
         }
       } catch (e) {
         console.log(e);
-        this.$router.replace({ path: "/errorPage" });
+        // this.$router.replace({ path: "/errorPage" });
       }
     },
   },

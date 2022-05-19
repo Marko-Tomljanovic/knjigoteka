@@ -13,7 +13,10 @@
       </b-card
     ></nuxt-link>
     <div
-      v-if="$store.state.userData.uid == $route.params.profilId"
+      v-if="
+        $store.state.userData.uid == $route.params.profilId &&
+        !$route.params.omiljeneId
+      "
       class="text-center mt-3"
     >
       <b-button class="mr-2" v-b-tooltip.hover title="uredi" variant="outline">
@@ -40,40 +43,40 @@ export default {
   },
   methods: {
     async obrisati() {
-      // try {
-      //   const ref = await this.$fire.firestore;
-      //   ref
-      //     .collection("kategorije")
-      //     .doc(this.kategorija)
-      //     .collection("knjige")
-      //     .doc(this.id)
-      //     .delete();
-      //   ref
-      //     .collection("users")
-      //     .doc(this.$store.state.userData.uid)
-      //     .update({
-      //       dodaneKnjige: this.$fireModule.firestore.FieldValue.arrayRemove({
-      //         idKnjige: this.id,
-      //         naslov: this.title,
-      //         kategorija: this.kategorija,
-      //       }),
-      //     });
-      //   ref
-      //     .collection("kategorije")
-      //     .doc("podaci")
-      //     .update({
-      //       knjige: this.$fireModule.firestore.FieldValue.arrayRemove({
-      //         idKnjige: this.id,
-      //         naslov: this.title,
-      //         kategorija: this.kategorija,
-      //       }),
-      //     })
-      //     .then(() => {
-      //       this.$emit("ucitajEmit");
-      //     });
-      // } catch (e) {
-      //   console.log(e);
-      // }
+      try {
+        const ref = await this.$fire.firestore;
+        ref
+          .collection("kategorije")
+          .doc(this.kategorija)
+          .collection("knjige")
+          .doc(this.id)
+          .delete();
+        ref
+          .collection("users")
+          .doc(this.$store.state.userData.uid)
+          .update({
+            dodaneKnjige: this.$fireModule.firestore.FieldValue.arrayRemove({
+              idKnjige: this.id,
+              naslov: this.title,
+              kategorija: this.kategorija,
+            }),
+          });
+        ref
+          .collection("kategorije")
+          .doc("podaci")
+          .update({
+            knjige: this.$fireModule.firestore.FieldValue.arrayRemove({
+              idKnjige: this.id,
+              naslov: this.title,
+              kategorija: this.kategorija,
+            }),
+          })
+          .then(() => {
+            this.$emit("ucitajEmit");
+          });
+      } catch (e) {
+        console.log(e);
+      }
     },
   },
 };

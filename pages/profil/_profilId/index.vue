@@ -35,8 +35,17 @@
               >21
             </h5>
           </b-col>
-          <b-col
-            ><p style="font-size: 17px" class="text-muted">es nesto</p>
+          <b-col cols="5">
+            <p
+              v-if="profilKorisnika.oMeni"
+              style="font-size: 17px"
+              class="text-muted"
+            >
+              {{ profilKorisnika.oMeni }}<ModalOpis class="ml-4" />
+            </p>
+            <p v-else style="font-size: 17px" class="text-muted block">
+              napiši nešto o sebi .. <ModalOpis />
+            </p>
             <br
           /></b-col>
         </b-row>
@@ -92,6 +101,7 @@ export default {
       }
     },
   },
+
   mounted() {
     this.ucitaj();
   },

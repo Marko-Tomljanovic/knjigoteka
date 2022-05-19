@@ -122,27 +122,53 @@ export default {
         this.$router.replace({ path: "/errorPage" });
       }
     },
-    dodajOmiljene() {
+    async dodajOmiljene() {
       if (this.$store.state.userData) {
-        let ref = this.$fire.firestore
+        const ref = await this.$fire.firestore
           .collection("kategorije")
           .doc(this.$route.params.kategorijaId)
           .collection("knjige")
           .doc(this.$route.params.oglasId);
+        const refU = await this.$fire.firestore
+          .collection("users")
+          .doc(this.$store.state.userData.uid);
+        const marko = this.$fireModule.firestore.FieldValue;
         if (this.oznacenoO) {
-          ref.update({
-            omiljene: this.$fireModule.firestore.FieldValue.arrayRemove(
-              this.$store.state.userData.uid
-            ),
-          });
-          this.ucitaj();
+          ref
+            .update({
+              omiljene: marko.arrayRemove(this.$store.state.userData.uid),
+            })
+            .then(() => {
+              refU
+                .update({
+                  omiljeneK: marko.arrayRemove({
+                    idKnjige: this.oglas.id,
+                    naslov: this.oglas.naslov,
+                    kategorija: this.oglas.kategorija,
+                  }),
+                })
+                .then(() => {
+                  this.ucitaj();
+                });
+            });
         } else {
-          ref.update({
-            omiljene: this.$fireModule.firestore.FieldValue.arrayUnion(
-              this.$store.state.userData.uid
-            ),
-          });
-          this.ucitaj();
+          ref
+            .update({
+              omiljene: marko.arrayUnion(this.$store.state.userData.uid),
+            })
+            .then(() => {
+              refU
+                .update({
+                  omiljeneK: marko.arrayUnion({
+                    idKnjige: this.oglas.id,
+                    naslov: this.oglas.naslov,
+                    kategorija: this.oglas.kategorija,
+                  }),
+                })
+                .then(() => {
+                  this.ucitaj();
+                });
+            });
         }
       } else {
         alert("Prijavi se za dodavanje knjiga u omiljene!");
