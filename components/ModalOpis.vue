@@ -21,7 +21,14 @@
           label-for="text-input"
           invalid-feedback="Opis je obavezan"
         >
-          <b-form-input id="text-input" v-model="text" max="5"></b-form-input>
+          <b-form-textarea
+            id="text-input"
+            placeholder="maksimalno 200 znakova"
+            v-model="text"
+            rows="3"
+            maxlength="210"
+            no-resize
+          ></b-form-textarea>
         </b-form-group>
       </form>
     </b-modal>
@@ -30,7 +37,7 @@
 
 <script>
 export default {
-  props: ["tooltip"],
+  emits: ["ucitajEmit"],
   data() {
     return {
       text: "",
@@ -53,9 +60,13 @@ export default {
       const ref = this.$fire.firestore
         .collection("users")
         .doc(this.$store.state.userData.uid);
-      ref.update({
-        oMeni: this.text,
-      });
+      ref
+        .update({
+          oMeni: this.text,
+        })
+        .then(() => {
+          this.$emit("ucitajEmit");
+        });
       // Hide the modal manually
       this.$nextTick(() => {
         this.$bvModal.hide("modal-prevent-closing");

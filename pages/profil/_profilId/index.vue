@@ -3,7 +3,7 @@
     <b-row align-h="center">
       <div
         class="border"
-        style="width: 61rem; height: 15.5rem; margin-top: 4.5rem"
+        style="width: 61rem; height: 15.5rem; margin-top: 3.5rem"
       >
         <b-row>
           <b-col cols="4" class="text-center">
@@ -35,16 +35,17 @@
               >21
             </h5>
           </b-col>
-          <b-col cols="5">
+          <b-col cols="7">
             <p
               v-if="profilKorisnika.oMeni"
               style="font-size: 17px"
               class="text-muted"
             >
-              {{ profilKorisnika.oMeni }}<ModalOpis class="ml-4" />
+              <ModalOpis @ucitajEmit="ucitaj" class="mr-2" />
+              {{ profilKorisnika.oMeni }}
             </p>
             <p v-else style="font-size: 17px" class="text-muted block">
-              napiši nešto o sebi .. <ModalOpis />
+              napiši nešto o sebi .. <ModalOpis @ucitajEmit="ucitaj" />
             </p>
             <br
           /></b-col>
