@@ -9,6 +9,13 @@
         required
       ></b-form-input>
       <b-form-input
+        id="autor"
+        v-model="autor"
+        type="text"
+        placeholder="Unesi autora"
+        required
+      ></b-form-input>
+      <b-form-input
         id="cijena"
         type="number"
         v-model="cijena"
@@ -79,6 +86,7 @@ export default {
       godinaIzdanja: "",
       stanjeO: "",
       jezik: "",
+      autor: "",
       uvezO: "",
       opis: "",
       obj: {},
@@ -125,6 +133,7 @@ export default {
           stanje: this.stanjeO,
           izdavackaKuca: this.izdavackaKuca,
           godinaIzdanja: this.godinaIzdanja,
+          autor: this.autor,
           kreiran: Date.now(),
           opis: this.opis,
           korisnik: this.$store.state.userData.email,

@@ -18,14 +18,6 @@ export default {
       podaci,
     };
   },
-
-  computed: {
-    filter() {
-      return this.podaci.kategorije.filter((card) =>
-        card.naslov.toLowerCase().includes(this.podaci.trazi.toLowerCase())
-      );
-    },
-  },
 };
 </script>
 
@@ -36,8 +28,4 @@ export default {
   font-weight: 900;
   color: white;
 }
-/* .custom-control:focus {
-  outline: none !important;
-  box-shadow: none;
-} */
 </style>

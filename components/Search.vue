@@ -2,31 +2,54 @@
   <div class="mx-auto d-flex justify-content-center">
     <div class="searchbar">
       <input
+        v-model="podaci.trazi"
         class="search_input"
         type="text"
         name=""
         placeholder="Traži po naslovu, autoru..."
       />
       <a href="#" class="search_icon"><img :src="search" alt="search" /></a>
-      <b-button to="#" class="search_button">Traži</b-button>
+      <b-button class="search_button">Traži</b-button>
     </div>
+
+    <div class="bg-white">{{}}</div>
   </div>
 </template>
 
 <script>
 import search from "@/static/search.svg";
+import podaci from "@/store/podaci";
 export default {
   data() {
     return {
       search,
+      podaci,
+      test: {},
     };
   },
+  methods: {
+    async ucitaj() {
+      try {
+        const ref = await this.$fire.firestore
+          .collection("kategorije")
+          .doc("podaci")
+          .get();
+        this.test = ref.data();
+      } catch (e) {
+        console.log(e);
+      }
+    },
+  },
   computed: {
-    filter() {
-      return this.podaci.kategorije.filter((card) =>
+    filterKnjiga() {
+      return this.test.filter((card) =>
         card.naslov.toLowerCase().includes(this.podaci.trazi.toLowerCase())
       );
     },
+  },
+
+  mounted() {
+    this.ucitaj();
   },
 };
 </script>

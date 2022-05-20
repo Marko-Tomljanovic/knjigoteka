@@ -24,7 +24,7 @@
           <b-form-textarea
             id="text-input"
             placeholder="maksimalno 200 znakova"
-            v-model="text"
+            v-model="textt"
             rows="3"
             maxlength="210"
             no-resize
@@ -37,6 +37,7 @@
 
 <script>
 export default {
+  props: ["oMeni"],
   emits: ["ucitajEmit"],
   data() {
     return {
@@ -52,6 +53,7 @@ export default {
     handleOk(bvModalEvent) {
       // Prevent modal from closing
       bvModalEvent.preventDefault();
+
       // Trigger submit handler
       this.handleSubmit();
     },
@@ -71,6 +73,22 @@ export default {
       this.$nextTick(() => {
         this.$bvModal.hide("modal-prevent-closing");
       });
+    },
+  },
+  computed: {
+    textt: {
+      get() {
+        if (this.oMeni) {
+          return `${this.oMeni}`;
+        } else {
+          return "";
+        }
+      },
+      set(newValue) {
+        const m = newValue;
+
+        this.text = m;
+      },
     },
   },
 };

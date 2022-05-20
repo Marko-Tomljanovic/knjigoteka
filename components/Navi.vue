@@ -58,23 +58,23 @@
                 ></b-icon>
               </template>
               <b-dropdown-item :to="`/profil/${this.$store.state.userData.uid}`"
-                ><b-icon class="mr-1" icon="person-lines-fill"></b-icon>
+                ><b-icon class="mr-2" icon="person-lines-fill"></b-icon>
                 Profil</b-dropdown-item
               >
               <b-dropdown-item
                 :to="`/profil/${
                   this.$store.state.userData.uid
                 }/${this.$store.state.userData.uid.substr(-5)}`"
-                ><b-icon class="mr-1" icon="heart"></b-icon>
+                ><b-icon class="mr-2" icon="heart"></b-icon>
                 Omiljene</b-dropdown-item
               >
               <b-dropdown-item to="/novaknjiga"
-                ><b-icon class="mr-1" icon="journal-plus"></b-icon> Dodaj
+                ><b-icon class="mr-2" icon="journal-plus"></b-icon> Dodaj
                 knjigu</b-dropdown-item
               >
               <hr />
               <b-dropdown-item @click="odjava" variant="danger"
-                ><b-icon class="mr-1" icon="box-arrow-right"></b-icon> Odjavi
+                ><b-icon class="mr-2" icon="box-arrow-right"></b-icon> Odjavi
                 se</b-dropdown-item
               >
             </b-dropdown>

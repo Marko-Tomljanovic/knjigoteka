@@ -13,13 +13,19 @@
       </b-card
     ></nuxt-link>
     <div
-      v-if="
-        $store.state.userData.uid == $route.params.profilId &&
-        !$route.params.omiljeneId
-      "
+      v-if="$route.params.profilId && !$route.params.omiljeneId"
       class="text-center mt-3"
     >
-      <b-button class="mr-2" v-b-tooltip.hover title="uredi" variant="outline">
+      <b-button
+        :to="{
+          path: `${$route.path}/uredi/${id}`,
+          query: { kategorija: `${kategorija}` },
+        }"
+        class="mr-2"
+        v-b-tooltip.hover
+        title="uredi"
+        variant="outline"
+      >
         <b-icon icon="pencil" variant="secondary" scale="1.6"></b-icon>
       </b-button>
       <b-button

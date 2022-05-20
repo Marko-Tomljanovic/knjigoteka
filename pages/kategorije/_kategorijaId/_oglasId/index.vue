@@ -1,6 +1,6 @@
 <template>
   <b-container fluid>
-    <b-row class="m-5">
+    <b-row class="m-4">
       <b-col md="auto"
         ><img src="https://picsum.photos/300/450" alt="knjiga"
       /></b-col>
@@ -15,17 +15,19 @@
             ><h4>{{ oglas.cijena }} kn</h4>
           </b-col> </b-row
         ><b-row>
-          <b-col style="margin-top: 0.9rem"
-            >Stanje: {{ oglas.stanje }}
+          <b-col style="margin-top: 0.8rem"
+            >Autor: {{ oglas.autor }}
           </b-col> </b-row
-        ><b-row>
-          <b-col class="mt-1">Uvez: {{ oglas.uvez }} </b-col> </b-row
         ><b-row>
           <b-col class="mt-1"
             >Izdavač: {{ oglas.izdavackaKuca }}
           </b-col> </b-row
         ><b-row>
+          <b-col class="mt-1">Uvez: {{ oglas.uvez }} </b-col> </b-row
+        ><b-row>
           <b-col class="mt-1">Jezik: {{ oglas.jezik }} </b-col> </b-row
+        ><b-row>
+          <b-col class="mt-1">Stanje: {{ oglas.stanje }} </b-col> </b-row
         ><b-row>
           <b-col class="mt-1"
             >Kategorija: {{ $route.params.kategorijaId }}

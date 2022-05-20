@@ -14,7 +14,10 @@
             ></b-icon
           ></b-col>
           <b-col
-            ><h2 class="mt-4 font-weight-bold">o meni</h2>
+            ><h2 class="mt-4 font-weight-bold">
+              o meni
+              <ModalOpis :oMeni="profilKorisnika.oMeni" @ucitajEmit="ucitaj" />
+            </h2>
             <hr />
           </b-col>
         </b-row>
@@ -41,11 +44,10 @@
               style="font-size: 17px"
               class="text-muted"
             >
-              <ModalOpis @ucitajEmit="ucitaj" class="mr-2" />
               {{ profilKorisnika.oMeni }}
             </p>
             <p v-else style="font-size: 17px" class="text-muted block">
-              napiši nešto o sebi .. <ModalOpis @ucitajEmit="ucitaj" />
+              napiši nešto o sebi ..
             </p>
             <br
           /></b-col>
@@ -80,7 +82,7 @@ export default {
   data() {
     return {
       profilKorisnika: [],
-      ukKnjiga: "",
+      ukKnjiga: "0",
     };
   },
   methods: {
@@ -92,7 +94,10 @@ export default {
           .doc(this.$store.state.userData.uid)
           .get();
         this.profilKorisnika = ref.data();
-        this.ukKnjiga = ref.data().dodaneKnjige.length;
+        if (this.profilKorisnika.dodaneKnjige) {
+          this.ukKnjiga = this.profilKorisnika.dodaneKnjige.length;
+        }
+
         if (!this.profilKorisnika) {
           this.$router.replace({ path: "/errorPage" });
         }
