@@ -13,8 +13,8 @@
         :title="card.naslov"
         :id="card.idKnjige"
         :kategorija="card.kategorija"
-        @ucitajEmit="ucitaj"
-    /></b-row>
+        @ucitajEmit="ucitaj" /></b-row
+    ><Search />
   </b-container>
 </template>
 

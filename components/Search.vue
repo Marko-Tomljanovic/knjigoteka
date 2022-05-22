@@ -1,7 +1,8 @@
 <template>
-  <div class="mx-auto d-flex justify-content-center">
+  <div class="mx-auto xd-flex justify-content-center">
     <div class="searchbar">
       <input
+        @input="someHandler"
         v-model="podaci.trazi"
         class="search_input"
         type="text"
@@ -12,7 +13,13 @@
       <b-button class="search_button">Traži</b-button>
     </div>
 
-    <div class="bg-white">{{}}</div>
+    <div v-if="show" style="width: 35.8rem" class="bg-white">
+      {{ filterKnjiga }}
+    </div>
+    <div v-if="show1" style="width: 35.8rem" class="bg-white">
+      {{ nemaKnjiga }}
+      <hr />
+    </div>
   </div>
 </template>
 
@@ -24,9 +31,13 @@ export default {
     return {
       search,
       podaci,
-      test: {},
+      test: [],
+      show: false,
+      nemaKnjiga: "",
+      show1: false,
     };
   },
+
   methods: {
     async ucitaj() {
       try {
@@ -34,9 +45,22 @@ export default {
           .collection("kategorije")
           .doc("podaci")
           .get();
-        this.test = ref.data();
+        this.test = ref.data().knjige;
       } catch (e) {
         console.log(e);
+      }
+    },
+    someHandler() {
+      if (!this.podaci.trazi) {
+        this.show = false;
+        this.show1 = false;
+      } else if (this.filterKnjiga.length == 0) {
+        this.show = false;
+        this.show1 = true;
+        this.nemaKnjiga = `Knjiga "${podaci.trazi}" nije pronađena`;
+      } else {
+        this.show = true;
+        this.show1 = false;
       }
     },
   },
@@ -49,7 +73,7 @@ export default {
   },
 
   mounted() {
-    this.ucitaj();
+    return this.ucitaj();
   },
 };
 </script>
