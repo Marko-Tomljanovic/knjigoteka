@@ -80,8 +80,14 @@
             </b-dropdown>
           </b-nav-form>
         </b-navbar-nav>
-      </b-collapse>
-    </b-navbar>
+      </b-collapse> </b-navbar
+    ><b-alert
+      :show="dismissCountDown"
+      @dismissed="dismissCountDown = 0"
+      @dismiss-count-down="countDownChanged"
+      variant="info"
+      >Info Alert</b-alert
+    >
   </div>
 </template>
 
@@ -89,16 +95,24 @@
 import logo from "@/static/logo.svg";
 export default {
   data() {
-    return { logo };
+    return { logo, dismissSecs: 5, dismissCountDown: 0 };
   },
   methods: {
     odjava() {
       console.log("signOut");
       this.$fire.auth.signOut().then(() => {
-        location.reload().catch((error) => {
-          console.log(error);
-        });
+        location
+          .reload()
+          .catch((error) => {
+            console.log(error);
+          })
+          .then(() => {
+            this.dismissCountDown = this.dismissSecs;
+          });
       });
+    },
+    countDownChanged(dismissCountDown) {
+      this.dismissCountDown = dismissCountDown;
     },
   },
   computed: {

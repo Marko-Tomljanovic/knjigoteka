@@ -1,20 +1,23 @@
 <template>
   <div>
-    <nuxt-link :to="`/kategorije/${kategorija}/${id}`">
-      <b-card
-        :title="title"
-        img-src="https://picsum.photos/600/300/?image=25"
-        img-alt="Image"
-        img-top
-        tag="article"
-        style="max-width: 12rem"
-        class="mb-2"
+    <div>
+      <nuxt-link
+        style="text-decoration: none"
+        :to="`/kategorije/${kategorija}/${id}`"
       >
-      </b-card
-    ></nuxt-link>
+        <b-img
+          style="height: 10.2rem; width: 15.5rem; border-radius: 10%"
+          class="mb-1 mr-2 ml-2"
+          src="https://picsum.photos/600/300/?image=25"
+          alt="knjiga"
+        />
+        <br />
+        <p class="text-right kartica mr-2">{{ title }}</p>
+      </nuxt-link>
+    </div>
     <div
       v-if="$route.params.profilId && !$route.params.omiljeneId"
-      class="text-center mt-3"
+      class="text-center border mb-4"
     >
       <b-button
         :to="{

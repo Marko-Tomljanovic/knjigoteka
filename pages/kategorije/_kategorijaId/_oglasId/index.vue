@@ -65,9 +65,9 @@
             <p style="margin-top: -1.5rem">{{ oglas.opis }}</p>
           </b-col>
         </b-row></b-col
-      ><b-col xcols="3" class="mt-4"
-        ><div class="profilK">
-          <b-icon class="slikaK" scale="6" icon="person-circle"></b-icon>
+      ><b-col xcols="3" class="mt-4 fluid"
+        ><div class="profilK text-center">
+          <b-icon scale="6" icon="person-circle"></b-icon>
           <br />
           <p class="tekstK">
             {{ oglas.imePrezime }} <br /><b-icon icon="geo-alt-fill"></b-icon>
@@ -78,6 +78,12 @@
             ></b-icon
             >21
           </p>
+        </div>
+        <div class="fontC mt-4">
+          <h4>Podjeli oglas</h4>
+          <br />
+          <p>facebook</p>
+          <p>instagram</p>
         </div>
       </b-col>
     </b-row>
@@ -186,16 +192,11 @@ export default {
 <style scoped>
 .profilK {
   border: solid 1.9px black;
-  width: 17.5rem;
-  height: 10.4rem;
-}
-.slikaK {
-  margin-left: 8.1rem;
-  margin-top: 0.5rem;
+  width: 24rem;
+  height: auto;
 }
 .tekstK {
   margin-top: 2.5rem;
-  text-align: center;
 }
 .naviButton {
   background: rgb(0, 0, 0);

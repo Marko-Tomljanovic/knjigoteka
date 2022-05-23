@@ -4,7 +4,7 @@
       <b-row style="margin-top: 6rem">
         <b-col><p class="fontI">Što mi se čita?</p></b-col>
       </b-row>
-      <b-row> <Search /></b-row>
+      <b-row> <Search :ucitaneKnjige="ucitaneKnjige" /></b-row>
     </b-container>
   </div>
 </template>
@@ -16,7 +16,24 @@ export default {
   data() {
     return {
       podaci,
+      ucitaneKnjige: [],
     };
+  },
+  methods: {
+    async ucitaj() {
+      try {
+        const ref = await this.$fire.firestore
+          .collection("kategorije")
+          .doc("podaci")
+          .get();
+        this.ucitaneKnjige = ref.data().knjige;
+      } catch (e) {
+        console.log(e);
+      }
+    },
+  },
+  mounted() {
+    return this.ucitaj();
   },
 };
 </script>

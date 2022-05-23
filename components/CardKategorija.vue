@@ -31,10 +31,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.kartica {
-  font-family: "Inika", sans-serif;
-  color: black;
-}
-</style>

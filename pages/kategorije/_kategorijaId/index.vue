@@ -1,5 +1,10 @@
 <template>
   <b-container class="mt-3">
+    <b-row class="mt-4 mb-4">
+      <h3 class="fontC mx-auto">
+        kategorija |{{ $route.params.kategorijaId }}|
+      </h3></b-row
+    >
     <b-card-group>
       <CardKnjiga
         v-for="(card, idx) in knjige"
