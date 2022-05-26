@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import search from "@/static/search.svg";
+import search from "@/static/svg/search.svg";
 import podaci from "@/store/podaci";
 export default {
   props: ["ucitaneKnjige"],

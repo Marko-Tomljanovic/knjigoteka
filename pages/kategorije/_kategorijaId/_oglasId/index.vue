@@ -81,9 +81,34 @@
         </div>
         <div class="fontC mt-4">
           <h4>Podjeli oglas</h4>
-          <br />
-          <p>facebook</p>
-          <p>instagram</p>
+          <br /><b-button v-b-tooltip.hover title="Facebook" variant="outline">
+            <b-icon scale="2.1" icon="facebook" variant="primary"></b-icon
+          ></b-button>
+          <b-button
+            :href="`https://web.whatsapp.com/send?text=http:/localhost:3000${this.$route.fullPath}`"
+            target="_blank"
+            data-action="share/whatsapp/share"
+            v-b-tooltip.hover
+            title="WhatsApp"
+            class="rounded-circle px-2"
+            variant="success"
+            ><img :src="whatsapp" alt="whatsapp" /> </b-button
+          ><b-button
+            :href="`mailto:?subject=${'Pogledaj oglas na Knjigoteci!'}&body=${'Pročitj kako bi pričitao :)'}%0D%0A%0D%0A<a>http:/localhost:3000${
+              this.$route.fullPath
+            }</a>`"
+            v-b-tooltip.hover
+            title="Pošalji email"
+            variant="outline"
+          >
+            <b-icon
+              scale="1"
+              style="height: 2.8rem; width: 2.88rem"
+              icon="envelope-open"
+              class="rounded-circle bg-info p-2"
+              variant="light"
+            ></b-icon
+          ></b-button>
         </div>
       </b-col>
     </b-row>
@@ -92,6 +117,7 @@
 
 <script>
 import podaci from "@/store/podaci";
+import whatsapp from "@/static/svg/whatsapp.svg";
 export default {
   head() {
     return {
@@ -104,6 +130,7 @@ export default {
       podaci,
       oznacenoO: false,
       ukOmiljene: 0,
+      whatsapp,
     };
   },
   methods: {

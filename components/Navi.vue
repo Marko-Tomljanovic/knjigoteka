@@ -92,7 +92,7 @@
 </template>
 
 <script>
-import logo from "@/static/logo.svg";
+import logo from "@/static/svg/logo.svg";
 export default {
   data() {
     return { logo, dismissSecs: 5, dismissCountDown: 0 };
