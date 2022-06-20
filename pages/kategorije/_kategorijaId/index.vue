@@ -25,7 +25,7 @@ export default {
   data() {
     return { podaci };
   },
-  async asyncData({ app, store, params }) {
+  async asyncData({ app, store, params, redirect, route }) {
     try {
       let userDoc = await app.$fire.firestore
         .collection("kategorije")
@@ -37,6 +37,9 @@ export default {
           .data()
           .knjige.filter((item) => item.kategorija === params.kategorijaId)
       );
+      if (store.state.podKategorija.length === 0) {
+        redirect({ path: `${route.path}/errorKnjiga` });
+      }
     } catch (e) {
       console.log(e);
     }
