@@ -7,27 +7,33 @@
       <b-col class="fontC">
         <b-row>
           <b-col
-            ><h2>{{ oglas.naslov }}</h2></b-col
+            ><h2>{{ $store.state.oglas.naslov }}</h2></b-col
           >
         </b-row>
         <b-row>
           <b-col
-            ><h4>{{ oglas.cijena }} kn</h4>
+            ><h4>{{ $store.state.oglas.cijena }} kn</h4>
           </b-col> </b-row
         ><b-row>
           <b-col style="margin-top: 0.8rem"
-            >Autor: {{ oglas.autor }}
+            >Autor: {{ $store.state.oglas.autor }}
           </b-col> </b-row
         ><b-row>
           <b-col class="mt-1"
-            >Izdavač: {{ oglas.izdavackaKuca }}
+            >Izdavač: {{ $store.state.oglas.izdavackaKuca }}
           </b-col> </b-row
         ><b-row>
-          <b-col class="mt-1">Uvez: {{ oglas.uvez }} </b-col> </b-row
+          <b-col class="mt-1"
+            >Uvez: {{ $store.state.oglas.uvez }}
+          </b-col> </b-row
         ><b-row>
-          <b-col class="mt-1">Jezik: {{ oglas.jezik }} </b-col> </b-row
+          <b-col class="mt-1"
+            >Jezik: {{ $store.state.oglas.jezik }}
+          </b-col> </b-row
         ><b-row>
-          <b-col class="mt-1">Stanje: {{ oglas.stanje }} </b-col> </b-row
+          <b-col class="mt-1"
+            >Stanje: {{ $store.state.oglas.stanje }}
+          </b-col> </b-row
         ><b-row>
           <b-col class="mt-1"
             >Kategorija: {{ $route.params.kategorijaId }}
@@ -39,20 +45,24 @@
             ><b-button
               v-b-tooltip.hover
               @click="dodajOmiljene"
-              :title="oznacenoO ? 'Obriši iz omiljenih' : 'Dodaj u omiljene'"
+              :title="
+                $store.state.oznacenoO
+                  ? 'Obriši iz omiljenih'
+                  : 'Dodaj u omiljene'
+              "
               class="mr-3"
-              :class="oznacenoO ? 'naviButton' : ''"
+              :class="$store.state.oznacenoO ? 'naviButton' : ''"
               variant="outline"
               style="border: solid 1px black"
               ><b-icon
-                :variant="oznacenoO ? 'white ' : ''"
+                :variant="$store.state.oznacenoO ? 'white ' : ''"
                 icon="heart"
               ></b-icon></b-button
             ><b-button
               disabled
               variant="outline"
               style="border: solid 1px black; width: 2.8rem"
-              >{{ ukOmiljene }}</b-button
+              >{{ $store.state.ukOmiljene }}</b-button
             ><b-button class="ml-4 naviButton"
               >Javi se prodavaču</b-button
             ></b-col
@@ -62,7 +72,7 @@
             ><h4 style="margin-bottom: -0.7rem">Opis:</h4>
             <hr />
             <br />
-            <p style="margin-top: -1.5rem">{{ oglas.opis }}</p>
+            <p style="margin-top: -1.5rem">{{ $store.state.oglas.opis }}</p>
           </b-col>
         </b-row></b-col
       ><b-col xcols="3" class="mt-4 fluid"
@@ -70,8 +80,10 @@
           <b-icon scale="6" icon="person-circle"></b-icon>
           <br />
           <p class="tekstK">
-            {{ oglas.imePrezime }} <br /><b-icon icon="geo-alt-fill"></b-icon>
-            {{ oglas.lokacija }} <br />
+            {{ $store.state.oglas.imePrezime }} <br /><b-icon
+              icon="geo-alt-fill"
+            ></b-icon>
+            {{ $store.state.oglas.lokacija }} <br />
             <b-icon class="mr-1 mt-3" icon="hand-thumbs-up"></b-icon>54<b-icon
               class="ml-3 mr-1"
               icon="hand-thumbs-down"
@@ -121,17 +133,42 @@ import whatsapp from "@/static/svg/whatsapp.svg";
 export default {
   head() {
     return {
-      title: this.$route.params.kategorijaId + " | " + this.oglas.naslov,
+      title:
+        this.$route.params.kategorijaId +
+        " | " +
+        this.$store.state.oglas.naslov,
     };
   },
   data() {
     return {
-      oglas: [],
       podaci,
-      oznacenoO: false,
-      ukOmiljene: 0,
       whatsapp,
     };
+  },
+  async asyncData({ app, store, params, redirect }) {
+    try {
+      let ref = await app.$fire.firestore
+        .collection("kategorije")
+        .doc(params.kategorijaId)
+        .collection("knjige")
+        .doc(params.oglasId)
+        .get();
+      store.commit("setOglas", ref.data());
+      if (store.state.userData) {
+        store.commit(
+          "setOznacenoO",
+          ref.data().omiljene.includes(store.state.userData.uid)
+        );
+      }
+      store.commit("setUkOmiljene", ref.data().omiljene.length);
+
+      if (!store.state.oglas) {
+        redirect({ path: "/errorPage" });
+      }
+    } catch (e) {
+      console.log(e);
+      redirect({ path: "/errorPage" });
+    }
   },
   methods: {
     async ucitaj() {
@@ -142,14 +179,16 @@ export default {
           .collection("knjige")
           .doc(this.$route.params.oglasId)
           .get();
-        this.oglas = ref.data();
+        this.$store.commit("setOglas", ref.data());
+
         if (this.$store.state.userData) {
-          this.oznacenoO = ref
-            .data()
-            .omiljene.includes(this.$store.state.userData.uid);
+          this.$store.commit(
+            "setOznacenoO",
+            ref.data().omiljene.includes(this.$store.state.userData.uid)
+          );
         }
-        this.ukOmiljene = ref.data().omiljene.length;
-        if (!this.oglas) {
+        this.$store.commit("setUkOmiljene", ref.data().omiljene.length);
+        if (!this.$store.state.oglas) {
           this.$router.replace({ path: "/errorPage" });
         }
       } catch (e) {
@@ -168,7 +207,7 @@ export default {
           .collection("users")
           .doc(this.$store.state.userData.uid);
         const marko = this.$fireModule.firestore.FieldValue;
-        if (this.oznacenoO) {
+        if (this.$store.state.oznacenoO) {
           ref
             .update({
               omiljene: marko.arrayRemove(this.$store.state.userData.uid),
@@ -177,9 +216,9 @@ export default {
               refU
                 .update({
                   omiljeneK: marko.arrayRemove({
-                    idKnjige: this.oglas.id,
-                    naslov: this.oglas.naslov,
-                    kategorija: this.oglas.kategorija,
+                    idKnjige: this.$store.state.oglas.id,
+                    naslov: this.$store.state.oglas.naslov,
+                    kategorija: this.$store.state.oglas.kategorija,
                   }),
                 })
                 .then(() => {
@@ -195,9 +234,9 @@ export default {
               refU
                 .update({
                   omiljeneK: marko.arrayUnion({
-                    idKnjige: this.oglas.id,
-                    naslov: this.oglas.naslov,
-                    kategorija: this.oglas.kategorija,
+                    idKnjige: this.$store.state.oglas.id,
+                    naslov: this.$store.state.oglas.naslov,
+                    kategorija: this.$store.state.oglas.kategorija,
                   }),
                 })
                 .then(() => {
@@ -209,9 +248,6 @@ export default {
         alert("Prijavi se za dodavanje knjiga u omiljene!");
       }
     },
-  },
-  mounted() {
-    this.ucitaj();
   },
 };
 </script>

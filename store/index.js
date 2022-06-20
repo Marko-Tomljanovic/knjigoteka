@@ -2,7 +2,11 @@ export default {
   state() {
     return {
       userData: null,
-    };
+      podKategorija: [],
+      oglas: [],
+      oznacenoO: false,
+      ukOmiljene: 0,
+     };
   },
 
   getters: {},
@@ -13,6 +17,18 @@ export default {
     },
     setUserData(state, payload) {
       state.userData = payload;
+    },
+    setOglas(state, payload) {
+      state.oglas = payload;
+    },
+    setOznacenoO(state, payload) {
+      state.oznacenoO = payload;
+    },
+    setUkOmiljene(state, payload) {
+      state.ukOmiljene = payload;
+    },
+    setPodKategorija(state, payload) {
+      state.podKategorija = payload;
     },
   },
   actions: {
