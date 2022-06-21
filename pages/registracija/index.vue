@@ -73,10 +73,16 @@ export default {
                   imePrezime: this.form.imePrezime,
                   mobitel: this.form.mobitel,
                   mjesto: this.form.mjesto,
+                })
+                .then(() => {
+                  location.reload();
+                })
+                .catch((e) => {
+                  console.log(e);
                 });
             })
-            .then(() => {
-              location.reload();
+            .catch((e) => {
+              console.log(e);
             });
         } catch (e) {
           console.log(e);

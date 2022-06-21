@@ -31,11 +31,9 @@
             </p>
 
             <h5>
-              <b-icon class="mr-1" icon="hand-thumbs-up"></b-icon>54<b-icon
-                class="ml-3 mr-1"
-                icon="hand-thumbs-down"
-              ></b-icon
-              >21
+              <b-icon class="mr-1" icon="hand-thumbs-up"></b-icon>{{ ukLajk
+              }}<b-icon class="ml-3 mr-1" icon="hand-thumbs-down"></b-icon
+              >{{ ukDislajk }}
             </h5>
           </b-col>
           <b-col cols="7">
@@ -87,7 +85,7 @@ export default {
   },
   methods: {
     async ucitaj() {
-      console.log("sada znam da je ucitano");
+      console.log("ucitano");
       try {
         let ref = await this.$fire.firestore
           .collection("users")
@@ -105,6 +103,14 @@ export default {
         console.log(e);
         this.$router.replace({ path: "/errorPage" });
       }
+    },
+  },
+  computed: {
+    ukLajk() {
+      return this.profilKorisnika.lajk?.length;
+    },
+    ukDislajk() {
+      return this.profilKorisnika.dislajk?.length;
     },
   },
 
