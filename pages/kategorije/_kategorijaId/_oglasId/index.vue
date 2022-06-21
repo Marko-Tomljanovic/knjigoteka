@@ -75,14 +75,16 @@
             <p style="margin-top: -1.5rem">{{ $store.state.oglas.opis }}</p>
           </b-col>
         </b-row></b-col
-      ><b-col xcols="3" class="mt-4 fluid"
+      ><b-col class="mt-4 fluid"
         ><div class="profilK text-center">
           <b-icon scale="6" icon="person-circle"></b-icon>
           <br />
           <p class="tekstK">
-            {{ $store.state.oglas.imePrezime }} <br /><b-icon
-              icon="geo-alt-fill"
-            ></b-icon>
+            <nuxt-link
+              :to="`/profil-prodavaca/${$store.state.oglas.idKorisnika}`"
+              class="darko"
+              >{{ $store.state.oglas.imePrezime }} </nuxt-link
+            ><br /><b-icon icon="geo-alt-fill"></b-icon>
             {{ $store.state.oglas.lokacija }} <br />
             <b-icon class="mr-1 mt-3" icon="hand-thumbs-up"></b-icon>54<b-icon
               class="ml-3 mr-1"
@@ -260,6 +262,9 @@ export default {
 }
 .tekstK {
   margin-top: 2.5rem;
+}
+.darko {
+  color: black;
 }
 .naviButton {
   background: rgb(0, 0, 0);
