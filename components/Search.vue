@@ -6,6 +6,7 @@
         v-model="podaci.trazi"
         class="search_input"
         type="text"
+        maxlength="40"
         name=""
         placeholder="Traži po naslovu, autoru..."
       />

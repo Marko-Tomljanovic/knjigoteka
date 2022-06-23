@@ -28,26 +28,25 @@
             </p>
 
             <h5>
-              <b-link @click="lajk" :disabled="!dislajkano">
-                <b-icon
-                  class="mr-2"
-                  variant="info"
-                  icon="hand-thumbs-up"
-                  scale="1.3"
-                ></b-icon></b-link
+              <b-button
+                @click="lajk"
+                :disabled="!dislajkano"
+                class="rounded-circle mr-1"
+                :variant="!dislajkano || lajkano ? 'outline' : 'outline-info'"
+                v-b-tooltip.hover
+                title="lajk"
+              >
+                <b-icon icon="hand-thumbs-up" scale="1.3"></b-icon></b-button
               >{{ ukLajk }}
-              <b-link
+              <b-button
                 @click="dislajk"
                 :disabled="!lajkano"
+                class="rounded-circle"
+                :variant="!lajkano || dislajkano ? 'outline' : 'outline-info'"
                 v-b-tooltip.hover
                 title="dislajk"
               >
-                <b-icon
-                  class="ml-3 mr-2"
-                  variant="info"
-                  icon="hand-thumbs-down"
-                  scale="1.3"
-                ></b-icon></b-link
+                <b-icon icon="hand-thumbs-down" scale="1.3"></b-icon></b-button
               >{{ ukDislajk }}
             </h5>
             <b-alert
@@ -89,7 +88,7 @@
 export default {
   head() {
     return {
-      title: "profil-prodavača",
+      title: "info-prodavac",
     };
   },
   data() {
@@ -108,7 +107,7 @@ export default {
       try {
         let ref = await this.$fire.firestore
           .collection("users")
-          .doc(this.$store.state.userData.uid)
+          .doc(this.$route.params.idProdavaca)
           .get();
         this.profilKorisnika = ref.data();
         if (this.profilKorisnika.dodaneKnjige) {
@@ -127,20 +126,40 @@ export default {
       if (this.$store.state.userData) {
         const ref = await this.$fire.firestore
           .collection("users")
-          .doc(this.$store.state.userData.uid);
+          .doc(this.$route.params.idProdavaca);
         const marko = this.$fireModule.firestore.FieldValue;
         if (!this.lajkano) {
-          ref.update({
-            lajk: marko.arrayRemove(this.$store.state.userData.uid),
-          });
-          this.ucitaj();
-          this.showAlert("Uklonjen lajk!", "danger");
+          ref
+            .update({
+              lajk: marko.arrayRemove(this.$store.state.userData.uid),
+            })
+            .then(() => {
+              this.ucitaj()
+                .then(() => {
+                  this.showAlert("Uklonjen lajk!", "danger");
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
+            })
+            .catch((e) => {
+              console.log(e);
+            });
         } else {
-          ref.update({
-            lajk: marko.arrayUnion(this.$store.state.userData.uid),
-          });
-          this.ucitaj();
-          this.showAlert("Hvala na ostavljenoj ocjeni", "success");
+          ref
+            .update({
+              lajk: marko.arrayUnion(this.$store.state.userData.uid),
+            })
+            .then(() => {
+              this.ucitaj()
+                .then(() => {
+                  this.showAlert("Hvala na ostavljenoj ocjeni", "success");
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
+            })
+            .catch((e) => console.log(e));
         }
       } else {
         alert("Prijavi se za lajk!");
@@ -150,20 +169,40 @@ export default {
       if (this.$store.state.userData) {
         const ref = await this.$fire.firestore
           .collection("users")
-          .doc(this.$store.state.userData.uid);
+          .doc(this.$route.params.idProdavaca);
         const marko = this.$fireModule.firestore.FieldValue;
         if (!this.dislajkano) {
-          ref.update({
-            dislajk: marko.arrayRemove(this.$store.state.userData.uid),
-          });
-          this.ucitaj();
-          this.showAlert("Uklonjen dislajk!", "danger");
+          ref
+            .update({
+              dislajk: marko.arrayRemove(this.$store.state.userData.uid),
+            })
+            .then(() => {
+              this.ucitaj()
+                .then(() => {
+                  this.showAlert("Uklonjen dislajk!", "danger");
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
+            })
+            .catch((e) => {
+              console.log(e);
+            });
         } else {
-          ref.update({
-            dislajk: marko.arrayUnion(this.$store.state.userData.uid),
-          });
-          this.ucitaj();
-          this.showAlert("Hvala na ostavljenoj ocjeni", "success");
+          ref
+            .update({
+              dislajk: marko.arrayUnion(this.$store.state.userData.uid),
+            })
+            .then(() => {
+              this.ucitaj()
+                .then(() => {
+                  this.showAlert("Hvala na ostavljenoj ocjeni", "success");
+                })
+                .catch((e) => {
+                  console.log(e);
+                });
+            })
+            .catch((e) => console.log(e));
         }
       } else {
         alert("Prijavi se za lajk!");
@@ -180,14 +219,16 @@ export default {
   },
   computed: {
     lajkano() {
-      if (this.profilKorisnika.lajk?.includes(this.$store.state.userData.uid)) {
+      if (
+        this.profilKorisnika.lajk?.includes(this.$store.state.userData?.uid)
+      ) {
         return false;
       }
       return true;
     },
     dislajkano() {
       if (
-        this.profilKorisnika.dislajk?.includes(this.$store.state.userData.uid)
+        this.profilKorisnika.dislajk?.includes(this.$store.state.userData?.uid)
       ) {
         return false;
       }

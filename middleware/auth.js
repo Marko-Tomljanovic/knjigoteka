@@ -1,11 +1,7 @@
 export default function ({ route, redirect, store }) {
   if (
     (!store.state.userData && route.path === "/novaknjiga") ||
-    (!store.state.userData &&
-      route.path === `/profil/${route.params.profilId}`) ||
-    (!store.state.userData &&
-      route.path ===
-        `/profil/${route.params.profilId}/uredi/${route.params.urediId}`)
+    (!store.state.userData && route.path.includes('profil'))
   ) {
     return redirect("/prijava");
   } else if (
@@ -13,6 +9,9 @@ export default function ({ route, redirect, store }) {
     (store.state.userData && route.path === "/registracija")
   ) {
     return redirect("/");
+  }
+  else if((store.state.userData && route.params?.idProdavaca === store.state.userData.uid)){
+    return redirect(`/profil/${store.state.userData.uid}`);
   }
 }
 

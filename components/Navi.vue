@@ -72,6 +72,10 @@
                 ><b-icon class="mr-2" icon="journal-plus"></b-icon> Dodaj
                 knjigu</b-dropdown-item
               >
+              <b-dropdown-item to="/profil/postavke"
+                ><b-icon class="mr-2" icon="gear"></b-icon>
+                Postavke</b-dropdown-item
+              >
               <hr />
               <b-dropdown-item @click="odjava" variant="danger"
                 ><b-icon class="mr-2" icon="box-arrow-right"></b-icon> Odjavi

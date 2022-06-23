@@ -81,16 +81,18 @@
           <br />
           <p class="tekstK">
             <nuxt-link
-              :to="`/profil-prodavaca/${$store.state.oglas.idKorisnika}`"
+              :to="`/info-prodavac/${$store.state.oglas.idKorisnika}`"
               class="darko"
               >{{ $store.state.oglas.imePrezime }} </nuxt-link
             ><br /><b-icon icon="geo-alt-fill"></b-icon>
             {{ $store.state.oglas.lokacija }} <br />
-            <b-icon class="mr-1 mt-3" icon="hand-thumbs-up"></b-icon>54<b-icon
-              class="ml-3 mr-1"
-              icon="hand-thumbs-down"
-            ></b-icon
-            >21
+            <nuxt-link
+              :to="`/info-prodavac/${$store.state.oglas.idKorisnika}`"
+              class="darko"
+            >
+              <b-icon class="mr-1 mt-3" icon="hand-thumbs-up"></b-icon>Ocjeni
+              korisnika
+            </nuxt-link>
           </p>
         </div>
         <div class="fontC mt-4">
@@ -225,6 +227,9 @@ export default {
                 })
                 .then(() => {
                   this.ucitaj();
+                })
+                .catch((e) => {
+                  console.log(e);
                 });
             });
         } else {
@@ -243,6 +248,9 @@ export default {
                 })
                 .then(() => {
                   this.ucitaj();
+                })
+                .catch((e) => {
+                  console.log(e);
                 });
             });
         }

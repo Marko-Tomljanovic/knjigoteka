@@ -1,9 +1,7 @@
 <template>
   <b-container>
     <b-row class="mt-4">
-      <h3 class="fontC mx-auto">
-        omiljene knjige |{{ omiljeneKnjige.length }}|
-      </h3></b-row
+      <h3 class="fontC mx-auto">omiljene knjige |{{ ukOmiljene }}|</h3></b-row
     >
     <b-row class="mt-4">
       <CardKnjiga
@@ -39,13 +37,18 @@ export default {
           .get();
 
         this.omiljeneKnjige = ref.data().omiljeneK;
-
-        if (!this.omiljeneKnjige) {
-          this.$router.replace({ path: "/errorPage" });
-        }
       } catch (e) {
         console.log(e);
         // this.$router.replace({ path: "/errorPage" });
+      }
+    },
+  },
+  computed: {
+    ukOmiljene() {
+      if (this.omiljeneKnjige) {
+        return this.omiljeneKnjige.length;
+      } else {
+        return "0";
       }
     },
   },
