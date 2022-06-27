@@ -3,7 +3,7 @@
     <b-row align-h="center">
       <div
         class="border"
-        style="width: 61rem; height: 15.5rem; margin-top: 3.5rem"
+        style="width: 61rem; height: 16rem; margin-top: 3.2rem"
       >
         <b-row>
           <b-col cols="4" class="text-center">
@@ -27,28 +27,28 @@
               >{{ profilKorisnika.mjesto }}
             </p>
 
-            <h5>
+            <div style="margin-top: -0.65rem">
               <b-button
-                @click="lajk"
-                :disabled="!dislajkano"
-                class="rounded-circle mr-1"
-                :variant="!dislajkano || lajkano ? 'outline' : 'outline-info'"
+                disabled
+                class="mr-1"
+                variant="outline"
                 v-b-tooltip.hover
                 title="lajk"
               >
                 <b-icon icon="hand-thumbs-up" scale="1.3"></b-icon></b-button
               >{{ ukLajk }}
               <b-button
-                @click="dislajk"
-                :disabled="!lajkano"
-                class="rounded-circle"
-                :variant="!lajkano || dislajkano ? 'outline' : 'outline-info'"
+                disabled
+                variant="outline"
                 v-b-tooltip.hover
                 title="dislajk"
               >
                 <b-icon icon="hand-thumbs-down" scale="1.3"></b-icon></b-button
               >{{ ukDislajk }}
-            </h5>
+            </div>
+
+            <ModalKomentar :lajkanox="lajkanox" @ucitajEmit="ucitaj" />
+
             <b-alert
               :show="dismissCountDown"
               :variant="variant"
@@ -65,22 +65,27 @@
         </b-row>
       </div>
     </b-row>
-    <b-row
-      ><b-col class="mx-auto mb-3" cols="5"
-        ><h4 class="text-center mt-3">
-          oglasi korisnika |{{ ukKnjiga }}|
-        </h4></b-col
-      ></b-row
-    >
-    <b-row>
-      <CardKnjiga
-        class="mr-1 ml-1"
-        v-for="(card, idx) in profilKorisnika.dodaneKnjige"
-        :key="idx.naslov"
-        :title="card.naslov"
-        :id="card.idKnjige"
-        :kategorija="card.kategorija"
-    /></b-row>
+    <b-tabs class="mt-1" content-class="mt-3" justified>
+      <b-tab :title="`Oglasi korniska |${ukKnjiga}|`" active>
+        <b-row>
+          <CardKnjiga
+            class="mr-1 ml-1"
+            v-for="(card, idx) in profilKorisnika.dodaneKnjige"
+            :key="idx.naslov"
+            :title="card.naslov"
+            :id="card.idKnjige"
+            :kategorija="card.kategorija" /></b-row
+      ></b-tab>
+      <b-tab :title="`Komentari |${ukKomentari}|`" :active="queryTab">
+        <komentar
+          v-for="(card, idx) in profilKorisnika.komentari"
+          :key="idx.komentar"
+          :korisnik="card.imePrezime"
+          :ocjena="card.lajk"
+          :komentar="card.komentar"
+          :vrijeme="card.vrijeme"
+      /></b-tab>
+    </b-tabs>
   </b-container>
 </template>
 
@@ -99,6 +104,7 @@ export default {
       dismissCountDown: 0,
       alertText: "",
       variant: "",
+      lajkMetoda: {},
     };
   },
   methods: {
@@ -110,104 +116,20 @@ export default {
           .doc(this.$route.params.idProdavaca)
           .get();
         this.profilKorisnika = ref.data();
+
         if (this.profilKorisnika.dodaneKnjige) {
           this.ukKnjiga = this.profilKorisnika.dodaneKnjige.length;
         }
-
         if (!this.profilKorisnika) {
           this.$router.replace({ path: "/errorPage" });
         }
+        this.dora();
       } catch (e) {
         console.log(e);
         this.$router.replace({ path: "/errorPage" });
       }
     },
-    async lajk() {
-      if (this.$store.state.userData) {
-        const ref = await this.$fire.firestore
-          .collection("users")
-          .doc(this.$route.params.idProdavaca);
-        const marko = this.$fireModule.firestore.FieldValue;
-        if (!this.lajkano) {
-          ref
-            .update({
-              lajk: marko.arrayRemove(this.$store.state.userData.uid),
-            })
-            .then(() => {
-              this.ucitaj()
-                .then(() => {
-                  this.showAlert("Uklonjen lajk!", "danger");
-                })
-                .catch((e) => {
-                  console.log(e);
-                });
-            })
-            .catch((e) => {
-              console.log(e);
-            });
-        } else {
-          ref
-            .update({
-              lajk: marko.arrayUnion(this.$store.state.userData.uid),
-            })
-            .then(() => {
-              this.ucitaj()
-                .then(() => {
-                  this.showAlert("Hvala na ostavljenoj ocjeni", "success");
-                })
-                .catch((e) => {
-                  console.log(e);
-                });
-            })
-            .catch((e) => console.log(e));
-        }
-      } else {
-        alert("Prijavi se za lajk!");
-      }
-    },
-    async dislajk() {
-      if (this.$store.state.userData) {
-        const ref = await this.$fire.firestore
-          .collection("users")
-          .doc(this.$route.params.idProdavaca);
-        const marko = this.$fireModule.firestore.FieldValue;
-        if (!this.dislajkano) {
-          ref
-            .update({
-              dislajk: marko.arrayRemove(this.$store.state.userData.uid),
-            })
-            .then(() => {
-              this.ucitaj()
-                .then(() => {
-                  this.showAlert("Uklonjen dislajk!", "danger");
-                })
-                .catch((e) => {
-                  console.log(e);
-                });
-            })
-            .catch((e) => {
-              console.log(e);
-            });
-        } else {
-          ref
-            .update({
-              dislajk: marko.arrayUnion(this.$store.state.userData.uid),
-            })
-            .then(() => {
-              this.ucitaj()
-                .then(() => {
-                  this.showAlert("Hvala na ostavljenoj ocjeni", "success");
-                })
-                .catch((e) => {
-                  console.log(e);
-                });
-            })
-            .catch((e) => console.log(e));
-        }
-      } else {
-        alert("Prijavi se za lajk!");
-      }
-    },
+
     countDownChanged(dismissCountDown) {
       this.dismissCountDown = dismissCountDown;
     },
@@ -216,29 +138,47 @@ export default {
       this.variant = variant;
       this.dismissCountDown = this.dismissSecs;
     },
+    dora() {
+      let res = {};
+      this.profilKorisnika.komentari?.forEach(function (v) {
+        res[v.lajk] = (res[v.lajk] || 0) + 1;
+      });
+      this.lajkMetoda = res;
+    },
   },
   computed: {
-    lajkano() {
+    lajkanox() {
       if (
-        this.profilKorisnika.lajk?.includes(this.$store.state.userData?.uid)
+        this.profilKorisnika.komentari?.some(
+          (u) => u["idKorisnika"] === this.$store.state.userData?.uid
+        )
       ) {
+        return true;
+      } else {
         return false;
       }
-      return true;
     },
-    dislajkano() {
-      if (
-        this.profilKorisnika.dislajk?.includes(this.$store.state.userData?.uid)
-      ) {
-        return false;
-      }
-      return true;
+    ukKomentari() {
+      return this.profilKorisnika.komentari
+        ? this.profilKorisnika.komentari.length
+        : "0";
     },
     ukLajk() {
-      return this.profilKorisnika.lajk?.length;
+      if (this.lajkMetoda.true) {
+        return this.lajkMetoda.true;
+      } else {
+        return "0";
+      }
     },
     ukDislajk() {
-      return this.profilKorisnika.dislajk?.length;
+      if (this.lajkMetoda.false) {
+        return this.lajkMetoda.false;
+      } else {
+        return "0";
+      }
+    },
+    queryTab() {
+      return this.$route.query.tab ? true : false;
     },
   },
   mounted() {
@@ -246,5 +186,3 @@ export default {
   },
 };
 </script>
-
-<style scoped></style>

@@ -87,11 +87,14 @@
             ><br /><b-icon icon="geo-alt-fill"></b-icon>
             {{ $store.state.oglas.lokacija }} <br />
             <nuxt-link
-              :to="`/info-prodavac/${$store.state.oglas.idKorisnika}`"
+              :to="{
+                path: `/info-prodavac/${$store.state.oglas.idKorisnika}`,
+                query: { tab: true },
+              }"
               class="darko"
             >
-              <b-icon class="mr-1 mt-3" icon="hand-thumbs-up"></b-icon>Ocjeni
-              korisnika
+              <b-icon class="mr-1 mt-3" icon="hand-thumbs-up"></b-icon>Pogledaj
+              ocjene
             </nuxt-link>
           </p>
         </div>
