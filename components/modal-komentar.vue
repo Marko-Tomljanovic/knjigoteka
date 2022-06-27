@@ -30,7 +30,6 @@
             id="radio-group"
             v-model="oznaceno"
             label="Enter your name"
-            :aria-describedby="ariaDescribedby"
             name="radio-sub-component"
             v-b-tooltip.hover
             title="Obavezno polje"

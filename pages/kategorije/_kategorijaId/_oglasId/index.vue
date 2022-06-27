@@ -93,9 +93,11 @@
               }"
               class="darko"
             >
-              <b-icon class="mr-1 mt-3" icon="hand-thumbs-up"></b-icon>Pogledaj
-              ocjene
-            </nuxt-link>
+              <span v-if="showNuxtLink">
+                <b-icon class="mr-1 mt-3" icon="hand-thumbs-up"></b-icon
+                >Pogledaj ocjene</span
+              >
+            </nuxt-link><p v-if="!showNuxtLink">Moj oglas</p>
           </p>
         </div>
         <div class="fontC mt-4">
@@ -260,6 +262,13 @@ export default {
       } else {
         alert("Prijavi se za dodavanje knjiga u omiljene!");
       }
+    },
+  },
+  computed: {
+    showNuxtLink() {
+      return !(
+        this.$store.state.userData?.uid === this.$store.state.oglas?.idKorisnika
+      );
     },
   },
 };

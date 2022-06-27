@@ -7,7 +7,7 @@
       <b-col cols="2"
         ><b-icon
           class="float-right mr-2"
-          :icon="ocjena ? 'hand-thumbs-up' : 'hand-thumbs-down'"
+          :icon="ocjena === 'true' ? 'hand-thumbs-up' : 'hand-thumbs-down'"
           scale="2"
         ></b-icon
       ></b-col>
@@ -17,7 +17,7 @@
       <b-col>{{ komentar }}</b-col>
     </b-row>
     <b-row align-h="end">
-      <b-col cols="3"
+      <b-col cols="7"
         ><span class="float-right">{{
           $moment(vrijeme).format("LLL")
         }}</span></b-col

@@ -52,21 +52,42 @@
         </b-row>
       </div>
     </b-row>
-    <b-row
-      ><b-col class="mx-auto mb-3" cols="5"
-        ><h4 class="text-center mt-3">moji oglasi |{{ ukKnjiga }}|</h4></b-col
-      ></b-row
-    >
-    <b-row>
-      <CardKnjiga
-        class="mr-1 ml-1"
-        v-for="(card, idx) in profilKorisnika.dodaneKnjige"
-        :key="idx.naslov"
-        :title="card.naslov"
-        :id="card.idKnjige"
-        :kategorija="card.kategorija"
-        @ucitajEmit="ucitaj"
-    /></b-row>
+
+    <b-tabs class="mt-1" content-class="mt-3" justified>
+      <b-tab :title="`Moji oglasi |${ukKnjiga}|`" active>
+        <b-row>
+          <CardKnjiga
+            class="mr-1 ml-1"
+            v-for="(card, idx) in profilKorisnika.dodaneKnjige"
+            :key="idx.naslov"
+            :title="card.naslov"
+            :id="card.idKnjige"
+            :kategorija="card.kategorija" /></b-row
+      ></b-tab>
+      <b-tab :title="`Komentari |${ukKomentari}|`" :active="queryTab">
+        <b-form-group v-if="ukKomentari > 0">
+          <b-form-radio-group
+            id="radio-group"
+            v-model="selected"
+            name="radio-sub-component"
+            size="sm"
+          >
+            <b-form-radio value="svi">Svi</b-form-radio>
+            <b-form-radio value="pozitivni">Pozitivni</b-form-radio>
+            <b-form-radio value="negativni">Negativni</b-form-radio>
+            <b-form-radio value="stariji">Stariji</b-form-radio>
+          </b-form-radio-group>
+        </b-form-group>
+        <komentar
+          v-for="(card, id) in sort"
+          :key="id.komentar"
+          :korisnik="card.imePrezime"
+          :ocjena="card.lajk"
+          :komentar="card.komentar"
+          :vrijeme="card.vrijeme"
+        />
+      </b-tab>
+    </b-tabs>
   </b-container>
 </template>
 
@@ -81,6 +102,8 @@ export default {
     return {
       profilKorisnika: [],
       ukKnjiga: "0",
+      lajkMetoda: {},
+      selected: "svi",
     };
   },
   methods: {
@@ -99,18 +122,61 @@ export default {
         if (!this.profilKorisnika) {
           this.$router.replace({ path: "/errorPage" });
         }
+        this.dora();
       } catch (e) {
         console.log(e);
         this.$router.replace({ path: "/errorPage" });
       }
     },
+    dora() {
+      let res = {};
+      this.profilKorisnika.komentari?.forEach(function (v) {
+        res[v.lajk] = (res[v.lajk] || 0) + 1;
+      });
+      this.lajkMetoda = res;
+    },
   },
   computed: {
+    ukKomentari() {
+      return this.profilKorisnika.komentari
+        ? this.profilKorisnika.komentari.length
+        : "0";
+    },
     ukLajk() {
-      return this.profilKorisnika.lajk?.length;
+      if (this.lajkMetoda.true) {
+        return this.lajkMetoda.true;
+      } else {
+        return "0";
+      }
     },
     ukDislajk() {
-      return this.profilKorisnika.dislajk?.length;
+      if (this.lajkMetoda.false) {
+        return this.lajkMetoda.false;
+      } else {
+        return "0";
+      }
+    },
+    queryTab() {
+      return this.$route.query.tab ? true : false;
+    },
+    sort() {
+      if (this.selected === "svi") {
+        return this.profilKorisnika.komentari?.sort(function (a, b) {
+          return b.vrijeme < a.vrijeme ? -1 : 1;
+        });
+      } else if (this.selected === "pozitivni") {
+        return this.profilKorisnika.komentari?.filter(
+          (row) => row.lajk === "true"
+        );
+      } else if (this.selected === "negativni") {
+        return this.profilKorisnika.komentari?.filter(
+          (row) => row.lajk === "false"
+        );
+      } else if (this.selected === "stariji") {
+        return this.profilKorisnika.komentari?.sort(function (a, b) {
+          return a.vrijeme < b.vrijeme ? -1 : 1;
+        });
+      }
     },
   },
 

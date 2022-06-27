@@ -77,14 +77,28 @@
             :kategorija="card.kategorija" /></b-row
       ></b-tab>
       <b-tab :title="`Komentari |${ukKomentari}|`" :active="queryTab">
+        <b-form-group v-if="ukKomentari > 0">
+          <b-form-radio-group
+            id="radio-group"
+            v-model="selected"
+            name="radio-sub-component"
+            size="sm"
+          >
+            <b-form-radio value="svi">Svi</b-form-radio>
+            <b-form-radio value="pozitivni">Pozitivni</b-form-radio>
+            <b-form-radio value="negativni">Negativni</b-form-radio>
+            <b-form-radio value="stariji">Stariji</b-form-radio>
+          </b-form-radio-group>
+        </b-form-group>
         <komentar
-          v-for="(card, idx) in profilKorisnika.komentari"
-          :key="idx.komentar"
+          v-for="(card, id) in sort"
+          :key="id.komentar"
           :korisnik="card.imePrezime"
           :ocjena="card.lajk"
           :komentar="card.komentar"
           :vrijeme="card.vrijeme"
-      /></b-tab>
+        />
+      </b-tab>
     </b-tabs>
   </b-container>
 </template>
@@ -105,6 +119,7 @@ export default {
       alertText: "",
       variant: "",
       lajkMetoda: {},
+      selected: "svi",
     };
   },
   methods: {
@@ -180,7 +195,27 @@ export default {
     queryTab() {
       return this.$route.query.tab ? true : false;
     },
+    sort() {
+      if (this.selected === "svi") {
+        return this.profilKorisnika.komentari?.sort(function (a, b) {
+          return b.vrijeme < a.vrijeme ? -1 : 1;
+        });
+      } else if (this.selected === "pozitivni") {
+        return this.profilKorisnika.komentari?.filter(
+          (row) => row.lajk === "true"
+        );
+      } else if (this.selected === "negativni") {
+        return this.profilKorisnika.komentari?.filter(
+          (row) => row.lajk === "false"
+        );
+      } else if (this.selected === "stariji") {
+        return this.profilKorisnika.komentari?.sort(function (a, b) {
+          return a.vrijeme < b.vrijeme ? -1 : 1;
+        });
+      }
+    },
   },
+
   mounted() {
     this.ucitaj();
   },
