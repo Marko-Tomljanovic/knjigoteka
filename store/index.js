@@ -2,6 +2,7 @@ export default {
   state() {
     return {
       userData: null,
+      userDataF: null,
       podKategorija: [],
       oglas: [],
       oznacenoO: false,
@@ -17,6 +18,9 @@ export default {
     },
     setUserData(state, payload) {
       state.userData = payload;
+    },
+    setUserDataF(state, payload) {
+      state.userDataF = payload;
     },
     setOglas(state, payload) {
       state.oglas = payload;

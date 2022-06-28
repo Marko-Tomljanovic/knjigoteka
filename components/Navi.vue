@@ -40,7 +40,18 @@
               to="/registracija"
               >Registracija</b-button
             >
-
+            <b-button
+              v-if="this.$store.state.userData"
+              variant="outline"
+              class="ml-1"
+              v-b-tooltip.hover
+              title="Nema novih poruka"
+              ><b-icon
+                :style="var1 ? 'color: #ffffff' : ''"
+                scale="1.6"
+                icon="envelope"
+              ></b-icon>
+            </b-button>
             <b-dropdown
               v-if="this.$store.state.userData"
               variant="outline"
@@ -51,7 +62,7 @@
               <template #button-content>
                 <b-icon
                   :class="var1 ? 'whiteN' : ''"
-                  class="ml-2 mr-1"
+                  class="mr-1"
                   icon="person-circle"
                   font-scale="2.4"
                   aria-hidden="true"
