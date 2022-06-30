@@ -42,6 +42,7 @@
             >
             <b-button
               v-if="this.$store.state.userData"
+              :to="`/profil/${this.$store.state.userData.uid}/poruke`"
               variant="outline"
               class="ml-1"
               v-b-tooltip.hover
