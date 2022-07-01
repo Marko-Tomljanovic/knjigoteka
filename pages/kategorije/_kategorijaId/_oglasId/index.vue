@@ -63,9 +63,9 @@
               variant="outline"
               style="border: solid 1px black; width: 2.8rem"
               >{{ $store.state.ukOmiljene }}</b-button
-            ><b-button class="ml-4 naviButton"
+            ><b-button v-b-modal.modal-prevent-closing  class="ml-4 naviButton"
               >Javi se prodavaču</b-button
-            ></b-col
+            ><modal-poruka  /></b-col
           > </b-row
         ><b-row>
           <b-col class="mt-4"
@@ -129,7 +129,7 @@
               class="rounded-circle bg-info p-2"
               variant="light"
             ></b-icon
-          ></b-button>
+          ></b-button>{{disableButton}}
         </div>
       </b-col>
     </b-row>
@@ -152,10 +152,11 @@ export default {
     return {
       podaci,
       whatsapp,
+      disableButton:false
     };
   },
   async asyncData({ app, store, params, redirect }) {
-    try {
+    try {     
       let ref = await app.$fire.firestore
         .collection("kategorije")
         .doc(params.kategorijaId)
