@@ -18,17 +18,20 @@ export default {
       podaci,
     };
   },
-  // async asyncData({ app, store }) {
-  //   try {
-  //     let userDoc = await app.$fire.firestore
-  //       .collection("kategorije")
-  //       .doc("podaci")
-  //       .get();
-  //     store.commit("setPodKategorija", userDoc.data().knjige);
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // },
+  async asyncData({ app, store }) {
+    if (store.state.podKategorija.length === 0) {
+      console.log("ucitano");
+      try {
+        let userDoc = await app.$fire.firestore
+          .collection("kategorije")
+          .doc("podaci")
+          .get();
+        store.commit("setPodKategorija", userDoc.data().knjige);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  },
 };
 </script>
 
