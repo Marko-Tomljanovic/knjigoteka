@@ -7,6 +7,7 @@ export default {
       oglas: [],
       oznacenoO: false,
       ukOmiljene: 0,
+      poruke: null
      };
   },
 
@@ -33,6 +34,9 @@ export default {
     },
     setPodKategorija(state, payload) {
       state.podKategorija = payload;
+    },
+    setPoruke(state, payload) {
+      state.poruke = payload;
     },
   },
   actions: {

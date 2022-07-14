@@ -102,10 +102,9 @@ export default {
             .doc(this.$store.state.userData.uid)
             .collection("poruke")
             .doc("sve");
-
           const marko = this.$fireModule.firestore.FieldValue;
-          ref.set({
-            [this.$store.state.oglas.idKorisnika]: marko.arrayUnion({
+          ref.update({
+            [this.$store.state.oglas.imePrezime]: marko.arrayUnion({
               idKorisnika: this.$store.state.oglas.idKorisnika,
               ime: this.$store.state.oglas.imePrezime,
               poruka: this.poruka,

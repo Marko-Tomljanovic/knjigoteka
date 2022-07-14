@@ -75,6 +75,17 @@ export default {
                   mjesto: this.form.mjesto,
                 })
                 .then(() => {
+                  this.$fire.firestore
+                    .collection("users")
+                    .doc(user.user._delegate.uid)
+                    .collection("poruke")
+                    .doc("sve")
+                    .set({ id: user.user._delegate.uid });
+                })
+                .catch((e) => {
+                  console.log(e);
+                })
+                .then(() => {
                   location.reload();
                 })
                 .catch((e) => {

@@ -63,7 +63,7 @@
               variant="outline"
               style="border: solid 1px black; width: 2.8rem"
               >{{ $store.state.ukOmiljene }}</b-button
-            ><b-button v-b-modal.modal-prevent-closing  class="ml-4 naviButton"
+            ><b-button v-if="!buttonMojOglas" v-b-modal.modal-prevent-closing  class="ml-4 naviButton"
               >Javi se prodavaču</b-button
             ><modal-poruka  /></b-col
           > </b-row
@@ -129,7 +129,7 @@
               class="rounded-circle bg-info p-2"
               variant="light"
             ></b-icon
-          ></b-button>{{disableButton}}
+          ></b-button>
         </div>
       </b-col>
     </b-row>
@@ -152,7 +152,6 @@ export default {
     return {
       podaci,
       whatsapp,
-      disableButton:false
     };
   },
   async asyncData({ app, store, params, redirect }) {
@@ -271,6 +270,9 @@ export default {
         this.$store.state.userData?.uid === this.$store.state.oglas?.idKorisnika
       );
     },
+    buttonMojOglas(){
+      return this.$store.state.userData?.uid === this.$store.state.oglas?.idKorisnika
+    }
   },
 };
 </script>

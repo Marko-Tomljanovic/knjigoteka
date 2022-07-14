@@ -7,13 +7,12 @@
       <b-card no-body>
         <b-tabs pills card vertical nav-wrapper-class="w-90">
           <poruka
-            v-for="(card, idx) in $store.state.userDataF.poruke.Luka"
+            v-for="(card, idx) in $store.state.poruke"
             :key="idx.ime"
-            :ime="card.ime"
-            :poruka="card.poruka"
+            :ime="idx"
+            :poruka="card"
           />
         </b-tabs>
-        <b-button @click="put">ucitaj</b-button>
       </b-card>
     </div>
   </b-container>
@@ -22,13 +21,7 @@
 <script>
 export default {
   data() {
-    return {
-      obj: [
-        { ime: "markoss", poruka: "poruka jedan" },
-        { ime: "filp", poruka: "poruka dva" },
-        { ime: "martina", poruka: "poruka tri" },
-      ],
-    };
+    return {};
   },
   async asyncData({ store, app }) {
     try {
@@ -36,31 +29,19 @@ export default {
         .collection("users")
         .doc(store.state.userData.uid)
         .get();
+      const poruke = await app.$fire.firestore
+        .collection("users")
+        .doc(store.state.userData.uid)
+        .collection("poruke")
+        .doc("sve")
+        .get();
       store.commit("setUserDataF", us.data());
+      store.commit("setPoruke", poruke.data());
     } catch (e) {
       console.log(e);
     }
   },
-  methods: {
-    async put() {
-      try {
-        await this.$fire.firestore
-          .collection("users")
-          .doc(this.$store.state.userData.uid)
-          .update({
-            poruke: {
-              Luka: this.$fireModule.firestore.FieldValue.arrayUnion({
-                idKorisnika: "naci",
-                ime: "markoss",
-                poruka: "poruka jedan",
-              }),
-            },
-          });
-      } catch (e) {
-        console.log(e);
-      }
-    },
-  },
+  methods: {},
   computed: {
     ukPoruke() {
       return "0";
