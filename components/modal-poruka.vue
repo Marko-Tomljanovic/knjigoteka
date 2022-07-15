@@ -14,7 +14,7 @@
     >
       <template #modal-title>
         <b-icon class="mr-2" icon="chat-right-dots" scale="1.5"></b-icon>
-        Poruku prima {{ $store.state.userDataF.imePrezime }}
+        Poruku prima {{ $store.state.oglas.imePrezime }}
       </template>
       <form ref="form" @submit.stop.prevent="handleSubmit">
         <b-form-group
@@ -102,9 +102,22 @@ export default {
             .doc(this.$store.state.userData.uid)
             .collection("poruke")
             .doc("sve");
+          const refK = await this.$fire.firestore
+            .collection("users")
+            .doc(this.$store.state.oglas.idKorisnika)
+            .collection("poruke")
+            .doc("sve");
           const marko = this.$fireModule.firestore.FieldValue;
           ref.update({
             [this.$store.state.oglas.imePrezime]: marko.arrayUnion({
+              idKorisnika: this.$store.state.oglas.idKorisnika,
+              ime: this.$store.state.oglas.imePrezime,
+              poruka: this.poruka,
+              vrijeme: Date.now(),
+            }),
+          });
+          refK.update({
+            [this.$store.state.userDataF.imePrezime]: marko.arrayUnion({
               idKorisnika: this.$store.state.oglas.idKorisnika,
               ime: this.$store.state.oglas.imePrezime,
               poruka: this.poruka,
