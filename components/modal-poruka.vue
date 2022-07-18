@@ -110,16 +110,16 @@ export default {
           const marko = this.$fireModule.firestore.FieldValue;
           ref.update({
             [this.$store.state.oglas.imePrezime]: marko.arrayUnion({
-              idKorisnika: this.$store.state.oglas.idKorisnika,
-              ime: this.$store.state.oglas.imePrezime,
+              idKorisnika: this.$store.state.userData.uid,
+              ime: this.$store.state.userDataF.imePrezime,
               poruka: this.poruka,
               vrijeme: Date.now(),
             }),
           });
           refK.update({
             [this.$store.state.userDataF.imePrezime]: marko.arrayUnion({
-              idKorisnika: this.$store.state.oglas.idKorisnika,
-              ime: this.$store.state.oglas.imePrezime,
+              idKorisnika: this.$store.state.userData.uid,
+              ime: this.$store.state.userDataF.imePrezime,
               poruka: this.poruka,
               vrijeme: Date.now(),
             }),

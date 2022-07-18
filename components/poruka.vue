@@ -16,7 +16,11 @@
           >
           <br />{{ card.poruka }}
         </p>
-      </b-card-text></b-tab
+      </b-card-text>
+      <b-input></b-input
+      ><b-button @click="$emit('posaljiPoruku', '1aosidjoasid')"
+        >Posalji</b-button
+      ></b-tab
     >
   </div>
 </template>
@@ -25,9 +29,11 @@
 export default {
   name: "poruka",
   props: ["ime", "poruka"],
+  emits: ["posaljiPoruku"],
   data() {
     return {};
   },
+  methods: {},
 };
 </script>
 
@@ -39,8 +45,8 @@ export default {
   padding: 0.8rem;
 }
 .colorPorukaJ {
-  background-color: rgb(181, 219, 255);
+  background-color: rgb(232, 244, 255);
   border-radius: 5rem;
-  padding: 0.8rem;
+  padding: 0.85rem;
 }
 </style>
