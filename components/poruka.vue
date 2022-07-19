@@ -17,11 +17,26 @@
           <br />{{ card.poruka }}
         </p>
       </b-card-text>
-      <b-input></b-input
-      ><b-button @click="$emit('posaljiPoruku', '1aosidjoasid')"
-        >Posalji</b-button
-      ></b-tab
-    >
+      <b-input class="rounded-pill" v-model="porukaChild"></b-input
+      ><b-button
+        class="naviButton mt-3"
+        @click="
+          $emit(
+            'posaljiPoruku',
+            filterPrimateljId,
+            filterPrimateljIme,
+            porukaChild
+          );
+          clearInput();
+        "
+        >Pošalji
+        <b-spinner
+          v-if="showSpinner"
+          class="ml-2"
+          small
+          type="grow"
+        ></b-spinner></b-button
+    ></b-tab>
   </div>
 </template>
 
@@ -31,9 +46,47 @@ export default {
   props: ["ime", "poruka"],
   emits: ["posaljiPoruku"],
   data() {
-    return {};
+    return {
+      porukaChild: "",
+      showSpinner: false,
+    };
   },
-  methods: {},
+  methods: {
+    clearInput() {
+      this.showSpinner = true;
+      setTimeout(() => {
+        this.porukaChild = "";
+        this.showSpinner = false;
+      }, "700");
+    },
+  },
+  computed: {
+    filterPrimateljId() {
+      let findId = this.poruka.find(
+        (x) => x.idKorisnika === this.$store.state.userData?.uid
+      )?.idPrimatelj;
+      if (findId) {
+        return findId;
+      } else {
+        return this.poruka.find(
+          (x) => x.idKorisnika != this.$store.state.userData?.uid
+        ).idKorisnika;
+      }
+    },
+
+    filterPrimateljIme() {
+      let findIme = this.poruka.find(
+        (x) => x.idKorisnika === this.$store.state.userData?.uid
+      )?.imePrimatelja;
+      if (findIme) {
+        return findIme;
+      } else {
+        return this.poruka.find(
+          (x) => x.idKorisnika != this.$store.state.userData?.uid
+        ).ime;
+      }
+    },
+  },
 };
 </script>
 
@@ -48,5 +101,14 @@ export default {
   background-color: rgb(232, 244, 255);
   border-radius: 5rem;
   padding: 0.85rem;
+}
+.naviButton {
+  height: 25px;
+  background: rgb(0, 0, 0);
+  border-color: rgb(0, 0, 0);
+  padding-bottom: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

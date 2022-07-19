@@ -111,7 +111,9 @@ export default {
           ref.update({
             [this.$store.state.oglas.imePrezime]: marko.arrayUnion({
               idKorisnika: this.$store.state.userData.uid,
+              idPrimatelj: this.$store.state.oglas.idKorisnika,
               ime: this.$store.state.userDataF.imePrezime,
+              imePrimatelja: this.$store.state.oglas.imePrezime,
               poruka: this.poruka,
               vrijeme: Date.now(),
             }),
@@ -119,7 +121,9 @@ export default {
           refK.update({
             [this.$store.state.userDataF.imePrezime]: marko.arrayUnion({
               idKorisnika: this.$store.state.userData.uid,
+              idPrimatelj: this.$store.state.oglas.idKorisnika,
               ime: this.$store.state.userDataF.imePrezime,
+              imePrimatelja: this.$store.state.oglas.imePrezime,
               poruka: this.poruka,
               vrijeme: Date.now(),
             }),

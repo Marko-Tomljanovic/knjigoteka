@@ -11,11 +11,15 @@
             :key="index.ime"
             :ime="index"
             :poruka="card"
-            @posaljiPoruku="(a) => posaljiPoruku(a)"
+            @posaljiPoruku="
+              (primateljId, imePrimatelja, porukaChild) =>
+                posaljiPoruku(primateljId, imePrimatelja, porukaChild)
+            "
           />
         </b-tabs>
       </b-card>
     </div>
+    {{ $store.state.poruke }}
   </b-container>
 </template>
 
@@ -38,47 +42,75 @@ export default {
         .get();
       store.commit("setUserDataF", us.data());
       store.commit("setPoruke", poruke.data());
+      store.dispatch("callSortPoruke");
     } catch (e) {
       console.log(e);
     }
   },
   methods: {
-    async posaljiPoruku(primatelj) {
+    async posaljiPoruku(primateljId, imePrimatelja, porukaChild) {
       if (this.$store.state.userData) {
-        console.log("primatelj = " + primatelj);
-        // try {
-        //   const ref = await this.$fire.firestore
-        //     .collection("users")
-        //     .doc(this.$store.state.userData.uid)
-        //     .collection("poruke")
-        //     .doc("sve");
-        //   const refK = await this.$fire.firestore
-        //     .collection("users")
-        //     .doc(this.$store.state.oglas.idKorisnika)
-        //     .collection("poruke")
-        //     .doc("sve");
-        //   const marko = this.$fireModule.firestore.FieldValue;
-        //   ref.update({
-        //     [this.$store.state.oglas.imePrezime]: marko.arrayUnion({
-        //       idKorisnika: this.$store.state.userData.uid,
-        //       ime: this.$store.state.userDataF.imePrezime,
-        //       poruka: this.poruka,
-        //       vrijeme: Date.now(),
-        //     }),
-        //   });
-        //   refK.update({
-        //     [this.$store.state.userDataF.imePrezime]: marko.arrayUnion({
-        //       idKorisnika: this.$store.state.userData.uid,
-        //       ime: this.$store.state.userDataF.imePrezime,
-        //       poruka: this.poruka,
-        //       vrijeme: Date.now(),
-        //     }),
-        //   });
-        // } catch (e) {
-        //   console.log(e);
-        // }
+        try {
+          const ref = await this.$fire.firestore
+            .collection("users")
+            .doc(this.$store.state.userData.uid)
+            .collection("poruke")
+            .doc("sve");
+          const refK = await this.$fire.firestore
+            .collection("users")
+            .doc(primateljId)
+            .collection("poruke")
+            .doc("sve");
+          const marko = this.$fireModule.firestore.FieldValue;
+          ref.update({
+            [imePrimatelja]: marko.arrayUnion({
+              idKorisnika: this.$store.state.userData.uid,
+              ime: this.$store.state.userDataF.imePrezime,
+              poruka: porukaChild,
+              vrijeme: Date.now(),
+            }),
+          });
+          refK
+            .update({
+              [this.$store.state.userDataF.imePrezime]: marko.arrayUnion({
+                idKorisnika: this.$store.state.userData.uid,
+                ime: this.$store.state.userDataF.imePrezime,
+                poruka: porukaChild,
+                vrijeme: Date.now(),
+              }),
+            })
+            .then(() => {
+              setTimeout(() => {
+                this.ucitaj();
+              }, "700");
+            })
+            .catch((e) => {
+              console.log(e);
+            });
+        } catch (e) {
+          console.log(e);
+        }
       } else {
         alert("Prijavi se za lajk!");
+      }
+    },
+    async ucitaj() {
+      try {
+        const us = await this.$fire.firestore
+          .collection("users")
+          .doc(this.$store.state.userData.uid)
+          .get();
+        const poruke = await this.$fire.firestore
+          .collection("users")
+          .doc(this.$store.state.userData.uid)
+          .collection("poruke")
+          .doc("sve")
+          .get();
+        this.$store.commit("setUserDataF", us.data());
+        this.$store.commit("setPoruke", poruke.data());
+        this.store.dispatch("callSortPoruke");
+      } catch (e) {
+        console.log(e);
       }
     },
   },

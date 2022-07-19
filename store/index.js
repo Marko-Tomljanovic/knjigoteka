@@ -38,6 +38,9 @@ export default {
     setPoruke(state, payload) {
       state.poruke = payload;
     },
+    sortPoruke(state){
+      state.poruke = state.poruke.sort()
+    }
   },
   actions: {
     onAuthStateChangedAction: ({ commit }, { authUser }) => {
@@ -52,5 +55,9 @@ export default {
         }
       }
     },
+    callSortPoruke({commit}){
+      console.log("marko");
+      commit("sortPoruke")
+    }
   },
 };
