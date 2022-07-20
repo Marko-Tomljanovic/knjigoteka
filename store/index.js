@@ -7,7 +7,7 @@ export default {
       oglas: [],
       oznacenoO: false,
       ukOmiljene: 0,
-      poruke: null
+      poruke: null,
      };
   },
 
@@ -38,9 +38,21 @@ export default {
     setPoruke(state, payload) {
       state.poruke = payload;
     },
-    sortPoruke(state){
-      state.poruke = state.poruke.sort()
-    }
+    sortPoruke(state) {
+      console.log('running mutation');
+      const jobs = this.state.poruke;
+      jobs.sort((a, b) => {
+          let compare = 0;
+          if (a["vrijeme"] > b["vrijeme"]) {
+              compare = 1;
+          } else if (b["vrijeme"] > a["vrijeme"]) {
+              compare = -1;
+          }
+          return compare;
+      });
+      state.poruke = jobs;
+  }
+
   },
   actions: {
     onAuthStateChangedAction: ({ commit }, { authUser }) => {

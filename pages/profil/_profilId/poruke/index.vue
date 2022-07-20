@@ -19,7 +19,6 @@
         </b-tabs>
       </b-card>
     </div>
-    {{ $store.state.poruke }}
   </b-container>
 </template>
 
