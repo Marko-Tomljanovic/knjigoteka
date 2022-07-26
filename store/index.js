@@ -36,24 +36,16 @@ export default {
       state.podKategorija = payload;
     },
     setPoruke(state, payload) {
-      state.poruke = payload;
-    },
-    sortPoruke(state) {
-      console.log('running mutation');
-      const jobs = this.state.poruke;
-      jobs.sort((a, b) => {
-          let compare = 0;
-          if (a["vrijeme"] > b["vrijeme"]) {
-              compare = 1;
-          } else if (b["vrijeme"] > a["vrijeme"]) {
-              compare = -1;
-          }
-          return compare;
+      var myArray = Object.entries(payload)
+      myArray = myArray.sort((a, b) => {
+        if (a[0] < b[0]) return -1;
+        if (a[0] > b[0]) return 1;
+        return 0;
       });
-      state.poruke = jobs;
-  }
-
+      state.poruke = myArray;
+    },
   },
+  
   actions: {
     onAuthStateChangedAction: ({ commit }, { authUser }) => {
       if (!authUser) {
@@ -68,7 +60,7 @@ export default {
       }
     },
     callSortPoruke({commit}){
-      console.log("marko");
+      
       commit("sortPoruke")
     }
   },

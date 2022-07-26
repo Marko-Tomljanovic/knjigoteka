@@ -1,8 +1,9 @@
 <template>
   <div>
+    {{ filterPrimateljId }}
     <b-tab :title="ime" active
-      ><b-card-text
-        ><p
+      ><b-card-text>
+        <p
           v-for="(card, idx) in poruka"
           :key="idx"
           :class="
@@ -57,7 +58,7 @@ export default {
       setTimeout(() => {
         this.porukaChild = "";
         this.showSpinner = false;
-      }, "700");
+      }, "750");
     },
   },
   computed: {

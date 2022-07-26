@@ -8,9 +8,9 @@
         <b-tabs pills card vertical nav-wrapper-class="w-90">
           <poruka
             v-for="(card, index) in $store.state.poruke"
-            :key="index.ime"
-            :ime="index"
-            :poruka="card"
+            :key="card[1].vrijeme"
+            :ime="card[0]"
+            :poruka="card[1]"
             @posaljiPoruku="
               (primateljId, imePrimatelja, porukaChild) =>
                 posaljiPoruku(primateljId, imePrimatelja, porukaChild)
