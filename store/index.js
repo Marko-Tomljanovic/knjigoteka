@@ -7,6 +7,7 @@ export default {
       oglas: [],
       oznacenoO: false,
       ukOmiljene: 0,
+      poruke: null,
      };
   },
 
@@ -34,7 +35,17 @@ export default {
     setPodKategorija(state, payload) {
       state.podKategorija = payload;
     },
+    setPoruke(state, payload) {
+      var myArray = Object.entries(payload)
+      myArray = myArray.sort((a, b) => {
+        if (a[0] < b[0]) return -1;
+        if (a[0] > b[0]) return 1;
+        return 0;
+      });
+      state.poruke = myArray;
+    },
   },
+  
   actions: {
     onAuthStateChangedAction: ({ commit }, { authUser }) => {
       if (!authUser) {
@@ -48,5 +59,9 @@ export default {
         }
       }
     },
+    callSortPoruke({commit}){
+      
+      commit("sortPoruke")
+    }
   },
 };
