@@ -5,7 +5,22 @@
     >
     <div>
       <b-card no-body>
-        <b-tabs pills card vertical nav-wrapper-class="w-90">
+        <b-tabs
+          pills="true"
+          card
+          vertical
+          nav-wrapper-class="w-90"
+          active-nav-item-class="bg-dark"
+        >
+          <b-tab title="INFO INBOX"
+            ><b-card-text
+              ><p v-if="novePorukeInfo">
+                Imate nove poruke od
+                {{ neprocitaneKorisnici }}
+              </p>
+              <p v-else>Nemate novih poruka</p></b-card-text
+            ></b-tab
+          >
           <poruka
             v-for="(card, index) in $store.state.poruke"
             :key="card[1].vrijeme"
@@ -41,11 +56,11 @@ export default {
         .get();
       store.commit("setUserDataF", us.data());
       store.commit("setPoruke", poruke.data());
-      store.dispatch("callSortPoruke");
     } catch (e) {
       console.log(e);
     }
   },
+
   methods: {
     async posaljiPoruku(primateljId, imePrimatelja, porukaChild) {
       if (this.$store.state.userData) {
@@ -60,6 +75,9 @@ export default {
             .doc(primateljId)
             .collection("poruke")
             .doc("sve");
+          const refKNotifikacija = await this.$fire.firestore
+            .collection("users")
+            .doc(primateljId);
           const marko = this.$fireModule.firestore.FieldValue;
           ref.update({
             [imePrimatelja]: marko.arrayUnion({
@@ -69,14 +87,19 @@ export default {
               vrijeme: Date.now(),
             }),
           });
-          refK
+          refK.update({
+            [this.$store.state.userDataF.imePrezime]: marko.arrayUnion({
+              idKorisnika: this.$store.state.userData.uid,
+              ime: this.$store.state.userDataF.imePrezime,
+              poruka: porukaChild,
+              vrijeme: Date.now(),
+            }),
+          });
+          refKNotifikacija
             .update({
-              [this.$store.state.userDataF.imePrezime]: marko.arrayUnion({
-                idKorisnika: this.$store.state.userData.uid,
-                ime: this.$store.state.userDataF.imePrezime,
-                poruka: porukaChild,
-                vrijeme: Date.now(),
-              }),
+              notifikacija: marko.arrayUnion(
+                this.$store.state.userDataF.imePrezime
+              ),
             })
             .then(() => {
               setTimeout(() => {
@@ -95,19 +118,18 @@ export default {
     },
     async ucitaj() {
       try {
-        const us = await this.$fire.firestore
-          .collection("users")
-          .doc(this.$store.state.userData.uid)
-          .get();
+        // const us = await this.$fire.firestore
+        //   .collection("users")
+        //   .doc(this.$store.state.userData.uid)
+        //   .get();
         const poruke = await this.$fire.firestore
           .collection("users")
           .doc(this.$store.state.userData.uid)
           .collection("poruke")
           .doc("sve")
           .get();
-        this.$store.commit("setUserDataF", us.data());
+        // this.$store.commit("setUserDataF", us.data());
         this.$store.commit("setPoruke", poruke.data());
-        this.store.dispatch("callSortPoruke");
       } catch (e) {
         console.log(e);
       }
@@ -116,7 +138,15 @@ export default {
 
   computed: {
     ukPoruke() {
-      return "0";
+      return this.$store.state.userDataF?.notifikacija
+        ? this.$store.state.userDataF?.notifikacija.length
+        : "0";
+    },
+    novePorukeInfo() {
+      return this.$store.state.userDataF?.notifikacija.length > 0;
+    },
+    neprocitaneKorisnici() {
+      return this.$store.state.userDataF?.notifikacija.toString();
     },
   },
 };

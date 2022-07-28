@@ -107,6 +107,10 @@ export default {
             .doc(this.$store.state.oglas.idKorisnika)
             .collection("poruke")
             .doc("sve");
+          const refKNotifikacija = await this.$fire.firestore
+            .collection("users")
+            .doc(this.$store.state.oglas.idKorisnika);
+
           const marko = this.$fireModule.firestore.FieldValue;
           ref.update({
             [this.$store.state.oglas.imePrezime]: marko.arrayUnion({
@@ -127,6 +131,11 @@ export default {
               poruka: this.poruka,
               vrijeme: Date.now(),
             }),
+          });
+          refKNotifikacija.update({
+            notifikacija: marko.arrayUnion(
+              this.$store.state.userDataF.imePrezime
+            ),
           });
         } catch (e) {
           console.log(e);

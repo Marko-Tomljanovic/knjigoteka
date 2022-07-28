@@ -1,7 +1,7 @@
 <template>
   <span
     v-b-tooltip.hover.v-primary
-    :title="lajkanox ? 'Već ste ocijenili korniska' : ''"
+    :title="lajkanox ? 'Već ste ocijenili korisnika' : ''"
   >
     <b-button
       class="naviButton mx-auto mt-1"

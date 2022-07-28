@@ -43,16 +43,26 @@
             <b-button
               v-if="this.$store.state.userData"
               :to="`/profil/${this.$store.state.userData.uid}/poruke`"
+              id="porukeN"
               variant="outline"
               class="ml-1"
-              v-b-tooltip.hover
-              title="Nema novih poruka"
               ><b-icon
                 :style="var1 ? 'color: #ffffff' : ''"
                 scale="1.6"
-                icon="envelope"
-              ></b-icon>
-            </b-button>
+                :icon="notPor ? 'envelope' : 'envelope-open'"
+              ></b-icon
+              ><b-badge v-if="notPor" pill variant="danger">{{
+                notifikacijaCall.length
+              }}</b-badge> </b-button
+            ><b-tooltip
+              target="porukeN"
+              :variant="notPor ? 'primary' : ''"
+              :title="
+                notPor
+                  ? 'Nove poruke od ' + notifikacijaCall
+                  : 'Nema novih poruka'
+              "
+            ></b-tooltip>
             <b-dropdown
               v-if="this.$store.state.userData"
               variant="outline"
@@ -134,6 +144,14 @@ export default {
   computed: {
     var1() {
       return this.$route.name.includes("index");
+    },
+    notPor() {
+      return this.$store.state.userDataF?.notifikacija.length > 0
+        ? true
+        : false;
+    },
+    notifikacijaCall() {
+      return this.$store.state.userDataF?.notifikacija;
     },
   },
 };

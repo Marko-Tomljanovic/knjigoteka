@@ -1,7 +1,6 @@
 <template>
   <div>
-    {{ filterPrimateljId }}
-    <b-tab :title="ime" active
+    <b-tab :title="ime" @click="removeNotifikacija(ime)"
       ><b-card-text>
         <p
           v-for="(card, idx) in poruka"
@@ -31,13 +30,9 @@
           clearInput();
         "
         >Pošalji
-        <b-spinner
-          v-if="showSpinner"
-          class="ml-2"
-          small
-          type="grow"
-        ></b-spinner></b-button
-    ></b-tab>
+        <b-spinner v-if="showSpinner" class="ml-2" small type="grow"></b-spinner
+      ></b-button>
+    </b-tab>
   </div>
 </template>
 
@@ -59,6 +54,27 @@ export default {
         this.porukaChild = "";
         this.showSpinner = false;
       }, "750");
+    },
+    async removeNotifikacija(ime) {
+      if (this.$store.state.userDataF.notifikacija.includes(ime)) {
+        try {
+          const ref = await this.$fire.firestore
+            .collection("users")
+            .doc(this.$store.state.userData.uid);
+          ref.update({
+            notifikacija:
+              this.$fireModule.firestore.FieldValue.arrayRemove(ime),
+          });
+          const refGet = await this.$fire.firestore
+            .collection("users")
+            .doc(this.$store.state.userData.uid)
+            .get();
+
+          this.$store.commit("setUserDataF", refGet.data());
+        } catch (e) {
+          console.log(e);
+        }
+      }
     },
   },
   computed: {
