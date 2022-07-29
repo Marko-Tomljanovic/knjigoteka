@@ -37,11 +37,18 @@ export default {
     },
     setPoruke(state, payload) {
       var myArray = Object.entries(payload)
+      // myArray = myArray.sort((a, b) => {
+      //   if (a[0] < b[0]) return -1;
+      //   if (a[0] > b[0]) return 1;
+      //   return 0;
+      // });
       myArray = myArray.sort((a, b) => {
-        if (a[0] < b[0]) return -1;
-        if (a[0] > b[0]) return 1;
-        return 0;
-      });
+        const indexA = a[1].length - 1
+        const indexB = b[1].length - 1
+       if (a[1][indexA].vrijeme > b[1][indexB].vrijeme) return -1;
+       if (a[1][indexA].vrijeme < b[1][indexB].vrijeme) return 1;
+       return 0;
+      })
       state.poruke = myArray;
     },
   },

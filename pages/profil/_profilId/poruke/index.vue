@@ -6,7 +6,9 @@
     <div>
       <b-card no-body>
         <b-tabs
-          pills="true"
+          v-model="tabIndex"
+          pills
+          lazy
           card
           vertical
           nav-wrapper-class="w-90"
@@ -40,7 +42,7 @@
 <script>
 export default {
   data() {
-    return {};
+    return { tabIndex: 0 };
   },
   async asyncData({ store, app }) {
     try {
@@ -63,57 +65,62 @@ export default {
 
   methods: {
     async posaljiPoruku(primateljId, imePrimatelja, porukaChild) {
-      if (this.$store.state.userData) {
-        try {
-          const ref = await this.$fire.firestore
-            .collection("users")
-            .doc(this.$store.state.userData.uid)
-            .collection("poruke")
-            .doc("sve");
-          const refK = await this.$fire.firestore
-            .collection("users")
-            .doc(primateljId)
-            .collection("poruke")
-            .doc("sve");
-          const refKNotifikacija = await this.$fire.firestore
-            .collection("users")
-            .doc(primateljId);
-          const marko = this.$fireModule.firestore.FieldValue;
-          ref.update({
-            [imePrimatelja]: marko.arrayUnion({
-              idKorisnika: this.$store.state.userData.uid,
-              ime: this.$store.state.userDataF.imePrezime,
-              poruka: porukaChild,
-              vrijeme: Date.now(),
-            }),
-          });
-          refK.update({
-            [this.$store.state.userDataF.imePrezime]: marko.arrayUnion({
-              idKorisnika: this.$store.state.userData.uid,
-              ime: this.$store.state.userDataF.imePrezime,
-              poruka: porukaChild,
-              vrijeme: Date.now(),
-            }),
-          });
-          refKNotifikacija
-            .update({
-              notifikacija: marko.arrayUnion(
-                this.$store.state.userDataF.imePrezime
-              ),
-            })
-            .then(() => {
-              setTimeout(() => {
-                this.ucitaj();
-              }, "700");
-            })
-            .catch((e) => {
-              console.log(e);
-            });
-        } catch (e) {
-          console.log(e);
-        }
+      if (!porukaChild) {
+        alert("Upisati poruku!");
       } else {
-        alert("Prijavi se za lajk!");
+        if (this.$store.state.userData) {
+          try {
+            const ref = await this.$fire.firestore
+              .collection("users")
+              .doc(this.$store.state.userData.uid)
+              .collection("poruke")
+              .doc("sve");
+            const refK = await this.$fire.firestore
+              .collection("users")
+              .doc(primateljId)
+              .collection("poruke")
+              .doc("sve");
+            const refKNotifikacija = await this.$fire.firestore
+              .collection("users")
+              .doc(primateljId);
+            const marko = this.$fireModule.firestore.FieldValue;
+            ref.update({
+              [imePrimatelja]: marko.arrayUnion({
+                idKorisnika: this.$store.state.userData.uid,
+                ime: this.$store.state.userDataF.imePrezime,
+                poruka: porukaChild,
+                vrijeme: Date.now(),
+              }),
+            });
+            refK.update({
+              [this.$store.state.userDataF.imePrezime]: marko.arrayUnion({
+                idKorisnika: this.$store.state.userData.uid,
+                ime: this.$store.state.userDataF.imePrezime,
+                poruka: porukaChild,
+                vrijeme: Date.now(),
+              }),
+            });
+            refKNotifikacija
+              .update({
+                notifikacija: marko.arrayUnion(
+                  this.$store.state.userDataF.imePrezime
+                ),
+              })
+              .then(() => {
+                setTimeout(() => {
+                  this.tabIndex = 1;
+                  this.ucitaj();
+                }, "700");
+              })
+              .catch((e) => {
+                console.log(e);
+              });
+          } catch (e) {
+            console.log(e);
+          }
+        } else {
+          alert("Prijavi se za lajk!");
+        }
       }
     },
     async ucitaj() {
@@ -143,7 +150,7 @@ export default {
         : "0";
     },
     novePorukeInfo() {
-      return this.$store.state.userDataF?.notifikacija.length > 0;
+      return this.$store.state.userDataF?.notifikacija?.length > 0;
     },
     neprocitaneKorisnici() {
       return this.$store.state.userDataF?.notifikacija.toString();

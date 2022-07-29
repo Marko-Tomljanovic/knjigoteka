@@ -1,6 +1,9 @@
 <template>
   <div>
-    <b-tab :title="ime" @click="removeNotifikacija(ime)"
+    <b-tab
+      :title="ime"
+      @click="removeNotifikacija(ime)"
+      :title-link-class="classNovaPoruka ? 'text-warning' : ''"
       ><b-card-text>
         <p
           v-for="(card, idx) in poruka"
@@ -17,7 +20,19 @@
           <br />{{ card.poruka }}
         </p>
       </b-card-text>
-      <b-input class="rounded-pill" v-model="porukaChild"></b-input
+      <b-input
+        @keyup.enter="
+          $emit(
+            'posaljiPoruku',
+            filterPrimateljId,
+            filterPrimateljIme,
+            porukaChild
+          );
+          clearInput();
+        "
+        class="rounded-pill"
+        v-model="porukaChild"
+      ></b-input
       ><b-button
         class="naviButton mt-3"
         @click="
@@ -56,7 +71,7 @@ export default {
       }, "750");
     },
     async removeNotifikacija(ime) {
-      if (this.$store.state.userDataF.notifikacija.includes(ime)) {
+      if (this.classNovaPoruka) {
         try {
           const ref = await this.$fire.firestore
             .collection("users")
@@ -102,6 +117,9 @@ export default {
           (x) => x.idKorisnika != this.$store.state.userData?.uid
         ).ime;
       }
+    },
+    classNovaPoruka() {
+      return this.$store.state.userDataF.notifikacija?.includes(this.ime);
     },
   },
 };

@@ -46,6 +46,7 @@
               id="porukeN"
               variant="outline"
               class="ml-1"
+              style="margin-right: -0.4rem"
               ><b-icon
                 :style="var1 ? 'color: #ffffff' : ''"
                 scale="1.6"
@@ -146,7 +147,7 @@ export default {
       return this.$route.name.includes("index");
     },
     notPor() {
-      return this.$store.state.userDataF?.notifikacija.length > 0
+      return this.$store.state.userDataF?.notifikacija?.length > 0
         ? true
         : false;
     },

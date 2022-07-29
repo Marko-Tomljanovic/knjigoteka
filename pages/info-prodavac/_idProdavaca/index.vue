@@ -3,7 +3,7 @@
     <b-row align-h="center">
       <div
         class="border"
-        style="width: 61rem; height: 16rem; margin-top: 3.2rem"
+        style="width: 61rem; height: 17.4rem; margin-top: 3.2rem"
       >
         <b-row>
           <b-col cols="4" class="text-center">
@@ -26,8 +26,13 @@
               <b-icon variant="dark" class="mr-2" icon="geo-alt-fill"></b-icon
               >{{ profilKorisnika.mjesto }}
             </p>
+            <h6 style="font-size: 15px; margin-top: -0.5rem" class="text-muted">
+              <b-icon variant="dark" class="mr-2" icon="clock-history"></b-icon
+              >Korisnik od:
+              {{ $moment(vrijemeKreiranjaKorisnika).format("ll") }}
+            </h6>
 
-            <div style="margin-top: -0.65rem">
+            <div>
               <b-button
                 disabled
                 class="mr-1"
@@ -213,6 +218,9 @@ export default {
           return a.vrijeme < b.vrijeme ? -1 : 1;
         });
       }
+    },
+    vrijemeKreiranjaKorisnika() {
+      return parseInt(this.profilKorisnika.createdAt);
     },
   },
 

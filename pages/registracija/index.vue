@@ -73,14 +73,20 @@ export default {
                   imePrezime: this.form.imePrezime,
                   mobitel: this.form.mobitel,
                   mjesto: this.form.mjesto,
-                })
+                });
+              this.$fire.firestore
+                .collection("users")
+                .doc(user.user._delegate.uid)
+                .collection("poruke")
+                .doc("sve")
+                .set({})
                 .then(() => {
                   this.$fire.firestore
                     .collection("users")
                     .doc(user.user._delegate.uid)
-                    .collection("poruke")
-                    .doc("sve")
-                    .set({ id: user.user._delegate.uid });
+                    .update({
+                      createdAt: this.$store.state.userData.createdAt,
+                    });
                 })
                 .catch((e) => {
                   console.log(e);
