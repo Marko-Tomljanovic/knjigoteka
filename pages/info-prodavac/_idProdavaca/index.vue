@@ -3,7 +3,7 @@
     <b-row align-h="center">
       <div
         class="border"
-        style="width: 61rem; height: 17.4rem; margin-top: 3.2rem"
+        style="width: 61rem; height: 17.7rem; margin-top: 3.2rem"
       >
         <b-row>
           <b-col cols="4" class="text-center">

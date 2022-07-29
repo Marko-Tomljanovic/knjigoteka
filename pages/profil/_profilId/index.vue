@@ -36,7 +36,8 @@
             </h6>
 
             <h5>
-              <b-icon class="mr-1" icon="hand-thumbs-up"></b-icon>{{ ukLajk
+              <b-icon class="mr-1 mt-2" icon="hand-thumbs-up"></b-icon
+              >{{ ukLajk
               }}<b-icon class="ml-3 mr-1" icon="hand-thumbs-down"></b-icon
               >{{ ukDislajk }}
             </h5>
