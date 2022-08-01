@@ -4,9 +4,25 @@
       :title="ime"
       @click="removeNotifikacija(ime)"
       :title-link-class="classNovaPoruka ? 'text-warning' : ''"
-      ><b-card-text>
+    >
+      <b-button
+        v-if="hideButtonUcitajPoruke && !hideSpinnerUcitajPoruke"
+        class="buttonUcitajPet mx-auto mb-2"
+        variant="outline-dark"
+        @click="dodajPet(poruka)"
+        >Učitaj još 5
+      </b-button>
+      <div class="text-center">
+        <b-spinner
+          v-if="hideSpinnerUcitajPoruke"
+          class="mb-1"
+          style="width: 2.5rem; height: 2.5rem"
+          type="grow"
+        ></b-spinner>
+      </div>
+      <b-card-text>
         <p
-          v-for="(card, idx) in poruka"
+          v-for="(card, idx) in porukaSlice"
           :key="idx"
           :class="
             card.ime === $store.state.userDataF.imePrezime
@@ -60,6 +76,9 @@ export default {
     return {
       porukaChild: "",
       showSpinner: false,
+      brPoruka: 5,
+      hideButtonUcitajPoruke: true,
+      hideSpinnerUcitajPoruke: false,
     };
   },
   methods: {
@@ -89,6 +108,17 @@ export default {
         } catch (e) {
           console.log(e);
         }
+      }
+    },
+    dodajPet(porukeKorisnika) {
+      if (porukeKorisnika.length >= this.brPoruka) {
+        this.hideSpinnerUcitajPoruke = true;
+        setTimeout(() => {
+          this.brPoruka += 5;
+          this.hideSpinnerUcitajPoruke = false;
+        }, "850");
+      } else {
+        this.hideButtonUcitajPoruke = false;
       }
     },
   },
@@ -121,6 +151,9 @@ export default {
     classNovaPoruka() {
       return this.$store.state.userDataF.notifikacija?.includes(this.ime);
     },
+    porukaSlice() {
+      return this.poruka.slice(Math.max(this.poruka.length - this.brPoruka, 0));
+    },
   },
 };
 </script>
@@ -141,6 +174,15 @@ export default {
   height: 25px;
   background: rgb(0, 0, 0);
   border-color: rgb(0, 0, 0);
+  padding-bottom: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.buttonUcitajPet {
+  height: 25px;
+  xbackground: rgb(0, 0, 0);
+  xborder-color: rgb(0, 0, 0);
   padding-bottom: 6px;
   display: flex;
   justify-content: center;
