@@ -73,6 +73,7 @@ export default {
                   imePrezime: this.form.imePrezime,
                   mobitel: this.form.mobitel,
                   mjesto: this.form.mjesto,
+                  createdAt: user.user.multiFactor.user.metadata.createdAt,
                 });
               this.$fire.firestore
                 .collection("users")
@@ -80,17 +81,6 @@ export default {
                 .collection("poruke")
                 .doc("sve")
                 .set({})
-                .then(() => {
-                  this.$fire.firestore
-                    .collection("users")
-                    .doc(user.user._delegate.uid)
-                    .update({
-                      createdAt: this.$store.state.userData.createdAt,
-                    });
-                })
-                .catch((e) => {
-                  console.log(e);
-                })
                 .then(() => {
                   location.reload();
                 })

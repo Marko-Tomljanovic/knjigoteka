@@ -6,7 +6,7 @@
       :title-link-class="classNovaPoruka ? 'text-warning' : ''"
     >
       <b-button
-        v-if="hideButtonUcitajPoruke && !hideSpinnerUcitajPoruke"
+        v-if="manjePoruka && !hideSpinnerUcitajPoruke"
         class="buttonUcitajPet mx-auto mb-2"
         variant="outline-dark"
         @click="dodajPet(poruka)"
@@ -77,7 +77,6 @@ export default {
       porukaChild: "",
       showSpinner: false,
       brPoruka: 5,
-      hideButtonUcitajPoruke: true,
       hideSpinnerUcitajPoruke: false,
     };
   },
@@ -117,8 +116,6 @@ export default {
           this.brPoruka += 5;
           this.hideSpinnerUcitajPoruke = false;
         }, "850");
-      } else {
-        this.hideButtonUcitajPoruke = false;
       }
     },
   },
@@ -153,6 +150,9 @@ export default {
     },
     porukaSlice() {
       return this.poruka.slice(Math.max(this.poruka.length - this.brPoruka, 0));
+    },
+    manjePoruka() {
+      return this.poruka.length > this.brPoruka;
     },
   },
 };
