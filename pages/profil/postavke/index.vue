@@ -34,8 +34,6 @@
 </template>
 
 <script>
-import { getMaxListeners } from "process";
-
 export default {
   name: "postavke",
   data() {
