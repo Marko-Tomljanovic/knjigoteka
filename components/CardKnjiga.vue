@@ -54,12 +54,14 @@ export default {
     async obrisati() {
       try {
         const ref = await this.$fire.firestore;
+        //brisanje knjige iz kategorija
         ref
           .collection("kategorije")
           .doc(this.kategorija)
           .collection("knjige")
           .doc(this.id)
           .delete();
+        //brisanje knjige iz kategorija
         ref
           .collection("users")
           .doc(this.$store.state.userData.uid)
@@ -70,6 +72,7 @@ export default {
               kategorija: this.kategorija,
             }),
           });
+        //brisanje knjige kolekcije podaci
         ref
           .collection("kategorije")
           .doc("podaci")

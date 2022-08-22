@@ -21,7 +21,8 @@
         <b-navbar-nav class="ml-auto">
           <b-nav-form>
             <b-button
-              class="my-2 my-sm-0 mr-1 naviButton"
+              class="my-2 my-sm-0 mr-1"
+              :class="var1 ? 'naviButtonNaslovna ' : 'naviButton'"
               type="button"
               to="/kategorije"
               >Kategorije</b-button
@@ -166,6 +167,17 @@ export default {
   height: 25px;
   background: rgb(0, 0, 0);
   border-color: rgb(0, 0, 0);
+  padding-bottom: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Inika", sans-serif;
+}
+.naviButtonNaslovna {
+  height: 25px;
+  background: rgb(255, 255, 255);
+  border-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
   padding-bottom: 5px;
   display: flex;
   justify-content: center;
