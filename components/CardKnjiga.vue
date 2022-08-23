@@ -68,6 +68,7 @@ export default {
           .update({
             dodaneKnjige: this.$fireModule.firestore.FieldValue.arrayRemove({
               idKnjige: this.id,
+              autor: this.autor,
               naslov: this.title,
               kategorija: this.kategorija,
             }),

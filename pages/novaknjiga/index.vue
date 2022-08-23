@@ -111,6 +111,7 @@ export default {
           .update({
             dodaneKnjige: this.$fireModule.firestore.FieldValue.arrayUnion({
               idKnjige: id,
+              autor: this.autor,
               naslov: this.naslov,
               kategorija: this.kategorijaO,
             }),
