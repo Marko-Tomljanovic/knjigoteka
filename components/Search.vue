@@ -25,6 +25,7 @@
             :key="idx.naslov"
             :title="card.naslov"
             :id="card.idKnjige"
+            :autor="card.autor"
             :kategorija="card.kategorija"
           />
         </b-card-group>
@@ -110,8 +111,10 @@ export default {
   },
   computed: {
     filterKnjiga() {
-      return this.ucitaneKnjige.filter((card) =>
-        card.naslov.toLowerCase().includes(this.podaci.trazi.toLowerCase())
+      return this.ucitaneKnjige.filter(
+        (card) =>
+          card.naslov.toLowerCase().includes(this.podaci.trazi.toLowerCase()) ||
+          card.autor.toLowerCase().includes(this.podaci.trazi.toLowerCase())
       );
     },
   },

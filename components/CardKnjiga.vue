@@ -45,7 +45,7 @@
 
 <script>
 export default {
-  props: ["title", "id", "kategorija"],
+  props: ["title", "id", "kategorija", "autor"],
   emits: ["ucitajEmit"],
   data() {
     return {};
@@ -79,6 +79,7 @@ export default {
           .update({
             knjige: this.$fireModule.firestore.FieldValue.arrayRemove({
               idKnjige: this.id,
+              autor: this.autor,
               naslov: this.title,
               kategorija: this.kategorija,
             }),

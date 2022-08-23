@@ -67,6 +67,7 @@
             v-for="(card, idx) in profilKorisnika.dodaneKnjige"
             :key="idx.naslov"
             :title="card.naslov"
+            :autor="card.autor"
             :id="card.idKnjige"
             :kategorija="card.kategorija" /></b-row
       ></b-tab>

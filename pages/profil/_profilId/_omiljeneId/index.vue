@@ -10,6 +10,7 @@
         :key="idx.naslov"
         :title="card.naslov"
         :id="card.idKnjige"
+        :autor="card.autor"
         :kategorija="card.kategorija"
         @ucitajEmit="ucitaj"
     /></b-row>

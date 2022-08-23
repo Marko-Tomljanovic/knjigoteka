@@ -16,6 +16,7 @@
           :key="idx.naslov"
           :title="card.naslov"
           :id="card.idKnjige"
+          :autor="card.autor"
           :kategorija="card.kategorija"
         /> </b-card-group
     ></b-row>
