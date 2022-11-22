@@ -1,35 +1,58 @@
 <template>
   <div>
-    <b-form-checkbox
-      id="checkbox-1"
-      class="ml-2"
-      v-model="status"
-      name="checkbox-1"
-    >
-      Želim novosti na email + {{ status }}</b-form-checkbox
-    >
-    <b-form-checkbox
-      id="checkbox-2"
-      class="ml-2"
-      v-model="status2"
-      name="checkbox-2"
-    >
-      Želim obavjesti na email kada primim poruku +
-      {{ status2 }}</b-form-checkbox
-    >
-    <b-form-checkbox
-      id="checkbox-3"
-      class="ml-2"
-      v-model="status3"
-      name="checkbox-3"
-    >
-      Želim obavjesti na email + {{ status3 }}</b-form-checkbox
-    >
-    Obrisati profil
-    <b-button @click="brisanjeProfil" variant="danger">Obriši profil</b-button
-    ><br /><br /><br />
-    <b-button @click="ucitajPostavke">Pohrani</b-button> <br /><br />
-    {{ $store.state.userData }}
+    <b-tabs pills card vertical>
+      <b-tab title="Općenito" active
+        >Ime i prezime: {{ this.$store.state.userDataF.imePrezime }} <br />
+        Ukupno dodane knjige:
+        {{ brojDodanihKnjiga }} <br />
+        Mjesto: {{ this.$store.state.userDataF.mjesto }} <br />
+
+        Email: {{ this.$store.state.userData.email }}<br />
+        Mobitel: {{ this.$store.state.userDataF.mobitel }} <br />
+        Vrijeme kreiranja profila
+        {{ $moment(vrijemeKreiranjaKorisnika).format("ll") }}
+      </b-tab>
+      <b-tab title="Obavijesti"
+        ><b-card-text
+          ><b-card-text>
+            <b-form-checkbox
+              id="checkbox-1"
+              class="ml-2"
+              v-model="status"
+              name="checkbox-1"
+            >
+              Želim novosti na email + {{ status }}</b-form-checkbox
+            >
+            <b-form-checkbox
+              id="checkbox-2"
+              class="ml-2"
+              v-model="status2"
+              name="checkbox-2"
+            >
+              Želim obavjesti na email kada primim poruku +
+              {{ status2 }}</b-form-checkbox
+            >
+            <b-form-checkbox
+              id="checkbox-3"
+              class="ml-2"
+              v-model="status3"
+              name="checkbox-3"
+            >
+              Želim obavjesti na email + {{ status3 }}</b-form-checkbox
+            ></b-card-text
+          ><br /><br /><br />
+          <b-button @click="ucitajPostavke">Pohrani</b-button></b-card-text
+        ></b-tab
+      >
+      <b-tab title="Profil"
+        ><b-card-text>
+          Obrisati profil
+          <b-button @click="brisanjeProfil" variant="danger"
+            >Obriši profil</b-button
+          ></b-card-text
+        ></b-tab
+      >
+    </b-tabs>
   </div>
 </template>
 
@@ -78,6 +101,14 @@ export default {
         .catch((e) => {
           console.log("Odjava neuspješna, error:" + e);
         });
+    },
+  },
+  computed: {
+    vrijemeKreiranjaKorisnika() {
+      return parseInt(this.$store.state.userData?.createdAt);
+    },
+    brojDodanihKnjiga() {
+      return this.$store.state.userDataF.dodaneKnjige?.length;
     },
   },
 };
