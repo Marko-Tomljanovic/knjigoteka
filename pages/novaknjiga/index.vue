@@ -65,9 +65,26 @@
 
       <b-button @click="onClick" type="submit" variant="primary"
         >Submit</b-button
-      >
-    </b-form></b-container
-  >
+      > </b-form
+    ><croppa
+      v-model="myCroppa"
+      :prevent-white-space="true"
+      :width="176"
+      :height="224"
+      placeholder="Izgled oglasa"
+      placeholder-color="#000"
+      :placeholder-font-size="16"
+      canvas-color="transparent"
+      :show-remove-button="true"
+      remove-button-color="black"
+      :remove-button-size="30"
+      :show-loading="true"
+      :loading-size="50"
+      loading-color="#606060"
+    ></croppa
+    ><b-button @click="uploadSlika()">Ucitaj sliku</b-button>da li je null:
+    {{ myCroppa.img === null ? true : false }} <br />url slike: {{ imgURL }}
+  </b-container>
 </template>
 
 <script>
@@ -92,12 +109,14 @@ export default {
       obj: {},
       podaci,
       profilKorisnika: [],
+      myCroppa: {},
+      imgURL: "",
     };
   },
   methods: {
     async onClick(e) {
       e.preventDefault();
-      if (!this.naslov) {
+      if (!this.naslov || this.slikaNull) {
         alert("potrebno upisati podatke");
       } else {
         const refKnjiga = await this.$fire.firestore
@@ -114,6 +133,7 @@ export default {
               autor: this.autor,
               naslov: this.naslov,
               kategorija: this.kategorijaO,
+              imgURL: this.imgURL,
             }),
           });
         await this.$fire.firestore
@@ -125,6 +145,7 @@ export default {
               autor: this.autor,
               naslov: this.naslov,
               kategorija: this.kategorijaO,
+              imgURL: this.imgURL,
             }),
           });
         refKnjiga.doc(id).set({
@@ -146,6 +167,7 @@ export default {
           mobitel: this.profilKorisnika.mobitel,
           omiljene: [],
           idKorisnika: this.$store.state.userData.uid,
+          imgURL: this.imgURL,
         });
       }
     },
@@ -164,9 +186,54 @@ export default {
         this.$router.replace({ path: "/errorPage" });
       }
     },
+    async uploadSlika() {
+      if (!this.slikaNull) {
+        this.myCroppa.generateBlob((blobData) => {
+          let imgName =
+            "oglasi/" +
+            this.$store.state.userDataF.imePrezime +
+            "_" +
+            Date.now() +
+            ".png";
+          this.$fire.storage
+            .ref(imgName)
+            .put(blobData)
+            .then((result) => {
+              result.ref.getDownloadURL().then((url) => {
+                this.imgURL = url;
+              });
+            })
+            .catch((e) => {
+              console.log(e);
+            });
+        });
+      } else {
+        alert("Potrebno učitati sliku!");
+      }
+    },
+  },
+  computed: {
+    slikaNull() {
+      return this.myCroppa.img === null;
+    },
   },
   mounted() {
     this.ucitaj();
   },
 };
 </script>
+
+<style scoped>
+.croppa-container {
+  background-color: rgb(255, 255, 255);
+  border: 1px solid grey;
+  border-radius: 8px;
+  transition: 0.5s ease-in-out;
+}
+
+.croppa-container:hover {
+  opacity: 1;
+  background-color: #d3d3d3;
+  border: 1px solid #d3d3d3;
+}
+</style>

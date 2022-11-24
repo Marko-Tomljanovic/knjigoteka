@@ -6,13 +6,15 @@
         :to="`/kategorije/${kategorija}/${id}`"
       >
         <b-img
-          style="height: 10.2rem; width: 15.5rem; border-radius: 10%"
+          style="height: 14rem; width: 11rem; border-radius: 8%"
           class="mb-1 mr-2 ml-2"
-          src="https://picsum.photos/600/300/?image=25"
+          :src="imgURL"
           alt="knjiga"
         />
         <br />
-        <p class="text-right kartica mr-2">{{ title }}</p>
+        <p style="width: 11.3rem" class="text-right kartica mr-2">
+          {{ title }}
+        </p>
       </nuxt-link>
     </div>
     <div
@@ -45,7 +47,7 @@
 
 <script>
 export default {
-  props: ["title", "id", "kategorija", "autor"],
+  props: ["title", "id", "kategorija", "autor", "imgURL"],
   emits: ["ucitajEmit"],
   data() {
     return {};
@@ -71,6 +73,7 @@ export default {
               autor: this.autor,
               naslov: this.title,
               kategorija: this.kategorija,
+              imgURL: this.imgURL,
             }),
           });
         //brisanje knjige kolekcije podaci
@@ -82,6 +85,7 @@ export default {
               idKnjige: this.id,
               autor: this.autor,
               naslov: this.title,
+              imgURL: this.imgURL,
               kategorija: this.kategorija,
             }),
           })

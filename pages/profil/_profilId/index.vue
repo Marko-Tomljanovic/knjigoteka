@@ -69,7 +69,8 @@
             :title="card.naslov"
             :autor="card.autor"
             :id="card.idKnjige"
-            :kategorija="card.kategorija" /></b-row
+            :kategorija="card.kategorija"
+            :imgURL="card.imgURL" /></b-row
       ></b-tab>
       <b-tab :title="`Komentari |${ukKomentari}|`" :active="queryTab">
         <b-form-group v-if="ukKomentari > 0">

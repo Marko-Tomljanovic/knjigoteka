@@ -2,7 +2,7 @@
   <b-container fluid>
     <b-row class="m-4">
       <b-col md="auto"
-        ><img src="https://picsum.photos/300/450" alt="knjiga"
+        ><img :src="$store.state.oglas.imgURL" alt="knjiga"
       /></b-col>
       <b-col class="fontC">
         <b-row>
@@ -228,6 +228,7 @@ export default {
                     idKnjige: this.$store.state.oglas.id,
                     naslov: this.$store.state.oglas.naslov,
                     kategorija: this.$store.state.oglas.kategorija,
+                    imgURL:this.$store.state.oglas.imgURL
                   }),
                 })
                 .then(() => {
@@ -249,6 +250,7 @@ export default {
                     idKnjige: this.$store.state.oglas.id,
                     naslov: this.$store.state.oglas.naslov,
                     kategorija: this.$store.state.oglas.kategorija,
+                    imgURL:this.$store.state.oglas.imgURL
                   }),
                 })
                 .then(() => {

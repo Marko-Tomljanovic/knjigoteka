@@ -4,7 +4,11 @@
       <b-tab title="Općenito" active
         >Ime i prezime: {{ this.$store.state.userDataF.imePrezime }} <br />
         Ukupno dodane knjige:
-        {{ brojDodanihKnjiga }} <br />
+        {{ brojDodanihKnjiga }}
+        <nuxt-link :to="`/profil/${this.$store.state.userData.uid}`"
+          >Pogledaj oglase</nuxt-link
+        >
+        <br />
         Mjesto: {{ this.$store.state.userDataF.mjesto }} <br />
 
         Email: {{ this.$store.state.userData.email }}<br />
