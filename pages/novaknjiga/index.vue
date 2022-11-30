@@ -65,13 +65,14 @@
 
       <b-button @click="onClick" type="submit" variant="primary"
         >Submit</b-button
-      > </b-form
-    ><croppa
+      >
+    </b-form>
+    <croppa
       v-model="myCroppa"
       :prevent-white-space="true"
       :width="176"
       :height="224"
-      placeholder="Izgled oglasa"
+      :placeholder="'Odaberite sliku oglasa'"
       placeholder-color="#000"
       :placeholder-font-size="16"
       canvas-color="transparent"
@@ -82,15 +83,24 @@
       :loading-size="50"
       loading-color="#606060"
       @image-remove="imgRemove()"
+      :disable-drag-to-move="disabledButtonUcitanaSlika"
+      :disable-scroll-to-zoom="disabledButtonUcitanaSlika"
+      :disable-pinch-to-zoom="disabledButtonUcitanaSlika"
+      :disable-rotation="disabledButtonUcitanaSlika"
     >
-      ></croppa
+    </croppa
     ><b-button
+      v-if="!slikaNull"
       :variant="imgURL ? 'success' : 'primary'"
       :disabled="disabledButtonUcitanaSlika"
       @click="uploadSlika()"
-      >{{ disabledButtonUcitanaSlika ? "" : "Ucitaj sliku" }}
+      ><b-spinner v-if="buttonSpinnerUcitavanjeSlike" small></b-spinner>
+      {{ disabledButtonUcitanaSlika ? "" : "Ucitaj sliku" }}
       <b-icon v-if="disabledButtonUcitanaSlika" icon="check"></b-icon></b-button
-    >da li je null: {{ myCroppa.img === null ? true : false }} <br />url slike:
+    ><b-alert class="mt-3" :show="!slikaNull" fade="true"
+      >Podesiti okvir slike prije učitavanja</b-alert
+    >
+    <br />url slike:
     {{ imgURL }}
   </b-container>
 </template>
@@ -119,6 +129,7 @@ export default {
       profilKorisnika: [],
       myCroppa: {},
       imgURL: "",
+      buttonSpinnerUcitavanjeSlike: false,
     };
   },
   methods: {
@@ -196,6 +207,7 @@ export default {
     },
     async uploadSlika() {
       if (!this.slikaNull) {
+        this.buttonSpinnerUcitavanjeSlike = true;
         this.myCroppa.generateBlob((blobData) => {
           let imgName =
             "oglasi/" +
@@ -210,6 +222,7 @@ export default {
               result.ref.getDownloadURL().then((url) => {
                 this.imgURL = url;
               });
+              this.buttonSpinnerUcitavanjeSlike = false;
             })
             .catch((e) => {
               console.log(e);
