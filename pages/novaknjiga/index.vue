@@ -81,9 +81,17 @@
       :show-loading="true"
       :loading-size="50"
       loading-color="#606060"
-    ></croppa
-    ><b-button @click="uploadSlika()">Ucitaj sliku</b-button>da li je null:
-    {{ myCroppa.img === null ? true : false }} <br />url slike: {{ imgURL }}
+      @image-remove="imgRemove()"
+    >
+      ></croppa
+    ><b-button
+      :variant="imgURL ? 'success' : 'primary'"
+      :disabled="disabledButtonUcitanaSlika"
+      @click="uploadSlika()"
+      >{{ disabledButtonUcitanaSlika ? "" : "Ucitaj sliku" }}
+      <b-icon v-if="disabledButtonUcitanaSlika" icon="check"></b-icon></b-button
+    >da li je null: {{ myCroppa.img === null ? true : false }} <br />url slike:
+    {{ imgURL }}
   </b-container>
 </template>
 
@@ -116,7 +124,7 @@ export default {
   methods: {
     async onClick(e) {
       e.preventDefault();
-      if (!this.naslov || this.slikaNull) {
+      if (!this.praznoPolje || !this.imgURL) {
         alert("potrebno upisati podatke");
       } else {
         const refKnjiga = await this.$fire.firestore
@@ -211,10 +219,48 @@ export default {
         alert("Potrebno učitati sliku!");
       }
     },
+    imgRemove() {
+      if (this.imgURL) {
+        this.$fire.storage
+          .refFromURL(this.imgURL)
+          .delete()
+          .then(() => {
+            this.imgURL = "";
+            alert("obrisano");
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      }
+    },
   },
   computed: {
     slikaNull() {
       return this.myCroppa.img === null;
+    },
+    praznoPolje() {
+      if (
+        this.cijena &&
+        this.naslov &&
+        this.izdavackaKuca &&
+        this.godinaIzdanja &&
+        this.jezik &&
+        this.autor &&
+        this.opis &&
+        this.kategorijaO &&
+        this.stanjeO &&
+        this.uvezO &&
+        this.obj &&
+        this.podaci &&
+        this.profilKorisnika
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    disabledButtonUcitanaSlika() {
+      return this.imgURL ? true : false;
     },
   },
   mounted() {
