@@ -10,15 +10,14 @@ export default async function ({ route, redirect, store, app }) {
       console.log(e);
     }
   }
-  console.log(route.path);
   if (
-    (!store.state.userData && route.path === "/novaknjiga") ||
+    (!store.state.userData && route.path.includes("/novaknjiga")) ||
     (!store.state.userData && route.path.includes("profil"))
   ) {
     return redirect("/prijava");
   } else if (
-    (store.state.userData && route.path === "/prijava") ||
-    (store.state.userData && route.path === "/registracija")
+    (store.state.userData && route.path.includes("/prijava")) ||
+    (store.state.userData && route.path.includes("/registracija"))
   ) {
     return redirect("/");
   } else if (
