@@ -73,11 +73,11 @@ export default {
       event.preventDefault();
 
       try {
-        await this.$fire.auth.signInWithEmailAndPassword(
-          this.form.email,
-          this.form.password
-        );
-        location.reload();
+        await this.$fire.auth
+          .signInWithEmailAndPassword(this.form.email, this.form.password)
+          .then(() => {
+            location.reload();
+          });
       } catch (e) {
         console.log(e);
       }
