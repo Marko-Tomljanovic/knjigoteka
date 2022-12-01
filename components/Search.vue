@@ -27,6 +27,7 @@
             :id="card.idKnjige"
             :autor="card.autor"
             :kategorija="card.kategorija"
+            :imgURL="card.imgURL"
           />
         </b-card-group>
       </div>
