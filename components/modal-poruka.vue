@@ -141,7 +141,7 @@ export default {
           console.log(e);
         }
       } else {
-        alert("Prijavi se za lajk!");
+        alert("Prijavi se za nastavak!");
       }
     },
   },

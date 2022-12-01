@@ -15,7 +15,7 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item to="/forum">Forum</b-nav-item>
-          <b-nav-item to="/">Kotnakt</b-nav-item>
+          <b-nav-item to="/">Kontakt</b-nav-item>
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
