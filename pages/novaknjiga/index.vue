@@ -238,8 +238,8 @@ export default {
           .refFromURL(this.imgURL)
           .delete()
           .then(() => {
-            this.imgURL = "";
             alert("obrisano");
+            this.imgURL = "";
           })
           .catch((e) => {
             console.log(e);

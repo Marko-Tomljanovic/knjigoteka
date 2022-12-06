@@ -114,6 +114,23 @@ export default {
               })
               .catch((e) => {
                 console.log(e);
+                if (e.message.includes("No document to update:")) {
+                  ref
+                    .update({
+                      [imePrimatelja]: marko.arrayUnion({
+                        idKorisnika: "sustavKnjigoteka",
+                        ime: "Knjigoteka",
+                        poruka: "Korisnik više ne postoji.",
+                        vrijeme: Date.now(),
+                      }),
+                    })
+                    .then(() => {
+                      setTimeout(() => {
+                        this.tabIndex = 1;
+                        this.ucitaj();
+                      }, "700");
+                    });
+                }
               });
           } catch (e) {
             console.log(e);

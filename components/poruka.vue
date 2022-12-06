@@ -48,6 +48,7 @@
         "
         class="rounded-pill"
         v-model="porukaChild"
+        :disabled="disableInuptButton"
       ></b-input
       ><b-button
         class="naviButton mt-3"
@@ -60,6 +61,7 @@
           );
           clearInput();
         "
+        :disabled="disableInuptButton"
         >Pošalji
         <b-spinner v-if="showSpinner" class="ml-2" small type="grow"></b-spinner
       ></b-button>
@@ -153,6 +155,17 @@ export default {
     },
     manjePoruka() {
       return this.poruka.length > this.brPoruka;
+    },
+    disableInuptButton() {
+      if (
+        this.poruka[this.poruka.length - 1].idKorisnika.includes(
+          "sustavKnjigoteka"
+        )
+      ) {
+        return true;
+      } else {
+        return false;
+      }
     },
   },
 };
