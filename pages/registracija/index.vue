@@ -65,8 +65,8 @@
             :quality="1"
             image-border-radius="77"
             :placeholder="'Odaberite sliku profila'"
-            placeholder-color="#000"
-            :placeholder-font-size="16"
+            placeholder-color="#404042"
+            :placeholder-font-size="14"
             canvas-color="transparent"
             :show-remove-button="true"
             remove-button-color="black"
@@ -76,13 +76,6 @@
             loading-color="#606060"
           >
           </croppa>
-          <b-button @click="uploadSlika"
-            ><b-spinner
-              v-if="buttonSpinnerUcitavanjeKorisnika"
-              small
-            ></b-spinner>
-            ucistaj sliku</b-button
-          >
           <b-button class="button login__submit" type="submit">
             <span class="button__text">Registriraj se sada </span>
             <i class="button__icon fas fa-chevron-right"></i>
