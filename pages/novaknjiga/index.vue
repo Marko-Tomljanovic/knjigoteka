@@ -187,6 +187,7 @@ export default {
           omiljene: [],
           idKorisnika: this.$store.state.userData.uid,
           imgURL: this.imgURL,
+          slikaProfilaURL: this.$store.state.userDataF.slikaProfilaURL,
         });
       }
     },
@@ -212,9 +213,10 @@ export default {
           let imgName =
             "oglasi/" +
             this.$store.state.userDataF.imePrezime +
-            "_" +
-            Date.now() +
-            ".png";
+            "/" +
+            this.naslov +
+            "_";
+          Date.now() + ".png";
           this.$fire.storage
             .ref(imgName)
             .put(blobData)

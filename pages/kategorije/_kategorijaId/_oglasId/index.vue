@@ -77,8 +77,13 @@
         </b-row></b-col
       ><b-col class="mt-4 fluid"
         ><div class="profilK text-center">
-          <b-icon scale="6" icon="person-circle"></b-icon>
-          <br />
+          <b-img
+              style="margin-top: -2.1rem; margin-bottom:-1.9rem"
+              :src="$store.state.oglas.slikaProfilaURL"
+              fluid
+              alt="Profil Image"
+              rounded="circle"
+            ></b-img>
           <p class="tekstK">
             <nuxt-link
               :to="`/info-prodavac/${$store.state.oglas.idKorisnika}`"

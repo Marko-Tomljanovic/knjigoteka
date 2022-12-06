@@ -24,7 +24,11 @@
 
           <b-button class="button login__submit" type="submit">
             <span class="button__text">Prijavi se sada</span>
-            <i class="button__icon fas fa-chevron-right"></i>
+            <i class="button__icon fas fa-chevron-right"></i
+            ><b-spinner
+              v-if="buttonSpinnerUcitavanjeKorisnika"
+              small
+            ></b-spinner>
           </b-button>
         </b-form>
         <div class="social-login">
@@ -66,19 +70,23 @@ export default {
         email: "",
         password: "",
       },
+      buttonSpinnerUcitavanjeKorisnika: false,
     };
   },
   methods: {
     async onSubmit(event) {
       event.preventDefault();
-
+      this.buttonSpinnerUcitavanjeKorisnika = true;
       try {
         await this.$fire.auth
           .signInWithEmailAndPassword(this.form.email, this.form.password)
           .then(() => {
+            this.buttonSpinnerUcitavanjeKorisnika = false;
             location.reload();
           });
       } catch (e) {
+        this.buttonSpinnerUcitavanjeKorisnika = false;
+        alert(e.message);
         console.log(e);
       }
     },

@@ -3,16 +3,23 @@
     <b-row align-h="center">
       <div
         class="border"
-        style="width: 61rem; height: 15.7rem; margin-top: 3.5rem"
+        style="width: 61rem; height: 16.3rem; margin-top: 3.3rem"
       >
         <b-row>
           <b-col cols="4" class="text-center">
-            <b-icon
+            <!-- <b-icon
               icon="person-circle"
-              font-scale="8"
+              font-scale="8.7"
               style="margin-top: -2rem"
-            ></b-icon
-          ></b-col>
+            ></b-icon> -->
+            <b-img
+              style="margin-top: -2.1rem"
+              :src="this.$store.state.userDataF.slikaProfilaURL"
+              fluid
+              alt="Profil Image"
+              rounded="circle"
+            ></b-img>
+          </b-col>
           <b-col
             ><h2 class="mt-4 font-weight-bold">
               o meni
@@ -59,7 +66,7 @@
       </div>
     </b-row>
 
-    <b-tabs class="mt-1" content-class="mt-3" justified>
+    <b-tabs class="mt-2" content-class="mt-3" justified>
       <b-tab :title="`Moji oglasi |${ukKnjiga}|`" active>
         <b-row>
           <CardKnjiga
@@ -116,7 +123,6 @@ export default {
   },
   methods: {
     async ucitaj() {
-      console.log("ucitano");
       try {
         let ref = await this.$fire.firestore
           .collection("users")
