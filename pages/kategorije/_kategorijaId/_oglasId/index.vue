@@ -63,10 +63,13 @@
               variant="outline"
               style="border: solid 1px black; width: 2.8rem"
               >{{ $store.state.ukOmiljene }}</b-button
-            ><b-button v-if="!buttonMojOglas" v-b-modal.modal-prevent-closing  class="ml-4 naviButton"
+            ><b-button
+              v-if="!buttonMojOglas"
+              v-b-modal.modal-prevent-closing
+              class="ml-4 naviButton"
               >Javi se prodavaču</b-button
-            ><modal-poruka  /></b-col
-          > </b-row
+            ><modal-poruka
+          /></b-col> </b-row
         ><b-row>
           <b-col class="mt-4"
             ><h4 style="margin-bottom: -0.7rem">Opis:</h4>
@@ -78,13 +81,13 @@
       ><b-col class="mt-4 fluid"
         ><div class="profilK text-center">
           <b-img
-              style="margin-top: -2.1rem; margin-bottom:-1.9rem"
-              :src="$store.state.oglas.slikaProfilaURL"
-              fluid
-              alt="Profil Image"
-              rounded="circle"
-            ></b-img>
-          <p class="tekstK">
+            style="margin-top: -2.1rem; margin-bottom: -1.9rem"
+            :src="$store.state.oglas.slikaProfilaURL"
+            fluid
+            alt="Profil Image"
+            rounded="circle"
+          ></b-img>
+          <div class="tekstK">
             <nuxt-link
               :to="`/info-prodavac/${$store.state.oglas.idKorisnika}`"
               class="darko"
@@ -102,8 +105,9 @@
                 <b-icon class="mr-1 mt-3" icon="hand-thumbs-up"></b-icon
                 >Pogledaj ocjene</span
               >
-            </nuxt-link><p v-if="!showNuxtLink">Moj oglas</p>
-          </p>
+            </nuxt-link>
+            <p v-if="!showNuxtLink">Moj oglas</p>
+          </div>
         </div>
         <div class="fontC mt-4">
           <h4>Podjeli oglas</h4>
@@ -160,7 +164,7 @@ export default {
     };
   },
   async asyncData({ app, store, params, redirect }) {
-    try {     
+    try {
       let ref = await app.$fire.firestore
         .collection("kategorije")
         .doc(params.kategorijaId)
@@ -233,7 +237,7 @@ export default {
                     idKnjige: this.$store.state.oglas.id,
                     naslov: this.$store.state.oglas.naslov,
                     kategorija: this.$store.state.oglas.kategorija,
-                    imgURL:this.$store.state.oglas.imgURL
+                    imgURL: this.$store.state.oglas.imgURL,
                   }),
                 })
                 .then(() => {
@@ -255,7 +259,7 @@ export default {
                     idKnjige: this.$store.state.oglas.id,
                     naslov: this.$store.state.oglas.naslov,
                     kategorija: this.$store.state.oglas.kategorija,
-                    imgURL:this.$store.state.oglas.imgURL
+                    imgURL: this.$store.state.oglas.imgURL,
                   }),
                 })
                 .then(() => {
@@ -277,9 +281,11 @@ export default {
         this.$store.state.userData?.uid === this.$store.state.oglas?.idKorisnika
       );
     },
-    buttonMojOglas(){
-      return this.$store.state.userData?.uid === this.$store.state.oglas?.idKorisnika
-    }
+    buttonMojOglas() {
+      return (
+        this.$store.state.userData?.uid === this.$store.state.oglas?.idKorisnika
+      );
+    },
   },
 };
 </script>

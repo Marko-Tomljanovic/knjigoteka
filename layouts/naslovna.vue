@@ -5,6 +5,12 @@
   </div>
 </template>
 
+<script>
+export default {
+  name: "naslovna",
+};
+</script>
+
 <style>
 .bg {
   background-image: url("@/static/books_bg.jpg");

@@ -9,7 +9,7 @@
               type="text"
               class="login__input"
               v-model="form.imePrezime"
-              placeholder="Ime i prezime"
+              placeholder="Ime i prezime*"
             ></b-form-input>
           </div>
           <div class="login__field">
@@ -18,7 +18,7 @@
               type="text"
               class="login__input"
               v-model="form.email"
-              placeholder="Email"
+              placeholder="Email*"
             ></b-form-input>
           </div>
           <div class="login__field">
@@ -27,7 +27,7 @@
               type="password"
               class="login__input"
               v-model="form.password"
-              placeholder="Lozinka"
+              placeholder="Lozinka*"
             ></b-form-input>
           </div>
           <div class="login__field">
@@ -36,7 +36,7 @@
               type="password"
               class="login__input"
               v-model="form.repeatPasswrod"
-              placeholder="Ponovljena lozinka"
+              placeholder="Ponovljena lozinka*"
             ></b-form-input>
           </div>
           <div class="login__field">
@@ -45,7 +45,7 @@
               type="tel"
               class="login__input"
               v-model="form.mobitel"
-              placeholder="Mobitel"
+              placeholder="Mobitel*"
             ></b-form-input>
           </div>
           <div class="login__field">
@@ -54,7 +54,7 @@
               type="text"
               class="login__input"
               v-model="form.mjesto"
-              placeholder="Mjesto"
+              placeholder="Mjesto*"
             ></b-form-input>
           </div>
           <croppa
@@ -132,7 +132,7 @@ export default {
   methods: {
     async onSubmit(event) {
       event.preventDefault();
-      if (this.form.repeatPasswrod == this.form.password) {
+      if (this.praznoPolje) {
         this.buttonSpinnerUcitavanjeKorisnika = true;
         try {
           await this.uploadSlika();
@@ -175,34 +175,42 @@ export default {
       }
     },
     async uploadSlika() {
-      if (!this.slikaNull) {
-        this.form.myCroppa.generateBlob((blobData) => {
-          let imgName =
-            "oglasi/" +
-            this.form.imePrezime +
-            "/slikaProfila/" +
-            Date.now() +
-            ".png";
-          this.$fire.storage
-            .ref(imgName)
-            .put(blobData)
-            .then((result) => {
-              result.ref.getDownloadURL().then((url) => {
-                this.slikaProfilaURL = url;
-              });
-            })
-            .catch((e) => {
-              console.log(e);
+      this.form.myCroppa.generateBlob((blobData) => {
+        let imgName =
+          "oglasi/" +
+          this.form.imePrezime +
+          "/slikaProfila/" +
+          Date.now() +
+          ".png";
+        this.$fire.storage
+          .ref(imgName)
+          .put(blobData)
+          .then((result) => {
+            result.ref.getDownloadURL().then((url) => {
+              this.slikaProfilaURL = url;
             });
-        });
-      } else {
-        alert("Potrebno učitati sliku!");
-      }
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      });
     },
   },
   computed: {
-    slikaNull() {
-      return this.form.myCroppa.img === null;
+    praznoPolje() {
+      if (
+        this.form.imePrezime &&
+        this.form.email &&
+        this.form.password &&
+        this.form.repeatPasswrod &&
+        this.form.mobitel &&
+        this.form.mjesto &&
+        this.form.repeatPasswrod === this.form.password
+      ) {
+        return true;
+      } else {
+        return false;
+      }
     },
   },
   mounted() {},

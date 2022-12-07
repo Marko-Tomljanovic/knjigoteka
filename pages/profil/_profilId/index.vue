@@ -7,14 +7,16 @@
       >
         <b-row>
           <b-col cols="4" class="text-center">
-            <!-- <b-icon
+            <b-icon
+              v-if="!$store.state.userDataF.slikaProfilaURL"
               icon="person-circle"
               font-scale="8.7"
               style="margin-top: -2rem"
-            ></b-icon> -->
+            ></b-icon>
             <b-img
+              v-else
               style="margin-top: -2.1rem"
-              :src="this.$store.state.userDataF.slikaProfilaURL"
+              :src="$store.state.userDataF.slikaProfilaURL"
               fluid
               alt="Profil Image"
               rounded="circle"

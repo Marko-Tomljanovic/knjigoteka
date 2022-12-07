@@ -1,6 +1,6 @@
 <template>
   <b-container class="mt-3">
-    <b-form @submit="onClick">
+    <b-form @submit.prevent="uploadSlika">
       <b-form-input
         id="naslov"
         v-model="naslov"
@@ -62,46 +62,36 @@
         v-model="stanjeO"
         :options="podaci.optionsStanje"
       ></b-form-select>
-
-      <b-button @click="onClick" type="submit" variant="primary"
-        >Submit</b-button
-      >
+      <b-row>
+        <b-col
+          ><croppa
+            v-model="myCroppa"
+            :prevent-white-space="true"
+            :width="176"
+            :height="224"
+            :placeholder="'Odaberite sliku oglasa'"
+            placeholder-color="#000"
+            :placeholder-font-size="16"
+            canvas-color="transparent"
+            :show-remove-button="true"
+            remove-button-color="black"
+            :remove-button-size="30"
+            :show-loading="true"
+            :loading-size="50"
+            loading-color="#606060"
+          >
+          </croppa
+        ></b-col>
+        <b-col lg="8"
+          ><b-alert class="mt-3" :show="!slikaNull" :fade="true"
+            >Podesiti okvir slike prije učitavanja.</b-alert
+          ></b-col
+        >
+      </b-row>
+      <b-button type="submit" variant="primary"
+        >Submit <b-spinner v-if="buttonSpinnerUcitavanjeSlike" small></b-spinner
+      ></b-button>
     </b-form>
-    <croppa
-      v-model="myCroppa"
-      :prevent-white-space="true"
-      :width="176"
-      :height="224"
-      :placeholder="'Odaberite sliku oglasa'"
-      placeholder-color="#000"
-      :placeholder-font-size="16"
-      canvas-color="transparent"
-      :show-remove-button="true"
-      remove-button-color="black"
-      :remove-button-size="30"
-      :show-loading="true"
-      :loading-size="50"
-      loading-color="#606060"
-      @image-remove="imgRemove()"
-      :disable-drag-to-move="disabledButtonUcitanaSlika"
-      :disable-scroll-to-zoom="disabledButtonUcitanaSlika"
-      :disable-pinch-to-zoom="disabledButtonUcitanaSlika"
-      :disable-rotation="disabledButtonUcitanaSlika"
-    >
-    </croppa
-    ><b-button
-      v-if="!slikaNull"
-      :variant="imgURL ? 'success' : 'primary'"
-      :disabled="disabledButtonUcitanaSlika"
-      @click="uploadSlika()"
-      ><b-spinner v-if="buttonSpinnerUcitavanjeSlike" small></b-spinner>
-      {{ disabledButtonUcitanaSlika ? "" : "Ucitaj sliku" }}
-      <b-icon v-if="disabledButtonUcitanaSlika" icon="check"></b-icon></b-button
-    ><b-alert class="mt-3" :show="!slikaNull" fade="true"
-      >Podesiti okvir slike prije učitavanja</b-alert
-    >
-    <br />url slike:
-    {{ imgURL }}
   </b-container>
 </template>
 
@@ -133,41 +123,39 @@ export default {
     };
   },
   methods: {
-    async onClick(e) {
-      e.preventDefault();
-      if (!this.praznoPolje || !this.imgURL) {
-        alert("potrebno upisati podatke");
-      } else {
-        const refKnjiga = await this.$fire.firestore
-          .collection("kategorije")
-          .doc(this.kategorijaO)
-          .collection("knjige");
-        const { id } = await refKnjiga.add(this.obj);
-        await this.$fire.firestore
-          .collection("users")
-          .doc(this.$store.state.userData.uid)
-          .update({
-            dodaneKnjige: this.$fireModule.firestore.FieldValue.arrayUnion({
-              idKnjige: id,
-              autor: this.autor,
-              naslov: this.naslov,
-              kategorija: this.kategorijaO,
-              imgURL: this.imgURL,
-            }),
-          });
-        await this.$fire.firestore
-          .collection("kategorije")
-          .doc("podaci")
-          .update({
-            knjige: this.$fireModule.firestore.FieldValue.arrayUnion({
-              idKnjige: id,
-              autor: this.autor,
-              naslov: this.naslov,
-              kategorija: this.kategorijaO,
-              imgURL: this.imgURL,
-            }),
-          });
-        refKnjiga.doc(id).set({
+    async uploadPodataka() {
+      const refKnjiga = await this.$fire.firestore
+        .collection("kategorije")
+        .doc(this.kategorijaO)
+        .collection("knjige");
+      const { id } = await refKnjiga.add(this.obj);
+      await this.$fire.firestore
+        .collection("users")
+        .doc(this.$store.state.userData.uid)
+        .update({
+          dodaneKnjige: this.$fireModule.firestore.FieldValue.arrayUnion({
+            idKnjige: id,
+            autor: this.autor,
+            naslov: this.naslov,
+            kategorija: this.kategorijaO,
+            imgURL: this.imgURL,
+          }),
+        });
+      await this.$fire.firestore
+        .collection("kategorije")
+        .doc("podaci")
+        .update({
+          knjige: this.$fireModule.firestore.FieldValue.arrayUnion({
+            idKnjige: id,
+            autor: this.autor,
+            naslov: this.naslov,
+            kategorija: this.kategorijaO,
+            imgURL: this.imgURL,
+          }),
+        });
+      refKnjiga
+        .doc(id)
+        .set({
           id: id,
           naslov: this.naslov,
           cijena: this.cijena,
@@ -188,8 +176,13 @@ export default {
           idKorisnika: this.$store.state.userData.uid,
           imgURL: this.imgURL,
           slikaProfilaURL: this.$store.state.userDataF.slikaProfilaURL,
+        })
+        .then(() => {
+          this.buttonSpinnerUcitavanjeSlike = false;
+        })
+        .catch((e) => {
+          console.log(e);
         });
-      }
     },
     async ucitaj() {
       try {
@@ -207,7 +200,9 @@ export default {
       }
     },
     async uploadSlika() {
-      if (!this.slikaNull) {
+      if (this.praznoPolje) {
+        alert("potrebno upisati podatke");
+      } else {
         this.buttonSpinnerUcitavanjeSlike = true;
         this.myCroppa.generateBlob((blobData) => {
           let imgName =
@@ -215,8 +210,9 @@ export default {
             this.$store.state.userDataF.imePrezime +
             "/" +
             this.naslov +
-            "_";
-          Date.now() + ".png";
+            "_" +
+            Date.now() +
+            ".png";
           this.$fire.storage
             .ref(imgName)
             .put(blobData)
@@ -224,32 +220,21 @@ export default {
               result.ref.getDownloadURL().then((url) => {
                 this.imgURL = url;
               });
-              this.buttonSpinnerUcitavanjeSlike = false;
+            })
+            .then(() => {
+              this.uploadPodataka();
             })
             .catch((e) => {
               console.log(e);
             });
         });
-      } else {
-        alert("Potrebno učitati sliku!");
-      }
-    },
-    imgRemove() {
-      if (this.imgURL) {
-        this.$fire.storage
-          .refFromURL(this.imgURL)
-          .delete()
-          .then(() => {
-            alert("obrisano");
-            this.imgURL = "";
-          })
-          .catch((e) => {
-            console.log(e);
-          });
       }
     },
   },
   computed: {
+    scehuledFunction() {
+      return this.compliteImgUpload ? true : false;
+    },
     slikaNull() {
       return this.myCroppa.img === null;
     },
@@ -267,15 +252,13 @@ export default {
         this.uvezO &&
         this.obj &&
         this.podaci &&
-        this.profilKorisnika
+        this.profilKorisnika &&
+        this.slikaNull
       ) {
         return true;
       } else {
         return false;
       }
-    },
-    disabledButtonUcitanaSlika() {
-      return this.imgURL ? true : false;
     },
   },
   mounted() {
