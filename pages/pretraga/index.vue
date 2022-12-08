@@ -18,6 +18,7 @@
           :id="card.idKnjige"
           :autor="card.autor"
           :kategorija="card.kategorija"
+          :imgURL="card.imgURL"
         /> </b-card-group
     ></b-row>
   </b-container>
@@ -48,14 +49,31 @@ export default {
     },
   },
   computed: {
+    // filterKnjiga() {
+    //   return this.ucitaneKnjige.filter(
+    //     (card) =>
+    //       card.naslov.toLowerCase().includes(this.podaci.trazi.toLowerCase()) ||
+    //       card.autor.toLowerCase().includes(this.podaci.trazi.toLowerCase())
+    //   );
+    // },
     filterKnjiga() {
       if (!this.podaci.trazi) {
-        return this.ucitaneKnjige.filter((card) =>
-          card.naslov.toLowerCase().includes(this.$route.query.trazi)
+        return this.ucitaneKnjige.filter(
+          (card) =>
+            card.naslov
+              .toLowerCase()
+              .includes(this.$route.query.trazi.toLowerCase()) ||
+            card.autor
+              .toLowerCase()
+              .includes(this.$route.query.trazi.toLowerCase())
         );
       } else {
-        return this.ucitaneKnjige.filter((card) =>
-          card.naslov.toLowerCase().includes(this.podaci.trazi)
+        return this.ucitaneKnjige.filter(
+          (card) =>
+            card.naslov
+              .toLowerCase()
+              .includes(this.podaci.trazi.toLowerCase()) ||
+            card.autor.toLowerCase().includes(this.podaci.trazi.toLowerCase())
         );
       }
     },
