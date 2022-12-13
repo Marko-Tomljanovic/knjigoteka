@@ -80,6 +80,7 @@
             :title="card.naslov"
             :id="card.idKnjige"
             :autor="card.autor"
+            :imgURL="card.imgURL"
             :kategorija="card.kategorija" /></b-row
       ></b-tab>
       <b-tab :title="`Komentari |${ukKomentari}|`" :active="queryTab">
