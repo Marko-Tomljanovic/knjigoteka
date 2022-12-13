@@ -3,16 +3,25 @@
     <b-row align-h="center">
       <div
         class="border"
-        style="width: 61rem; height: 17.7rem; margin-top: 3.2rem"
+        style="width: 61rem; height: 18.7rem; margin-top: 3.2rem"
       >
         <b-row>
           <b-col cols="4" class="text-center">
             <b-icon
+              v-if="!profilKorisnika.slikaProfilaURL"
               icon="person-circle"
-              font-scale="8"
+              font-scale="8.7"
               style="margin-top: -2rem"
-            ></b-icon
-          ></b-col>
+            ></b-icon>
+            <b-img
+              v-else
+              style="margin-top: -2.1rem"
+              :src="profilKorisnika.slikaProfilaURL"
+              fluid
+              alt="Profil Image"
+              rounded="circle"
+            ></b-img>
+          </b-col>
           <b-col
             ><h2 class="mt-4 font-weight-bold">o korisniku</h2>
             <hr />
@@ -20,7 +29,7 @@
         </b-row>
         <b-row>
           <b-col cols="4" class="text-center"
-            ><h5 class="mt-3">{{ profilKorisnika.imePrezime }}</h5>
+            ><h5 class="mt-2">{{ profilKorisnika.imePrezime }}</h5>
 
             <p style="font-size: 18px" class="text-muted">
               <b-icon variant="dark" class="mr-2" icon="geo-alt-fill"></b-icon
