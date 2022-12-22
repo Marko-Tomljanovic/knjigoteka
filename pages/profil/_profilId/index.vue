@@ -79,7 +79,8 @@
             :autor="card.autor"
             :id="card.idKnjige"
             :kategorija="card.kategorija"
-            :imgURL="card.imgURL" /></b-row
+            :imgURL="card.imgURL"
+            @knjiga="getKnjiga" /></b-row
       ></b-tab>
       <b-tab :title="`Komentari |${ukKomentari}|`" :active="queryTab">
         <b-form-group v-if="ukKomentari > 0">
@@ -105,6 +106,36 @@
         />
       </b-tab>
     </b-tabs>
+    <b-modal
+      id="modal-brisati-knjigu"
+      ref="modal"
+      title="Za brisanje knjige upisati točan naziv knjige"
+      @show="resetModal"
+      @hidden="resetModal"
+      @ok="handleOk"
+    >
+      <form ref="form" @submit.stop.prevent="handleSubmit">
+        <b-form-group
+          label-for="text-input"
+          invalid-feedback="Opis je obavezan"
+        >
+          <b-form-input
+            id="text-input"
+            autocomplete="off"
+            placeholder="npr. Harry Potter"
+            v-model="text"
+          ></b-form-input>
+        </b-form-group>
+      </form>
+      <template #modal-footer="{ cancel }">
+        <b-button size="sm" variant="outline-dark" @click="cancel()">
+          Odustani
+        </b-button>
+        <b-button variant="danger" size="sm" @click="handleOk">
+          Obriši
+        </b-button>
+      </template>
+    </b-modal>
   </b-container>
 </template>
 
@@ -121,9 +152,87 @@ export default {
       ukKnjiga: "0",
       lajkMetoda: {},
       selected: "svi",
+      text: "",
+      odabranaKnjiga: {},
     };
   },
   methods: {
+    getKnjiga(value) {
+      this.odabranaKnjiga = value;
+    },
+    async obrisati() {
+      try {
+        const ref = await this.$fire.firestore;
+        //brisanje knjige iz kategorija
+        ref
+          .collection("kategorije")
+          .doc(this.odabranaKnjiga.kategorija)
+          .collection("knjige")
+          .doc(this.odabranaKnjiga.id)
+          .delete();
+        //brisanje knjige iz kategorija
+        ref
+          .collection("users")
+          .doc(this.$store.state.userData.uid)
+          .update({
+            dodaneKnjige: this.$fireModule.firestore.FieldValue.arrayRemove({
+              idKnjige: this.odabranaKnjiga.id,
+              autor: this.odabranaKnjiga.autor,
+              naslov: this.odabranaKnjiga.title,
+              kategorija: this.odabranaKnjiga.kategorija,
+              imgURL: this.odabranaKnjiga.imgURL,
+            }),
+          });
+        //brisanje knjige kolekcije podaci
+        ref
+          .collection("kategorije")
+          .doc("podaci")
+          .update({
+            knjige: this.$fireModule.firestore.FieldValue.arrayRemove({
+              idKnjige: this.odabranaKnjiga.id,
+              autor: this.odabranaKnjiga.autor,
+              naslov: this.odabranaKnjiga.title,
+              imgURL: this.odabranaKnjiga.imgURL,
+              kategorija: this.odabranaKnjiga.kategorija,
+            }),
+          })
+          .then(() => {
+            this.$emit("ucitajEmit");
+          });
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    resetModal() {
+      this.text = "";
+      this.nameState = null;
+    },
+
+    handleOk(bvModalEvent) {
+      // Prevent modal from closing
+      bvModalEvent.preventDefault();
+      if (this.odabranaKnjiga.title === this.text) {
+        // Trigger submit handler
+        this.obrisati()
+          .then(() => {
+            this.handleSubmit();
+            console.log("Knjiga je obrisana");
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      } else {
+        alert("upisati tocan naziv knjige");
+      }
+    },
+    handleSubmit() {
+      this.ucitaj();
+      // Hide the modal manually
+      this.$nextTick(() => {
+        this.$bvModal.hide("modal-brisati-knjigu");
+      });
+      this.showAlert();
+    },
     async ucitaj() {
       try {
         let ref = await this.$fire.firestore

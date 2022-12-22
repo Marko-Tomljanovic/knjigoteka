@@ -34,13 +34,13 @@
         <b-icon icon="pencil" variant="secondary" scale="1.6"></b-icon>
       </b-button>
       <b-button
-        @click="obrisati"
+        @click="getTheSelectedOne(title, id, kategorija, imgURL, autor)"
+        v-b-modal.modal-brisati-knjigu
         v-b-tooltip.hover.v-danger
         title="izbriši"
         variant="outline"
-      >
-        <b-icon icon="x-circle" variant="danger" scale="1.6"></b-icon>
-      </b-button>
+        ><b-icon icon="x-circle" variant="danger" scale="1.6"></b-icon
+      ></b-button>
     </div>
   </div>
 </template>
@@ -50,51 +50,11 @@ export default {
   props: ["title", "id", "kategorija", "autor", "imgURL"],
   emits: ["ucitajEmit"],
   data() {
-    return {};
+    return { text: "" };
   },
   methods: {
-    async obrisati() {
-      try {
-        const ref = await this.$fire.firestore;
-        //brisanje knjige iz kategorija
-        ref
-          .collection("kategorije")
-          .doc(this.kategorija)
-          .collection("knjige")
-          .doc(this.id)
-          .delete();
-        //brisanje knjige iz kategorija
-        ref
-          .collection("users")
-          .doc(this.$store.state.userData.uid)
-          .update({
-            dodaneKnjige: this.$fireModule.firestore.FieldValue.arrayRemove({
-              idKnjige: this.id,
-              autor: this.autor,
-              naslov: this.title,
-              kategorija: this.kategorija,
-              imgURL: this.imgURL,
-            }),
-          });
-        //brisanje knjige kolekcije podaci
-        ref
-          .collection("kategorije")
-          .doc("podaci")
-          .update({
-            knjige: this.$fireModule.firestore.FieldValue.arrayRemove({
-              idKnjige: this.id,
-              autor: this.autor,
-              naslov: this.title,
-              imgURL: this.imgURL,
-              kategorija: this.kategorija,
-            }),
-          })
-          .then(() => {
-            this.$emit("ucitajEmit");
-          });
-      } catch (e) {
-        console.log(e);
-      }
+    getTheSelectedOne(title, id, kategorija, imgURL, autor) {
+      this.$emit("knjiga", { title, id, kategorija, imgURL, autor });
     },
   },
 };
