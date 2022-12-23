@@ -51,9 +51,42 @@
       <b-tab title="Profil"
         ><b-card-text>
           Obrisati profil
-          <b-button @click="brisanjeProfil" variant="danger"
+          <b-button
+            v-b-modal.modal-brisati-profil
+            v-b-tooltip.hover.v-danger
+            title="izbriši profil"
+            variant="outline-danger"
             >Obriši profil</b-button
-          ></b-card-text
+          ><b-modal
+            id="modal-brisati-profil"
+            ref="modal"
+            title="Za brisanje profila upisati e-mail"
+            @show="resetModal"
+            @hidden="resetModal"
+            @ok="handleOk"
+          >
+            <form ref="form" @submit.stop.prevent="handleSubmit">
+              <b-form-group
+                label-for="text-input"
+                invalid-feedback="Opis je obavezan"
+              >
+                <b-form-input
+                  id="text-input"
+                  autocomplete="off"
+                  placeholder="npr. marko@gmail.com"
+                  v-model="text"
+                ></b-form-input>
+              </b-form-group>
+            </form>
+            <template #modal-footer="{ cancel }">
+              <b-button size="sm" variant="outline-dark" @click="cancel()">
+                Odustani
+              </b-button>
+              <b-button variant="danger" size="sm" @click="handleOk">
+                Obriši
+              </b-button>
+            </template>
+          </b-modal></b-card-text
         ></b-tab
       >
     </b-tabs>
@@ -64,7 +97,7 @@
 export default {
   name: "postavke",
   data() {
-    return { status: false, status2: false, status3: false };
+    return { status: false, status2: false, status3: false, text: "" };
   },
   methods: {
     async ucitajPostavke() {
@@ -85,10 +118,10 @@ export default {
     },
     async brisanjeProfil() {
       // delete user info in the database&auth
-      const deleteRef = await this.$fire.firestore
+      const deleteRef = this.$fire.firestore
         .collection("users")
         .doc(this.$store.state.userData.uid);
-      deleteRef
+      await deleteRef
         .delete()
         .then(() => {
           this.$fire.auth.currentUser.delete();
@@ -105,6 +138,35 @@ export default {
         .catch((e) => {
           console.log("Odjava neuspješna, error:" + e);
         });
+    },
+    resetModal() {
+      this.text = "";
+      this.nameState = null;
+    },
+
+    handleOk(bvModalEvent) {
+      // Prevent modal from closing
+      bvModalEvent.preventDefault();
+      if (this.$store.state.userData.email === this.text) {
+        // Trigger submit handler
+        this.brisanjeProfil()
+          .then(() => {
+            this.handleSubmit();
+            console.log("Profil je obrisan");
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      } else {
+        alert("upisati točnu email adresu");
+      }
+    },
+    handleSubmit() {
+      this.ucitaj();
+      // Hide the modal manually
+      this.$nextTick(() => {
+        this.$bvModal.hide("modal-brisati-profil");
+      });
     },
   },
   computed: {
