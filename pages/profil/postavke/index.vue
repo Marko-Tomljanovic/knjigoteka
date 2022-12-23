@@ -116,7 +116,23 @@ export default {
         console.log(e);
       }
     },
+    obrisatiSliku() {
+      const storage = this.$fire.storage;
+      const picture = storage.refFromURL(
+        this.$store.state.userDataF.slikaProfilaURL
+      );
+      picture
+        .delete()
+        .then(function () {
+          console.log("slika obrisana");
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+    },
     async brisanjeProfil() {
+      //delete profile img
+      this.obrisatiSliku();
       // delete user info in the database&auth
       const deleteRef = this.$fire.firestore
         .collection("users")

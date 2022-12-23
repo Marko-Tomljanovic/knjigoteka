@@ -135,38 +135,42 @@ export default {
       if (this.praznoPolje) {
         this.buttonSpinnerUcitavanjeKorisnika = true;
         try {
-          await this.uploadSlika();
-          await this.$fire.auth
-            .createUserWithEmailAndPassword(this.form.email, this.form.password)
-            .then((user) => {
-              this.$fire.firestore
-                .collection("users")
-                .doc(user.user._delegate.uid)
-                .set({
-                  id: user.user._delegate.uid,
-                  imePrezime: this.form.imePrezime,
-                  mobitel: this.form.mobitel,
-                  mjesto: this.form.mjesto,
-                  slikaProfilaURL: this.slikaProfilaURL,
-                  createdAt: user.user.multiFactor.user.metadata.createdAt,
-                });
-              this.$fire.firestore
-                .collection("users")
-                .doc(user.user._delegate.uid)
-                .collection("poruke")
-                .doc("sve")
-                .set({})
-                .then(() => {
-                  this.buttonSpinnerUcitavanjeKorisnika = false;
-                  location.reload();
-                })
-                .catch((e) => {
-                  console.log(e);
-                });
-            })
-            .catch((e) => {
-              console.log(e);
-            });
+          await this.uploadSlika().then(() => {
+            this.$fire.auth
+              .createUserWithEmailAndPassword(
+                this.form.email,
+                this.form.password
+              )
+              .then((user) => {
+                this.$fire.firestore
+                  .collection("users")
+                  .doc(user.user._delegate.uid)
+                  .set({
+                    id: user.user._delegate.uid,
+                    imePrezime: this.form.imePrezime,
+                    mobitel: this.form.mobitel,
+                    mjesto: this.form.mjesto,
+                    slikaProfilaURL: this.slikaProfilaURL,
+                    createdAt: user.user.multiFactor.user.metadata.createdAt,
+                  });
+                this.$fire.firestore
+                  .collection("users")
+                  .doc(user.user._delegate.uid)
+                  .collection("poruke")
+                  .doc("sve")
+                  .set({})
+                  .then(() => {
+                    this.buttonSpinnerUcitavanjeKorisnika = false;
+                    location.reload();
+                  })
+                  .catch((e) => {
+                    console.log(e);
+                  });
+              })
+              .catch((e) => {
+                console.log(e);
+              });
+          });
         } catch (e) {
           console.log(e);
         }
@@ -175,25 +179,27 @@ export default {
       }
     },
     async uploadSlika() {
-      this.form.myCroppa.generateBlob((blobData) => {
-        let imgName =
-          "oglasi/" +
-          this.form.imePrezime +
-          "/slikaProfila/" +
-          Date.now() +
-          ".png";
-        this.$fire.storage
-          .ref(imgName)
-          .put(blobData)
-          .then((result) => {
-            result.ref.getDownloadURL().then((url) => {
-              this.slikaProfilaURL = url;
+      if (this.form.myCroppa.imageSet) {
+        this.form.myCroppa.generateBlob((blobData) => {
+          let imgName =
+            "oglasi/" +
+            this.form.imePrezime +
+            "/slikaProfila/" +
+            Date.now() +
+            ".png";
+          this.$fire.storage
+            .ref(imgName)
+            .put(blobData)
+            .then((result) => {
+              result.ref.getDownloadURL().then((url) => {
+                this.slikaProfilaURL = url;
+              });
+            })
+            .catch((e) => {
+              console.log(e);
             });
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      });
+        });
+      }
     },
   },
   computed: {
