@@ -5,7 +5,9 @@
         >Ime i prezime: {{ this.$store.state.userDataF.imePrezime }} <br />
         Ukupno dodane knjige:
         {{ brojDodanihKnjiga }}
-        <nuxt-link :to="`/profil/${this.$store.state.userData.uid}`"
+        <nuxt-link
+          v-if="brojDodanihKnjiga > 0"
+          :to="`/profil/${this.$store.state.userData.uid}`"
           >Pogledaj oglase</nuxt-link
         >
         <br />

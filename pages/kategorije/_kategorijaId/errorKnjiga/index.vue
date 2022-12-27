@@ -1,10 +1,10 @@
 <template>
   <div class="text-center mt-4">
-    <h3 class="fontC">
+    <h5 class="fontC">
       Trenutno nema dodanih oglasa u kategoriji |{{
         $route.params.kategorijaId
       }}|
-    </h3>
+    </h5>
     <b-button to="/kategorije">Natrag na kategorije</b-button>
   </div>
 </template>

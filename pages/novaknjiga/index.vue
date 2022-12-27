@@ -200,7 +200,7 @@ export default {
       }
     },
     async uploadSlika() {
-      if (this.praznoPolje) {
+      if (!this.praznoPolje) {
         alert("potrebno upisati podatke");
       } else {
         this.buttonSpinnerUcitavanjeSlike = true;
