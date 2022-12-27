@@ -46,6 +46,7 @@
           );
           clearInput();
         "
+        autocomplete="off"
         class="rounded-pill"
         v-model="porukaChild"
         :disabled="disableInuptButton"
