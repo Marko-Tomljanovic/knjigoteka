@@ -2,9 +2,9 @@
   <div>
     <b-navbar
       class="sticky-top"
-      :class="var1 ? 'naslovna' : 'ostali'"
+      :class="var1 ? 'naslovna' : tamnaTemaStyleOstali"
       toggleable="lg"
-      :type="var1 ? 'dark' : 'light'"
+      :type="var1 ? 'dark' : tamnaTemaStyleLight"
     >
       <b-navbar-brand class="font" to="/"
         ><img :src="logo" alt="logo" /> Knjigoteka</b-navbar-brand
@@ -23,7 +23,13 @@
           <b-nav-form>
             <b-button
               class="my-2 my-sm-0 mr-1"
-              :class="var1 ? 'naviButtonNaslovna ' : 'naviButton'"
+              :class="
+                var1
+                  ? 'naviButtonNaslovna '
+                  : tamnaTemaTemp
+                  ? 'naviButtonNaslovna'
+                  : 'naviButton'
+              "
               type="button"
               to="/kategorije"
               >Kategorije</b-button
@@ -50,7 +56,9 @@
               class="ml-1"
               style="margin-right: -0.4rem"
               ><b-icon
-                :style="var1 ? 'color: #ffffff' : ''"
+                :style="
+                  var1 ? 'color: #ffffff' : tamnaTemaStyleButtonPorukaProfil
+                "
                 scale="1.6"
                 :icon="notPor ? 'envelope' : 'envelope-open'"
               ></b-icon
@@ -75,7 +83,9 @@
             >
               <template #button-content>
                 <b-icon
-                  :class="var1 ? 'whiteN' : ''"
+                  :style="
+                    var1 ? 'color: #ffffff' : tamnaTemaStyleButtonPorukaProfil
+                  "
                   class="mr-1"
                   icon="person-circle"
                   font-scale="2.4"
@@ -148,6 +158,9 @@ export default {
     var1() {
       return this.$route.name.includes("index");
     },
+    tamnaTemaTemp() {
+      return this.$store.state.userDataF.postavke?.tamnaTema;
+    },
     notPor() {
       return this.$store.state.userDataF?.notifikacija?.length > 0
         ? true
@@ -155,6 +168,27 @@ export default {
     },
     notifikacijaCall() {
       return this.$store.state.userDataF?.notifikacija;
+    },
+    tamnaTemaStyleOstali() {
+      if (this.$store.state.userDataF) {
+        return this.tamnaTemaTemp ? "tamnaTemaStyle" : "ostali";
+      } else {
+        ("ostali");
+      }
+    },
+    tamnaTemaStyleLight() {
+      if (this.$store.state.userDataF) {
+        return this.tamnaTemaTemp ? "dark" : "light";
+      } else {
+        ("light");
+      }
+    },
+    tamnaTemaStyleButtonPorukaProfil() {
+      if (this.$store.state.userDataF) {
+        return this.tamnaTemaTemp ? "color:white" : "";
+      } else {
+        ("");
+      }
     },
   },
 };
@@ -185,6 +219,7 @@ export default {
   align-items: center;
   font-family: "Inika", sans-serif;
 }
+
 .naslovna {
   background-color: rgba(0, 0, 0, 0.5);
   color: #fff;
@@ -194,7 +229,9 @@ export default {
   color: black;
   border-bottom: 1px solid #c4c4c4;
 }
-.whiteN {
-  color: rgb(255, 255, 255);
+.tamnaTemaStyle {
+  background-color: black;
+  color: white;
+  border-bottom: 1px solid #c4c4c4;
 }
 </style>

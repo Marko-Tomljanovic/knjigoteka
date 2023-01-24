@@ -23,6 +23,9 @@ export default {
     setUserDataF(state, payload) {
       state.userDataF = payload;
     },
+    setUserDataFtamnaTema(state, payload) {
+      state.userDataF.postavke.tamnaTema = payload;
+    },
     setOglas(state, payload) {
       state.oglas = payload;
     },

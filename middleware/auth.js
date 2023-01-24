@@ -7,7 +7,7 @@ export default async function ({ route, redirect, store, app }) {
         .get();
       store.commit("setUserDataF", us.data());
     } catch (e) {
-      console.log(e);
+      console.log("Pogreška u dohvaćanju podataka 'userDataF'" + e);
     }
   }
   if (

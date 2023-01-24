@@ -152,6 +152,7 @@ export default {
                     mjesto: this.form.mjesto,
                     slikaProfilaURL: this.slikaProfilaURL,
                     createdAt: user.user.multiFactor.user.metadata.createdAt,
+                    postavke: { tamnaTema: false },
                   });
                 this.$fire.firestore
                   .collection("users")

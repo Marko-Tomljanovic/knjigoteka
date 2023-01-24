@@ -18,6 +18,16 @@
         Vrijeme kreiranja profila
         {{ $moment(vrijemeKreiranjaKorisnika).format("ll") }}
       </b-tab>
+      <b-tab title="Prilagođavanje izgleda"
+        ><b-card-text>
+          <b-form-checkbox v-model="tamnaTema" name="check-button" switch>
+            Tamna tema <b> {{ tamnaTema }}</b> </b-form-checkbox
+          ><br /><br />
+          <b-button @click="updatePrilagodavanjeIzgleda"
+            >Pohrani</b-button
+          ></b-card-text
+        ></b-tab
+      >
       <b-tab title="Obavijesti"
         ><b-card-text
           ><b-card-text>
@@ -50,6 +60,7 @@
           <b-button @click="ucitajPostavke">Pohrani</b-button></b-card-text
         ></b-tab
       >
+
       <b-tab title="Profil"
         ><b-card-text>
           Obrisati profil
@@ -99,7 +110,13 @@
 export default {
   name: "postavke",
   data() {
-    return { status: false, status2: false, status3: false, text: "" };
+    return {
+      status: false,
+      status2: false,
+      status3: false,
+      text: "",
+      tamnaTema: this.$store.state.userDataF?.postavke.tamnaTema,
+    };
   },
   methods: {
     async ucitajPostavke() {
@@ -185,6 +202,23 @@ export default {
       this.$nextTick(() => {
         this.$bvModal.hide("modal-brisati-profil");
       });
+    },
+    updatePrilagodavanjeIzgleda() {
+      const ref = this.$fire.firestore
+        .collection("users")
+        .doc(this.$store.state.userData.uid);
+      ref
+        .update({
+          postavke: { tamnaTema: this.tamnaTema },
+        })
+        .then(() => {
+          this.$store.commit("setUserDataFtamnaTema", this.tamnaTema);
+          // alert("pohranjeno");
+          this.ucitajPostavke();
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     },
   },
   computed: {
