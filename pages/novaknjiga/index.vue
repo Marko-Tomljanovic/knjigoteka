@@ -253,7 +253,7 @@ export default {
         this.obj &&
         this.podaci &&
         this.profilKorisnika &&
-        this.slikaNull
+        !this.slikaNull
       ) {
         return true;
       } else {
