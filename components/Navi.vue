@@ -159,7 +159,7 @@ export default {
       return this.$route.name.includes("index");
     },
     tamnaTemaTemp() {
-      return this.$store.state.userDataF.postavke?.tamnaTema;
+      return this.$store.state.userDataF?.postavke?.tamnaTema;
     },
     notPor() {
       return this.$store.state.userDataF?.notifikacija?.length > 0
