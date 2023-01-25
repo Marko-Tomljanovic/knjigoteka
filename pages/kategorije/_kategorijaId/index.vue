@@ -8,7 +8,7 @@
         </h4></b-col
       >
       <b-col align-self="center" class="text-right"
-        ><b-button class="buttonPovratak"
+        ><b-button to="/kategorije" class="buttonPovratak"
           ><b-icon icon="arrow90deg-left"></b-icon>&nbsp; POVRATAK
         </b-button></b-col
       >
