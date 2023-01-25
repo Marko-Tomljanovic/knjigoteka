@@ -1,6 +1,15 @@
 <template>
   <div>
-    <b-tabs pills card vertical>
+    <b-tabs
+      pills
+      card
+      vertical
+      :active-nav-item-class="
+        tamnaTema
+          ? 'font-weight-bold text-uppercase bg-dark'
+          : 'font-weight-bold text-uppercase btn-outline-light border'
+      "
+    >
       <b-tab title="Općenito" active
         >Ime i prezime: {{ this.$store.state.userDataF.imePrezime }} <br />
         Ukupno dodane knjige:
@@ -20,7 +29,7 @@
       </b-tab>
       <b-tab title="Prilagođavanje izgleda"
         ><b-card-text>
-          <b-form-checkbox v-model="tamnaTema" name="check-button" switch>
+          <b-form-checkbox v-model="tamnaTemaTemp" name="check-button" switch>
             Tamna tema <b> {{ tamnaTema }}</b> </b-form-checkbox
           ><br /><br />
           <b-button @click="updatePrilagodavanjeIzgleda"
@@ -116,6 +125,7 @@ export default {
       status3: false,
       text: "",
       tamnaTema: this.$store.state.userDataF?.postavke.tamnaTema,
+      tamnaTemaTemp: this.$store.state.userDataF?.postavke.tamnaTema,
     };
   },
   methods: {
@@ -209,10 +219,11 @@ export default {
         .doc(this.$store.state.userData.uid);
       ref
         .update({
-          postavke: { tamnaTema: this.tamnaTema },
+          postavke: { tamnaTema: this.tamnaTemaTemp },
         })
         .then(() => {
-          this.$store.commit("setUserDataFtamnaTema", this.tamnaTema);
+          this.$store.commit("setUserDataFtamnaTema", this.tamnaTemaTemp);
+          this.tamnaTema = this.tamnaTemaTemp;
           // alert("pohranjeno");
           this.ucitajPostavke();
         })
