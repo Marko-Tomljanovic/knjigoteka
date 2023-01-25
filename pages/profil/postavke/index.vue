@@ -30,7 +30,7 @@
       <b-tab title="Prilagođavanje izgleda"
         ><b-card-text>
           <b-form-checkbox v-model="tamnaTemaTemp" name="check-button" switch>
-            Tamna tema <b> {{ tamnaTema }}</b> </b-form-checkbox
+            Tamna tema </b-form-checkbox
           ><br /><br />
           <b-button @click="updatePrilagodavanjeIzgleda"
             >Pohrani</b-button

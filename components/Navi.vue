@@ -9,7 +9,6 @@
       <b-navbar-brand class="font" to="/"
         ><img :src="logo" alt="logo" /> Knjigoteka</b-navbar-brand
       >
-
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
@@ -173,21 +172,21 @@ export default {
       if (this.$store.state.userDataF) {
         return this.tamnaTemaTemp ? "tamnaTemaStyle" : "ostali";
       } else {
-        ("ostali");
+        return "ostali";
       }
     },
     tamnaTemaStyleLight() {
       if (this.$store.state.userDataF) {
         return this.tamnaTemaTemp ? "dark" : "light";
       } else {
-        ("light");
+        return "light";
       }
     },
     tamnaTemaStyleButtonPorukaProfil() {
       if (this.$store.state.userDataF) {
         return this.tamnaTemaTemp ? "color:white" : "";
       } else {
-        ("");
+        return "";
       }
     },
   },
